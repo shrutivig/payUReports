@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "17619777938",
+    "project_id": "payureports-3751e"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17619777938:android:a60dad36261658fc",
+        "android_client_info": {
+          "package_name": "reports.payu.com.app.payureports"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17619777938-262i3nf1oeg83m0fkqmodh2dp8i3hd8h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "reports.payu.com.app.payureports",
+            "certificate_hash": "B964DE07956A606862922AB8C6E2A92DCD35078B"
+          }
+        },
+        {
+          "client_id": "17619777938-ph7srm9vumbdqdok664vugt230mc2q60.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrDPh59xnhIsVALyYAr3aHcHixCVtttzM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
