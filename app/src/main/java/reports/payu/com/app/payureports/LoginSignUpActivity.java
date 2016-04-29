@@ -163,6 +163,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements
         if (signedIn) {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
           //  findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            startActivity(new Intent(this,HomeActivity.class));
         } else {
             mStatusTextView.setText(R.string.signed_out);
 
