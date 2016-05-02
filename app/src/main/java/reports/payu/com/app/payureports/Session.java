@@ -14,15 +14,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.gson.Gson;
 
 import org.apache.http.conn.ConnectTimeoutException;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -46,18 +43,6 @@ public class Session {
     private static Session INSTANCE = null;
     private final SessionData mSessionData = new SessionData();
     Long start = null, end = null, diff = null;
-
-    public GoogleApiClient getmGoogleApiClient() {
-        return mGoogleApiClient;
-    }
-
-    public void setmGoogleApiClient(GoogleApiClient mGoogleApiClient) {
-        this.mGoogleApiClient = mGoogleApiClient;
-    }
-
-    private GoogleApiClient mGoogleApiClient;
-
-
 
     private Session(Context context) //Set Token and User from SharedPrefs in constructor, very clever actually :P
     {

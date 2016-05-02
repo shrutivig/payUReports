@@ -10,10 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,14 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -33,7 +44,15 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.sign_out_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signOut();
+                //signOut();
+               // LoginSignUpActivity.signOut();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                onBackPressed();
+                            }
+                        });
 
 
             }
@@ -41,32 +60,12 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.disconnect_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                revokeAccess();
             }
         });
     }
 
-    private void signOut() {
-        Auth.GoogleSignInApi.signOut(Session.getInstance(this).getmGoogleApiClient()).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // [START_EXCLUDE]
-                        //updateUI(false);
-                        // [END_EXCLUDE]
-                    }
-                });
-    }
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
-    private void revokeAccess() {
-        Auth.GoogleSignInApi.revokeAccess(Session.getInstance(this).getmGoogleApiClient()).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // [START_EXCLUDE]
-                       // updateUI(false);
-                        // [END_EXCLUDE]
-                    }
-                });
     }
 }

@@ -2,12 +2,16 @@ package reports.payu.com.app.payureports;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -19,15 +23,20 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import java.io.IOException;
+
 public class LoginSignUpActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
+    private static final int REQ_SIGN_IN_REQUIRED = 55664;
 
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
+    private String mAccountName;
+    private String oAuthtoken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +49,10 @@ public class LoginSignUpActivity extends AppCompatActivity implements
                 .requestEmail()
                 .build();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
         // Customize sign-in button. The sign-in button can be displayed in
         // multiple sizes and color schemes. It can also be contextually
         // rendered based on the requested scopes. For example. a red button may
@@ -89,14 +97,20 @@ public class LoginSignUpActivity extends AppCompatActivity implements
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
+        if (requestCode == REQ_SIGN_IN_REQUIRED && resultCode == RESULT_OK && mAccountName != null && !mAccountName.isEmpty()) {
+            // We had to sign in - now we can finish off the token request.
+            new RetrieveTokenTask().execute(mAccountName);
+        }
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
+            mAccountName = acct.getEmail();
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             updateUI(true);
+
         } else {
             updateUI(false);
         }
@@ -132,6 +146,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements
         if (signedIn) {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             //  findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            new RetrieveTokenTask().execute(mAccountName);
             startActivity(new Intent(this, HomeActivity.class));
         } else {
             mStatusTextView.setText(R.string.signed_out);
@@ -148,11 +163,39 @@ public class LoginSignUpActivity extends AppCompatActivity implements
                 signIn();
                 break;
             case R.id.sign_out_button:
-                // signOut();
+                 //signOut();
                 break;
             case R.id.disconnect_button:
                 //revokeAccess();
                 break;
         }
     }
+
+    private class RetrieveTokenTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String accountName = params[0];
+            String scopes = "oauth2:profile email";
+            String token = null;
+            try {
+                token = GoogleAuthUtil.getToken(getApplicationContext(), accountName, scopes);
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage());
+            } catch (UserRecoverableAuthException e) {
+                startActivityForResult(e.getIntent(), REQ_SIGN_IN_REQUIRED);
+            } catch (GoogleAuthException e) {
+                Log.e(TAG, e.getMessage());
+            }
+            return token;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+             oAuthtoken = s;
+           // ((TextView) findViewById(R.id.token_value)).setText("Token Value: " + s);
+        }
+    }
+
 }
