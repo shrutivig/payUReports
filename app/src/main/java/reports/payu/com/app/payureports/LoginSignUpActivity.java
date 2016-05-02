@@ -21,7 +21,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
 
@@ -147,7 +146,6 @@ public class LoginSignUpActivity extends AppCompatActivity implements
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             //  findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             new RetrieveTokenTask().execute(mAccountName);
-            startActivity(new Intent(this, HomeActivity.class));
         } else {
             mStatusTextView.setText(R.string.signed_out);
 
@@ -163,7 +161,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements
                 signIn();
                 break;
             case R.id.sign_out_button:
-                 //signOut();
+                //signOut();
                 break;
             case R.id.disconnect_button:
                 //revokeAccess();
@@ -193,9 +191,21 @@ public class LoginSignUpActivity extends AppCompatActivity implements
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-             oAuthtoken = s;
-           // ((TextView) findViewById(R.id.token_value)).setText("Token Value: " + s);
+            oAuthtoken = s;
+            launchHomeActivity();
+            // ((TextView) findViewById(R.id.token_value)).setText("Token Value: " + s);
         }
     }
 
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    private void launchHomeActivity() {
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
+        finish();
+    }
 }
