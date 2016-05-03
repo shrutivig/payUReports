@@ -1,6 +1,7 @@
 package reports.payu.com.app.payureports;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -113,33 +114,66 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
     public void setDataInChart() {
 
+        /*Line Chart Start*/
         ArrayList<Entry> listSuccess = new ArrayList<>();
         ArrayList<Entry> listFailed = new ArrayList<>();
         ArrayList<Entry> listDropped = new ArrayList<>();
         ArrayList<Entry> listBounced = new ArrayList<>();
         ArrayList<Entry> listUserCancelled = new ArrayList<>();
         ArrayList<Entry> listOther = new ArrayList<>();
-
         ArrayList<String> xVals = new ArrayList<>();
+        /*Line Chart End*/
+
+        /*Pie Chart Start*/
+        ArrayList<Entry> listForPieChart = new ArrayList<>();
+        double successTotal = 0.0;
+        double failedTotal = 0.0;
+        double droppedTotal = 0.0;
+        double bouncedTotal = 0.0;
+        double userCancelledTotal = 0.0;
+        double pendingTotal = 0.0;
+        ArrayList<String> xValsForPieChart = new ArrayList<>();
+        /*Pie Chart End*/
+
         try {
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset());
             reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
             List<ReportData> list = reportsResults.getList();
-            for (int i = 0 ; i < list.size() ; i++) {
+            for (int i = 0; i < list.size(); i++) {
+
                 ReportData temp = list.get(i);
-                Entry success = new Entry(temp.getSuccess(), i);
+
+                float tempSuccessValue = temp.getSuccess();
+                successTotal += tempSuccessValue;
+                Entry success = new Entry(tempSuccessValue, i);
                 listSuccess.add(success);
-                Entry failed = new Entry(temp.getFailed(), i);
+
+                float tempFailedValue = temp.getFailed();
+                failedTotal += tempFailedValue;
+                Entry failed = new Entry(tempFailedValue, i);
                 listFailed.add(failed);
-                Entry dropped = new Entry(temp.getDropped(), i);
+
+                float tempDroppedValue = temp.getDropped();
+                droppedTotal += tempDroppedValue;
+                Entry dropped = new Entry(tempDroppedValue, i);
                 listDropped.add(dropped);
-                Entry bounced = new Entry(temp.getBounced(), i);
+
+                float tempBouncedValue = temp.getBounced();
+                bouncedTotal += tempBouncedValue;
+                Entry bounced = new Entry(tempBouncedValue, i);
                 listBounced.add(bounced);
-                Entry userCancelled = new Entry(temp.getUserCancelled(), i);
+
+                float tempUserCancelledValue = temp.getUserCancelled();
+                userCancelledTotal += tempUserCancelledValue;
+                Entry userCancelled = new Entry(tempUserCancelledValue, i);
                 listUserCancelled.add(userCancelled);
-                Entry others = new Entry(temp.getPending(), i);
+
+                float tempPendingValue = temp.getPending();
+                pendingTotal += tempPendingValue;
+                Entry others = new Entry(tempPendingValue, i);
                 listOther.add(others);
-                xVals.add("from "+ temp.getMinDate()+" to "+temp.getMaxDate());
+
+                xVals.add("" + temp.getMinDate() + " to " + temp.getMaxDate());
 
             }
             LineDataSet setComp1 = new LineDataSet(listSuccess, "Success");
@@ -148,27 +182,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             LineDataSet setComp4 = new LineDataSet(listBounced, "Bounced");
             LineDataSet setComp5 = new LineDataSet(listUserCancelled, "User Cancelled");
             LineDataSet setComp6 = new LineDataSet(listOther, "Others");
-
-
-            /*Entry c1e1 = new Entry(100.000f, 0); // 0 == quarter 1
-            valsComp1.add(c1e1);
-            Entry c1e2 = new Entry(50.000f, 1); // 1 == quarter 2 ...
-            valsComp1.add(c1e2);
-            Entry c1e3 = new Entry(70.000f, 2); // 0 == quarter 1
-            valsComp1.add(c1e3);
-            Entry c1e4 = new Entry(60.000f, 3); // 1 == quarter 2 ...
-            valsComp1.add(c1e4);
-            // and so on ...
-
-            Entry c2e1 = new Entry(120.000f, 0); // 0 == quarter 1
-            valsComp2.add(c2e1);
-            Entry c2e2 = new Entry(110.000f, 1); // 1 == quarter 2 ...
-            valsComp2.add(c2e2);
-            Entry c2e3 = new Entry(100.000f, 2); // 0 == quarter 1
-            valsComp2.add(c2e3);
-            Entry c2e4 = new Entry(150.000f, 3); // 1 == quarter 2 ...
-            valsComp2.add(c2e4);*/
-
 
             setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
             setComp1.setCircleColor(ContextCompat.getColor(this, R.color.black));
@@ -250,11 +263,26 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             barChart.setData(mData2);
             barChart.animateY(2000);
 
-            PieDataSet setPie1 = new PieDataSet(listSuccess, "Company 1");
-            setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setPie1.setColors(ColorTemplate.COLORFUL_COLORS);
+            xValsForPieChart.add("Success");
+            xValsForPieChart.add("Failed");
+            xValsForPieChart.add("Pending ");
+            xValsForPieChart.add("Dropped ");
+            xValsForPieChart.add("User Cancelled");
+            xValsForPieChart.add("Bounced");
 
-            PieData mData3 = new PieData(xVals, setPie1);
+            listForPieChart.add(new Entry((float) successTotal, 0));
+            listForPieChart.add(new Entry((float) failedTotal, 1));
+            listForPieChart.add(new Entry((float) pendingTotal, 2));
+            listForPieChart.add(new Entry((float) droppedTotal, 3));
+            listForPieChart.add(new Entry((float) userCancelledTotal, 4));
+            listForPieChart.add(new Entry((float) bouncedTotal, 5));
+
+
+            PieDataSet setPie1 = new PieDataSet(listForPieChart, "");
+            setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setPie1.setColors(new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82),  Color.rgb(245, 199, 0),Color.rgb(255, 102, 0),
+                    Color.rgb(179, 100, 53), Color.rgb(255, 255, 255)});
+            PieData mData3 = new PieData(xValsForPieChart, setPie1);
             pieChart.setData(mData3);
             pieChart.animateY(3000);
         } catch (JSONException e) {
