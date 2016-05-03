@@ -119,6 +119,8 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         ArrayList<Entry> listBounced = new ArrayList<>();
         ArrayList<Entry> listUserCancelled = new ArrayList<>();
         ArrayList<Entry> listOther = new ArrayList<>();
+
+        ArrayList<String> xVals = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset());
             reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
@@ -137,14 +139,15 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                 listUserCancelled.add(userCancelled);
                 Entry others = new Entry(temp.getPending(), i);
                 listOther.add(others);
+                xVals.add("from "+ temp.getMinDate()+" to "+temp.getMaxDate());
 
             }
-            LineDataSet setComp1 = new LineDataSet(listSuccess, "success");
-            LineDataSet setComp2 = new LineDataSet(listFailed, "failed");
-            LineDataSet setComp3 = new LineDataSet(listDropped, "dropped");
-            LineDataSet setComp4 = new LineDataSet(listBounced, "bounced");
-            LineDataSet setComp5 = new LineDataSet(listUserCancelled, "userCancelled");
-            LineDataSet setComp6 = new LineDataSet(listOther, "other");
+            LineDataSet setComp1 = new LineDataSet(listSuccess, "Success");
+            LineDataSet setComp2 = new LineDataSet(listFailed, "Failed");
+            LineDataSet setComp3 = new LineDataSet(listDropped, "Dropped");
+            LineDataSet setComp4 = new LineDataSet(listBounced, "Bounced");
+            LineDataSet setComp5 = new LineDataSet(listUserCancelled, "User Cancelled");
+            LineDataSet setComp6 = new LineDataSet(listOther, "Others");
 
 
             /*Entry c1e1 = new Entry(100.000f, 0); // 0 == quarter 1
@@ -169,27 +172,33 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
             setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
             setComp1.setCircleColor(ContextCompat.getColor(this, R.color.black));
-            setComp1.setColor(ContextCompat.getColor(this, android.R.color.holo_green_dark ));
+            setComp1.setColor(ContextCompat.getColor(this, android.R.color.holo_green_dark));
+            setComp1.setLineWidth(2);
 
             setComp2.setAxisDependency(YAxis.AxisDependency.LEFT);
             setComp2.setCircleColor(ContextCompat.getColor(this, R.color.black));
             setComp2.setColor(ContextCompat.getColor(this, android.R.color.holo_red_dark));
+            setComp2.setLineWidth(2);
 
             setComp3.setAxisDependency(YAxis.AxisDependency.LEFT);
             setComp3.setCircleColor(ContextCompat.getColor(this, R.color.black));
             setComp3.setColor(ContextCompat.getColor(this, android.R.color.holo_blue_dark));
+            setComp3.setLineWidth(2);
 
             setComp4.setAxisDependency(YAxis.AxisDependency.LEFT);
             setComp4.setCircleColor(ContextCompat.getColor(this, R.color.black));
             setComp4.setColor(ContextCompat.getColor(this, android.R.color.holo_orange_dark));
+            setComp4.setLineWidth(2);
 
             setComp5.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setComp2.setCircleColor(ContextCompat.getColor(this, R.color.black));
-            setComp2.setColor(ContextCompat.getColor(this, android.R.color.darker_gray));
+            setComp5.setCircleColor(ContextCompat.getColor(this, R.color.black));
+            setComp5.setColor(ContextCompat.getColor(this, android.R.color.darker_gray));
+            setComp5.setLineWidth(2);
 
             setComp6.setAxisDependency(YAxis.AxisDependency.LEFT);
             setComp6.setCircleColor(ContextCompat.getColor(this, R.color.black));
             setComp6.setColor(ContextCompat.getColor(this, android.R.color.black));
+            setComp6.setLineWidth(2);
 
             ArrayList<ILineDataSet> dataSets = new ArrayList<>();
             dataSets.add(setComp1);
@@ -199,20 +208,10 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             dataSets.add(setComp5);
             dataSets.add(setComp6);
 
-            ArrayList<String> xVals = new ArrayList<>();
-            xVals.add("Success");
-            xVals.add("Failed");
-            xVals.add("Dropped");
-            xVals.add("Bounced");
-            xVals.add("User Cancelled");
-            xVals.add("Others");
-
             LineData mData = new LineData(xVals, dataSets);
             lineChart.setData(mData);
 
             lineChart.animateY(2000);
-
-
             ArrayList<BarEntry> barComp1 = new ArrayList<BarEntry>();
             ArrayList<BarEntry> barComp2 = new ArrayList<BarEntry>();
 
