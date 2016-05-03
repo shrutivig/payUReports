@@ -1,0 +1,117 @@
+{
+  "displayReportResult": [
+    {
+      "9": {
+        "minDate": "2014-04-25",
+        "maxDate": "2014-04-27",
+        "success": 611119,
+        "total": 987742,
+        "pending": 920,
+        "bounced": 85289,
+        "dropped": 161940,
+        "failed": 121815,
+        "userCancelled": 6659
+      },
+      "8": {
+        "minDate": "2014-04-28",
+        "maxDate": "2014-05-04",
+        "success": 1515309,
+        "total": 2442941,
+        "failed": 286043,
+        "pending": 19712,
+        "bounced": 225278,
+        "dropped": 380417,
+        "userCancelled": 16182
+      },
+      "7": {
+        "minDate": "2014-05-05",
+        "maxDate": "2014-05-11",
+        "bounced": 238377,
+        "total": 2603064,
+        "dropped": 450609,
+        "pending": 2211,
+        "success": 1557694,
+        "failed": 336632,
+        "userCancelled": 17541
+      },
+      "6": {
+        "minDate": "2014-05-12",
+        "maxDate": "2014-05-18",
+        "success": 1521777,
+        "total": 2452256,
+        "failed": 298339,
+        "userCancelled": 16027,
+        "pending": 1969,
+        "bounced": 209850,
+        "dropped": 404294
+      },
+      "5": {
+        "minDate": "2014-05-19",
+        "maxDate": "2014-05-25",
+        "success": 1640951,
+        "total": 2674083,
+        "pending": 3027,
+        "userCancelled": 16621,
+        "bounced": 238190,
+        "dropped": 447837,
+        "failed": 327457
+      },
+      "4": {
+        "minDate": "2014-05-26",
+        "maxDate": "2014-06-01",
+        "success": 1598032,
+        "total": 2598887,
+        "failed": 313384,
+        "pending": 5383,
+        "userCancelled": 16812,
+        "bounced": 216257,
+        "dropped": 449019
+      },
+      "3": {
+        "minDate": "2014-06-02",
+        "maxDate": "2014-06-08",
+        "success": 1680528,
+        "total": 2706763,
+        "failed": 307954,
+        "pending": 6899,
+        "userCancelled": 17300,
+        "bounced": 218493,
+        "dropped": 475589
+      },
+      "2": {
+        "minDate": "2014-06-09",
+        "maxDate": "2014-06-15",
+        "pending": 6498,
+        "total": 2626208,
+        "success": 1587808,
+        "userCancelled": 18084,
+        "bounced": 208790,
+        "dropped": 475330,
+        "failed": 329698
+      },
+      "1": {
+        "minDate": "2014-06-16",
+        "maxDate": "2014-06-22",
+        "success": 1658621,
+        "total": 2646253,
+        "failed": 353283,
+        "pending": 6360,
+        "userCancelled": 18399,
+        "bounced": 204079,
+        "dropped": 405510,
+        "": "1"
+      },
+      "0": {
+        "minDate": "2014-06-23",
+        "maxDate": "2014-06-29",
+        "bounced": 213472,
+        "total": 2948644,
+        "dropped": 435908,
+        "pending": 5712,
+        "success": 1880259,
+        "failed": 394570,
+        "userCancelled": 18723
+      }
+    }
+  ]
+}

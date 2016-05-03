@@ -14,17 +14,22 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.conn.ConnectTimeoutException;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import reports.payu.com.app.payureports.Model.ReportData;
+import reports.payu.com.app.payureports.Model.ReportResults;
 import reports.payu.com.app.payureports.Utils.Helper;
 import reports.payu.com.app.payureports.Utils.Logger;
 import reports.payu.com.app.payureports.Utils.SharedPrefsUtils;
@@ -43,6 +48,32 @@ public class Session {
     private static Session INSTANCE = null;
     private final SessionData mSessionData = new SessionData();
     Long start = null, end = null, diff = null;
+
+    public enum dataType {
+        ReportResults,
+        ReportData
+    }
+
+    public Object getParsedResponseFromGSON(JSONObject jsonObject, dataType type) {
+
+        Type classType;
+        Gson gson = new Gson();
+        Object fromJson = null;
+        switch (type) {
+            case ReportResults:
+                classType = new TypeToken<ReportResults>() {
+                }.getType();
+                fromJson = (ReportResults) gson.fromJson(jsonObject.toString(), classType);
+                break;
+            case ReportData:
+                classType = new TypeToken<ReportData>() {
+                }.getType();
+                fromJson = (ReportData) gson.fromJson(jsonObject.toString(), classType);
+                break;
+
+        }
+        return fromJson;
+    }
 
     private Session(Context context) //Set Token and User from SharedPrefs in constructor, very clever actually :P
     {
