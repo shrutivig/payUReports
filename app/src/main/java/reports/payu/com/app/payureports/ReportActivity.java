@@ -2,11 +2,17 @@ package reports.payu.com.app.payureports;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.YAxis;
@@ -41,7 +47,7 @@ import reports.payu.com.app.payureports.Model.ReportResults;
  */
 public class ReportActivity extends HomeActivity {
 
-    private BarChart barChart;
+    private HorizontalBarChart barChart;
     private ReportResults reportsResults;
     private LineChart lineChart;
     private PieChart pieChart;
@@ -53,7 +59,7 @@ public class ReportActivity extends HomeActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        barChart = (BarChart) findViewById(R.id.barChart);
+        barChart = (HorizontalBarChart) findViewById(R.id.barChart);
         lineChart = (LineChart) findViewById(R.id.lineChart);
         pieChart = (PieChart) findViewById(R.id.pieChart);
         setDataInChart();
@@ -78,49 +84,63 @@ public class ReportActivity extends HomeActivity {
         double userCancelledTotal = 0.0;
         double pendingTotal = 0.0;
         ArrayList<String> xValsForPieChart = new ArrayList<>();
-        /*Pie Chart End*/
 
         try {
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset());
             reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
 
-            /*Line Chart Start*/
+
             List<ReportData> list = reportsResults.getList();
             for (int i = 0; i < list.size(); i++) {
 
                 ReportData temp = list.get(i);
 
-                float tempSuccessValue = temp.getSuccess();
+                float tempTotal = temp.getTotal();
+
+                float tempSuccessValue = (temp.getSuccess()) * 100 / tempTotal;
                 successTotal += tempSuccessValue;
                 Entry success = new Entry(tempSuccessValue, i);
                 listSuccess.add(success);
 
-                float tempFailedValue = temp.getFailed();
+                float tempFailedValue = (temp.getFailed()) * 100 / tempTotal;
                 failedTotal += tempFailedValue;
                 Entry failed = new Entry(tempFailedValue, i);
                 listFailed.add(failed);
 
-                float tempDroppedValue = temp.getDropped();
+                float tempDroppedValue = (temp.getDropped()) * 100 / tempTotal;
                 droppedTotal += tempDroppedValue;
                 Entry dropped = new Entry(tempDroppedValue, i);
                 listDropped.add(dropped);
 
-                float tempBouncedValue = temp.getBounced();
+                float tempBouncedValue = (temp.getBounced()) * 100 / tempTotal;
                 bouncedTotal += tempBouncedValue;
                 Entry bounced = new Entry(tempBouncedValue, i);
                 listBounced.add(bounced);
 
-                float tempUserCancelledValue = temp.getUserCancelled();
+                float tempUserCancelledValue = (temp.getUserCancelled()) * 100 / tempTotal;
                 userCancelledTotal += tempUserCancelledValue;
                 Entry userCancelled = new Entry(tempUserCancelledValue, i);
                 listUserCancelled.add(userCancelled);
 
-                float tempPendingValue = temp.getPending();
+                float tempPendingValue = (temp.getPending()) * 100 / tempTotal;
                 pendingTotal += tempPendingValue;
                 Entry others = new Entry(tempPendingValue, i);
                 listOther.add(others);
 
-                xVals.add("" + temp.getMinDate() + " to " + temp.getMaxDate());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+                String date = null;
+                String toDate = null;
+
+                try {
+                    Date date1 = dateFormat.parse(list.get(i).getMinDate());
+                    Date date2 = dateFormat.parse(list.get(i).getMaxDate());
+                    date = (String) android.text.format.DateFormat.format("dd", date1);
+                    toDate = (String) android.text.format.DateFormat.format("dd-MMM ''yy", date2);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+
+                }
+                xVals.add("" + date + " - " + toDate);
 
             }
             LineDataSet setComp1 = new LineDataSet(listSuccess, "Success");
@@ -169,33 +189,25 @@ public class ReportActivity extends HomeActivity {
             dataSets.add(setComp6);
 
             LineData mData = new LineData(xVals, dataSets);
+            lineChart.getXAxis().setLabelRotationAngle(90f);
             lineChart.setData(mData);
+
             lineChart.animateY(2000);
             /*Line Chart End*/
 
             ArrayList<BarEntry> barComp1 = new ArrayList<>();
 
             for (int i = 0; i < list.size(); i++) {
-                float tempSuccess = list.get(i).getSuccess();
-                float tempFailure = list.get(i).getFailed();
-                float tempDropped = list.get(i).getDropped();
-                float tempBounced = list.get(i).getBounced();
-                float tempUserCancelled = list.get(i).getUserCancelled();
-                float tempPending = list.get(i).getPending();
+                float tempTotal = list.get(i).getTotal();
+                float tempSuccess = (list.get(i).getSuccess()) * 100 / tempTotal;
+                float tempFailure = (list.get(i).getFailed()) * 100 / tempTotal;
+                float tempDropped = (list.get(i).getDropped()) * 100 / tempTotal;
+                float tempBounced = (list.get(i).getBounced()) * 100 / tempTotal;
+                float tempUserCancelled = (list.get(i).getUserCancelled()) * 100 / tempTotal;
+                float tempPending = (list.get(i).getPending()) * 100 / tempTotal;
 
                 BarEntry tempBarEntry = new BarEntry(new float[]{tempSuccess, tempFailure, tempDropped, tempBounced, tempUserCancelled, tempPending}, i);
                 barComp1.add(tempBarEntry);
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss.SSSSSS'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-                Date date = null;
-                try {
-                    date = dateFormat.parse(list.get(i).getMinDate());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-
-                }
             }
 
             BarDataSet setBar1 = new BarDataSet(barComp1, "");
@@ -208,6 +220,7 @@ public class ReportActivity extends HomeActivity {
             ArrayList<IBarDataSet> dataSet2 = new ArrayList<>();
             dataSet2.add(setBar1);
             BarData mData2 = new BarData(xVals, dataSet2);
+            barChart.getXAxis().setTextSize(2f);
             barChart.setData(mData2);
             barChart.animateY(2000);
 
@@ -256,4 +269,52 @@ public class ReportActivity extends HomeActivity {
         }
         return json;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.report_menu, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        barChart.setVisibility(View.GONE);
+        lineChart.setVisibility(View.GONE);
+        pieChart.setVisibility(View.GONE);
+        switch (item.getItemId()) {
+
+            case R.id.bar:
+                barChart.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        barChart.animateY(2000);
+                    }
+                }, 100);
+                return true;
+            case R.id.line:
+                lineChart.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        lineChart.animateY(2000);
+                    }
+                }, 100);
+                return true;
+            case R.id.pie:
+                pieChart.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pieChart.animateY(2000);
+                    }
+                }, 100);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

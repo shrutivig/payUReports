@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/margin_20"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -13,7 +14,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.github.mikephil.charting.charts.BarChart
+    <com.github.mikephil.charting.charts.HorizontalBarChart
         android:id="@+id/barChart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,6 +24,7 @@
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:rotation="90"
         android:visibility="gone" />
 
     <com.github.mikephil.charting.charts.PieChart
