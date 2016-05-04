@@ -1,17 +1,25 @@
 package reports.payu.com.app.payureports.Model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sagar.chauhan on 5/3/16.
  */
-public class ReportResults implements Serializable{
+public class ReportResults implements Serializable {
 
-    List<ReportData> displayReportResult;
+    DisplayReportResults displayReportResult;
+    String reportID;
+    int status;
 
-    public List<ReportData> getList() {
+    public DisplayReportResults getDisplayReportResult() {
         return displayReportResult;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public String getReportID() {
+        return reportID;
     }
 }

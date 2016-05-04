@@ -7,15 +7,15 @@ import java.io.Serializable;
  */
 public class ReportData implements Serializable{
 
-    private String minDate,maxDate;
+    private String startDate,endDate;
     private Float success,total,pending,bounced,dropped,failed,userCancelled;
 
     public String getMinDate() {
-        return minDate;
+        return startDate;
     }
 
     public String getMaxDate() {
-        return maxDate;
+        return endDate;
     }
 
     public Float getTotal() {

@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import reports.payu.com.app.payureports.Model.DisplayReportResults;
 import reports.payu.com.app.payureports.Model.ReportData;
 import reports.payu.com.app.payureports.Model.ReportResults;
 
@@ -54,6 +55,8 @@ public class ReportActivity extends HomeActivity {
     private ReportResults reportsResults;
     private LineChart lineChart;
     private PieChart pieChart;
+    private int[] colors = new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82), Color.rgb(245, 199, 0), Color.rgb(255, 102, 0),
+            Color.rgb(179, 100, 53), Color.rgb(255, 32, 34)};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +71,81 @@ public class ReportActivity extends HomeActivity {
         setDataInChart();
     }
 
+    private void setDataInPieChart(ReportData l) {
 
-    public void setDataInChart() {
+        /*Pie Chart Start*/
+        ArrayList<Entry> listForPieChart = new ArrayList<>();
+        ArrayList<String> xValsForPieChart = new ArrayList<>();
 
+        float successTotal = l.getSuccess();
+        float failedTotal = l.getFailed();
+        float droppedTotal = l.getDropped();
+        float bouncedTotal = l.getBounced();
+        float userCancelledTotal = l.getUserCancelled();
+        float pendingTotal = l.getPending();
+
+        listForPieChart.add(new Entry(successTotal, 0));
+        listForPieChart.add(new Entry(failedTotal, 1));
+        listForPieChart.add(new Entry(pendingTotal, 2));
+        listForPieChart.add(new Entry(droppedTotal, 3));
+        listForPieChart.add(new Entry(userCancelledTotal, 4));
+        listForPieChart.add(new Entry(bouncedTotal, 5));
+
+        PieDataSet setPie1 = new PieDataSet(listForPieChart, "");
+        setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        setPie1.setColors(colors);
+
+        xValsForPieChart.add("Success");
+        xValsForPieChart.add("Failed");
+        xValsForPieChart.add("Pending ");
+        xValsForPieChart.add("Dropped ");
+        xValsForPieChart.add("User Cancelled");
+        xValsForPieChart.add("Bounced");
+
+        PieData mData3 = new PieData(xValsForPieChart, setPie1);
+        pieChart.setData(mData3);
+        pieChart.animateY(3000);
+        /*Pie Chart End*/
+    }
+
+    private void setDataInBarChart(List<ReportData> list) {
+
+
+        ArrayList<BarEntry> barComp1 = new ArrayList<>();
+        ArrayList<String> xVals = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            float tempSuccess = list.get(i).getSuccess();
+            float tempFailure = list.get(i).getFailed();
+            float tempDropped = list.get(i).getDropped();
+            float tempBounced = list.get(i).getBounced();
+            float tempUserCancelled = list.get(i).getUserCancelled();
+            float tempPending = list.get(i).getPending();
+
+            xVals.add("" + list.get(i).getMinDate() + " to " + list.get(i).getMaxDate());
+
+            BarEntry tempBarEntry = new BarEntry(new float[]{tempSuccess, tempFailure, tempDropped, tempBounced, tempUserCancelled, tempPending}, i);
+            barComp1.add(tempBarEntry);
+        }
+
+        BarDataSet setBar1 = new BarDataSet(barComp1, "");
+        setBar1.setAxisDependency(YAxis.AxisDependency.LEFT);
+// setBar1.setColors(ColorTemplate.PASTEL_COLORS);
+        setBar1.setColors(new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82), Color.rgb(245, 199, 0), Color.rgb(255, 102, 0),
+                Color.rgb(179, 100, 53), Color.rgb(0, 0, 0)});
+        setBar1.setStackLabels(new String[]{"Success", "Failed", "Dropped", "Bounced", "User Cancelled", "Pending"});
+        setBar1.setValueTextSize(0f);
+        ArrayList<IBarDataSet> dataSet2 = new ArrayList<>();
+        dataSet2.add(setBar1);
+        BarData mData2 = new BarData(xVals, dataSet2);
+        barChart.getXAxis().setTextSize(2f);
+        barChart.setData(mData2);
+        barChart.animateY(2000);
+    }
+
+    private void setDataInLineChart(List<ReportData> l) {
+
+        /*Line Chart Start*/
         ArrayList<Entry> listSuccess = new ArrayList<>();
         ArrayList<Entry> listFailed = new ArrayList<>();
         ArrayList<Entry> listDropped = new ArrayList<>();
@@ -79,177 +154,101 @@ public class ReportActivity extends HomeActivity {
         ArrayList<Entry> listOther = new ArrayList<>();
         ArrayList<String> xVals = new ArrayList<>();
 
-        ArrayList<Entry> listForPieChart = new ArrayList<>();
-        double successTotal = 0.0;
-        double failedTotal = 0.0;
-        double droppedTotal = 0.0;
-        double bouncedTotal = 0.0;
-        double userCancelledTotal = 0.0;
-        double pendingTotal = 0.0;
-        ArrayList<String> xValsForPieChart = new ArrayList<>();
+        List<ReportData> list = l;
+        for (int i = 0; i < list.size(); i++) {
 
+            ReportData temp = list.get(i);
+
+            float tempSuccessValue = temp.getSuccess();
+            Entry success = new Entry(tempSuccessValue, i);
+            listSuccess.add(success);
+
+            float tempFailedValue = temp.getFailed();
+            Entry failed = new Entry(tempFailedValue, i);
+            listFailed.add(failed);
+
+            float tempDroppedValue = temp.getDropped();
+            Entry dropped = new Entry(tempDroppedValue, i);
+            listDropped.add(dropped);
+
+            float tempBouncedValue = temp.getBounced();
+            Entry bounced = new Entry(tempBouncedValue, i);
+            listBounced.add(bounced);
+
+            float tempUserCancelledValue = temp.getUserCancelled();
+            Entry userCancelled = new Entry(tempUserCancelledValue, i);
+            listUserCancelled.add(userCancelled);
+
+            float tempPendingValue = temp.getPending();
+            Entry others = new Entry(tempPendingValue, i);
+            listOther.add(others);
+
+            xVals.add("" + temp.getMinDate() + " to " + temp.getMaxDate());
+
+        }
+        LineDataSet setComp1 = new LineDataSet(listSuccess, "Success");
+        LineDataSet setComp2 = new LineDataSet(listFailed, "Failed");
+        LineDataSet setComp3 = new LineDataSet(listDropped, "Dropped");
+        LineDataSet setComp4 = new LineDataSet(listBounced, "Bounced");
+        LineDataSet setComp5 = new LineDataSet(listUserCancelled, "User Cancelled");
+        LineDataSet setComp6 = new LineDataSet(listOther, "Others");
+
+        setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        setComp1.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp1.setColor(colors[0]);
+        setComp1.setLineWidth(2);
+
+        setComp2.setAxisDependency(YAxis.AxisDependency.LEFT);
+        setComp2.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp2.setColor(colors[1]);
+        setComp2.setLineWidth(2);
+
+        setComp3.setAxisDependency(YAxis.AxisDependency.LEFT);
+        setComp3.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp3.setColor(colors[2]);
+        setComp3.setLineWidth(2);
+
+        setComp4.setAxisDependency(YAxis.AxisDependency.LEFT);
+        setComp4.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp4.setColor(colors[3]);
+        setComp4.setLineWidth(2);
+
+        setComp5.setAxisDependency(YAxis.AxisDependency.LEFT);
+        setComp5.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp5.setColor(colors[4]);
+        setComp5.setLineWidth(2);
+
+        setComp6.setAxisDependency(YAxis.AxisDependency.LEFT);
+        setComp6.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp6.setColor(colors[5]);
+        setComp6.setLineWidth(2);
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(setComp1);
+        dataSets.add(setComp2);
+        dataSets.add(setComp3);
+        dataSets.add(setComp4);
+        dataSets.add(setComp5);
+        dataSets.add(setComp6);
+
+        LineData mData = new LineData(xVals, dataSets);
+        lineChart.setData(mData);
+        lineChart.animateY(2000);
+        /*Line Chart End*/
+
+    }
+
+    public void setDataInChart() {
         try {
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset());
             reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
-
-
-            List<ReportData> list = reportsResults.getList();
-            for (int i = 0; i < list.size(); i++) {
-
-                ReportData temp = list.get(i);
-
-                float tempTotal = temp.getTotal();
-
-                float tempSuccessValue = (temp.getSuccess()) * 100 / tempTotal;
-                successTotal += tempSuccessValue;
-                Entry success = new Entry(tempSuccessValue, i);
-                listSuccess.add(success);
-
-                float tempFailedValue = (temp.getFailed()) * 100 / tempTotal;
-                failedTotal += tempFailedValue;
-                Entry failed = new Entry(tempFailedValue, i);
-                listFailed.add(failed);
-
-                float tempDroppedValue = (temp.getDropped()) * 100 / tempTotal;
-                droppedTotal += tempDroppedValue;
-                Entry dropped = new Entry(tempDroppedValue, i);
-                listDropped.add(dropped);
-
-                float tempBouncedValue = (temp.getBounced()) * 100 / tempTotal;
-                bouncedTotal += tempBouncedValue;
-                Entry bounced = new Entry(tempBouncedValue, i);
-                listBounced.add(bounced);
-
-                float tempUserCancelledValue = (temp.getUserCancelled()) * 100 / tempTotal;
-                userCancelledTotal += tempUserCancelledValue;
-                Entry userCancelled = new Entry(tempUserCancelledValue, i);
-                listUserCancelled.add(userCancelled);
-
-                float tempPendingValue = (temp.getPending()) * 100 / tempTotal;
-                pendingTotal += tempPendingValue;
-                Entry others = new Entry(tempPendingValue, i);
-                listOther.add(others);
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
-                String date = null;
-                String toDate = null;
-
-                try {
-                    Date date1 = dateFormat.parse(list.get(i).getMinDate());
-                    Date date2 = dateFormat.parse(list.get(i).getMaxDate());
-                    date = (String) android.text.format.DateFormat.format("dd", date1);
-                    toDate = (String) android.text.format.DateFormat.format("dd-MMM ''yy", date2);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-
-                }
-                xVals.add("" + date + " - " + toDate);
-
-            }
-            LineDataSet setComp1 = new LineDataSet(listSuccess, "Success");
-            LineDataSet setComp2 = new LineDataSet(listFailed, "Failed");
-            LineDataSet setComp3 = new LineDataSet(listDropped, "Dropped");
-            LineDataSet setComp4 = new LineDataSet(listBounced, "Bounced");
-            LineDataSet setComp5 = new LineDataSet(listUserCancelled, "User Cancelled");
-            LineDataSet setComp6 = new LineDataSet(listOther, "Others");
-
-            setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setComp1.setCircleColor(ContextCompat.getColor(this, R.color.black));
-            setComp1.setColor(ContextCompat.getColor(this, android.R.color.holo_green_dark));
-            setComp1.setLineWidth(2);
-
-            setComp2.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setComp2.setCircleColor(ContextCompat.getColor(this, R.color.black));
-            setComp2.setColor(ContextCompat.getColor(this, android.R.color.holo_red_dark));
-            setComp2.setLineWidth(2);
-
-            setComp3.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setComp3.setCircleColor(ContextCompat.getColor(this, R.color.black));
-            setComp3.setColor(ContextCompat.getColor(this, android.R.color.holo_blue_dark));
-            setComp3.setLineWidth(2);
-
-            setComp4.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setComp4.setCircleColor(ContextCompat.getColor(this, R.color.black));
-            setComp4.setColor(ContextCompat.getColor(this, android.R.color.holo_orange_dark));
-            setComp4.setLineWidth(2);
-
-            setComp5.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setComp5.setCircleColor(ContextCompat.getColor(this, R.color.black));
-            setComp5.setColor(ContextCompat.getColor(this, android.R.color.darker_gray));
-            setComp5.setLineWidth(2);
-
-            setComp6.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setComp6.setCircleColor(ContextCompat.getColor(this, R.color.black));
-            setComp6.setColor(ContextCompat.getColor(this, android.R.color.black));
-            setComp6.setLineWidth(2);
-
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(setComp1);
-            dataSets.add(setComp2);
-            dataSets.add(setComp3);
-            dataSets.add(setComp4);
-            dataSets.add(setComp5);
-            dataSets.add(setComp6);
-
-            LineData mData = new LineData(xVals, dataSets);
-            lineChart.getXAxis().setLabelRotationAngle(90f);
-            lineChart.setData(mData);
-            lineChart.animateX(2000);
-            /*Line Chart End*/
-
-            ArrayList<BarEntry> barComp1 = new ArrayList<>();
-
-            for (int i = 0; i < list.size(); i++) {
-                float tempTotal = list.get(i).getTotal();
-                float tempSuccess = (list.get(i).getSuccess()) * 100 / tempTotal;
-                float tempFailure = (list.get(i).getFailed()) * 100 / tempTotal;
-                float tempDropped = (list.get(i).getDropped()) * 100 / tempTotal;
-                float tempBounced = (list.get(i).getBounced()) * 100 / tempTotal;
-                float tempUserCancelled = (list.get(i).getUserCancelled()) * 100 / tempTotal;
-                float tempPending = (list.get(i).getPending()) * 100 / tempTotal;
-
-                BarEntry tempBarEntry = new BarEntry(new float[]{tempSuccess, tempFailure, tempDropped, tempBounced, tempUserCancelled, tempPending}, i);
-                barComp1.add(tempBarEntry);
-            }
-
-            BarDataSet setBar1 = new BarDataSet(barComp1, "");
-            setBar1.setAxisDependency(YAxis.AxisDependency.LEFT);
-            //       setBar1.setColors(ColorTemplate.PASTEL_COLORS);
-            setBar1.setColors(new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82), Color.rgb(245, 199, 0), Color.rgb(255, 102, 0),
-                    Color.rgb(179, 100, 53), Color.rgb(0, 0, 0)});
-            setBar1.setStackLabels(new String[]{"Success", "Failed", "Dropped", "Bounced", "User Cancelled", "Pending"});
-            setBar1.setValueTextSize(0f);
-            ArrayList<IBarDataSet> dataSet2 = new ArrayList<>();
-            dataSet2.add(setBar1);
-            BarData mData2 = new BarData(xVals, dataSet2);
-            barChart.getXAxis().setTextSize(2f);
-            barChart.setData(mData2);
-            barChart.animateY(2000);
-
-            /*Pie Chart Start*/
-            xValsForPieChart.add("Success");
-            xValsForPieChart.add("Failed");
-            xValsForPieChart.add("Pending ");
-            xValsForPieChart.add("Dropped ");
-            xValsForPieChart.add("User Cancelled");
-            xValsForPieChart.add("Bounced");
-
-            listForPieChart.add(new Entry((float) successTotal, 0));
-            listForPieChart.add(new Entry((float) failedTotal, 1));
-            listForPieChart.add(new Entry((float) pendingTotal, 2));
-            listForPieChart.add(new Entry((float) droppedTotal, 3));
-            listForPieChart.add(new Entry((float) userCancelledTotal, 4));
-            listForPieChart.add(new Entry((float) bouncedTotal, 5));
-
-            PieDataSet setPie1 = new PieDataSet(listForPieChart, "");
-            setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setPie1.setColors(new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82), Color.rgb(245, 199, 0), Color.rgb(255, 102, 0),
-                    Color.rgb(179, 100, 53), Color.rgb(200, 200, 50)});
-            PieData mData3 = new PieData(xValsForPieChart, setPie1);
-            mData3.setValueTextSize(getResources().getDimension(R.dimen.label_float_size));
-            pieChart.setData(mData3);
-            pieChart.animateY(3000);
-            /*Pie Chart End*/
+            List<ReportData> mDay = reportsResults.getDisplayReportResult().getDay();
+            List<ReportData> mWeek = reportsResults.getDisplayReportResult().getWeek();
+            List<ReportData> mMonth = reportsResults.getDisplayReportResult().getMonth();
+            ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
+            setDataInPieChart(mOverall);
+            setDataInLineChart(mDay);
+            setDataInBarChart(mDay);
         } catch (JSONException e) {
             e.printStackTrace();
         }
