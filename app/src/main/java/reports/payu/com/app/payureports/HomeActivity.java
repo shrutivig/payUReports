@@ -124,6 +124,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         ArrayList<String> xVals = new ArrayList<>();
         /*Line Chart End*/
 
+
         /*Pie Chart Start*/
         ArrayList<Entry> listForPieChart = new ArrayList<>();
         double successTotal = 0.0;
@@ -135,9 +136,16 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         ArrayList<String> xValsForPieChart = new ArrayList<>();
         /*Pie Chart End*/
 
+        /*Bar Chart start*/
+        ArrayList<BarEntry> barComp1 = new ArrayList<>();
+        ArrayList<BarEntry> barComp2 = new ArrayList<>();
+        /*Bar chart end*/
+
         try {
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset());
             reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
+
+            /*Line Chart Start*/
             List<ReportData> list = reportsResults.getList();
             for (int i = 0; i < list.size(); i++) {
 
@@ -223,46 +231,40 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
             LineData mData = new LineData(xVals, dataSets);
             lineChart.setData(mData);
-
             lineChart.animateY(2000);
-            ArrayList<BarEntry> barComp1 = new ArrayList<BarEntry>();
-            ArrayList<BarEntry> barComp2 = new ArrayList<BarEntry>();
+            /*Line Chart End*/
 
-            BarEntry b1 = new BarEntry(100.000f, 0); // 0 == quarter 1
-            barComp1.add(b1);
-            BarEntry b2 = new BarEntry(50.000f, 1); // 1 == quarter 2 ...
-            barComp1.add(b2);
-            BarEntry b3 = new BarEntry(70.000f, 2); // 0 == quarter 1
-            barComp1.add(b3);
-            BarEntry b4 = new BarEntry(60.000f, 3); // 1 == quarter 2 ...
-            barComp1.add(b4);
+            for (int i = 0; i < list.size(); i++) {
+                float tempSuccess = list.get(i).getSuccess();
+                float tempFailure = list.get(i).getFailed();
+                float tempDropped = list.get(i).getDropped();
+                float tempBounced = list.get(i).getBounced();
+                float tempUserCancelled = list.get(i).getUserCancelled();
+                float tempPending = list.get(i).getPending();
 
-            BarEntry b11 = new BarEntry(120.000f, 0); // 0 == quarter 1
-            barComp2.add(b11);
-            BarEntry b12 = new BarEntry(110.000f, 1); // 1 == quarter 2 ...
-            barComp2.add(b12);
-            BarEntry b13 = new BarEntry(100.000f, 2); // 0 == quarter 1
-            barComp2.add(b13);
-            BarEntry b14 = new BarEntry(150.000f, 3); // 1 == quarter 2 ...
-            barComp2.add(b14);
+                BarEntry tempBarEntry = new BarEntry(new float[]{tempSuccess, tempFailure, tempDropped, tempBounced, tempUserCancelled, tempPending}, i); // 0 == quarter 1
+                barComp1.add(tempBarEntry);
+            }
+
+                BarDataSet setBar1 = new BarDataSet(barComp1, "");
+                setBar1.setAxisDependency(YAxis.AxisDependency.LEFT);
+                setBar1.setColors(new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82), Color.rgb(245, 199, 0), Color.rgb(255, 102, 0),
+                        Color.rgb(179, 100, 53), Color.rgb(0, 0, 0)});
+                setBar1.setStackLabels(new String[]{"Success","Failed","Dropped","Bounced","User Cancelled","Pending"});
+
+                /*BarDataSet setBar2 = new BarDataSet(barComp2, "Company 2");
+                setBar2.setAxisDependency(YAxis.AxisDependency.LEFT);
+                setBar2.setColor(ContextCompat.getColor(this, android.R.color.holo_green_dark));*/
+
+                ArrayList<IBarDataSet> dataSet2 = new ArrayList<>();
+                dataSet2.add(setBar1);
+                //dataSet2.add(setBar2);
+                BarData mData2 = new BarData(xVals, dataSet2);
+                barChart.setData(mData2);
+                barChart.animateY(2000);
 
 
-            BarDataSet setBar1 = new BarDataSet(barComp1, "Company1");
-            setBar1.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setBar1.setColor(ContextCompat.getColor(this, android.R.color.holo_red_dark));
-
-            BarDataSet setBar2 = new BarDataSet(barComp2, "Company 2");
-            setBar2.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setBar2.setColor(ContextCompat.getColor(this, android.R.color.holo_green_dark));
-
-            ArrayList<IBarDataSet> dataSet2 = new ArrayList<IBarDataSet>();
-            dataSet2.add(setBar1);
-            dataSet2.add(setBar2);
-
-            BarData mData2 = new BarData(xVals, dataSet2);
-            barChart.setData(mData2);
-            barChart.animateY(2000);
-
+            /*Pie Chart Start*/
             xValsForPieChart.add("Success");
             xValsForPieChart.add("Failed");
             xValsForPieChart.add("Pending ");
@@ -277,14 +279,14 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             listForPieChart.add(new Entry((float) userCancelledTotal, 4));
             listForPieChart.add(new Entry((float) bouncedTotal, 5));
 
-
             PieDataSet setPie1 = new PieDataSet(listForPieChart, "");
             setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
-            setPie1.setColors(new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82),  Color.rgb(245, 199, 0),Color.rgb(255, 102, 0),
+            setPie1.setColors(new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82), Color.rgb(245, 199, 0), Color.rgb(255, 102, 0),
                     Color.rgb(179, 100, 53), Color.rgb(255, 255, 255)});
             PieData mData3 = new PieData(xValsForPieChart, setPie1);
             pieChart.setData(mData3);
             pieChart.animateY(3000);
+            /*Pie Chart End*/
         } catch (JSONException e) {
             e.printStackTrace();
         }
