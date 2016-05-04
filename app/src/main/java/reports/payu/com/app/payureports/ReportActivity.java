@@ -220,6 +220,7 @@ public class ReportActivity extends HomeActivity {
         dataSet2.add(setBar1);
         BarData mData2 = new BarData(xVals, dataSet2);
         barChart.getXAxis().setTextSize(2f);
+        barChart.setScaleMinima(1f,10f);
         barChart.setData(mData2);
         barChart.animateY(2000);
     }
@@ -326,6 +327,7 @@ public class ReportActivity extends HomeActivity {
         dataSets.add(setComp6);
 
         LineData mData = new LineData(xVals, dataSets);
+        lineChart.setScaleMinima(5f,1f);
         lineChart.setData(mData);
         lineChart.animateY(2000);
         /*Line Chart End*/
