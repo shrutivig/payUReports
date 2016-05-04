@@ -16,6 +16,7 @@
         <activity
             android:name=".ReportActivity"
             android:label="@string/app_name"
+            android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".LoginSignUpActivity"

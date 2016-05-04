@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/WindowBg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="START DATE"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_12" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_30"
+            android:layout_weight="1"
+            android:background="@android:drawable/editbox_background_normal"
+            android:textSize="@dimen/text_size_12" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="END DATE"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_12" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_30"
+            android:layout_weight="1"
+            android:background="@android:drawable/editbox_background_normal"
+            android:textSize="@dimen/text_size_12" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_30"
+            android:layout_marginLeft="@dimen/margin_40"
+            android:layout_weight="0.5"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="SUBMIT"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_12" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_50"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="VIEW BY: "
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="bold" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10"
+                android:layout_weight="1"
+                android:text="DAY"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10"
+                android:layout_weight="1"
+                android:text="WEEK"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10"
+                android:layout_weight="1"
+                android:text="MONTH"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_50"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="CHART TYPE: "
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="bold" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10"
+                android:layout_weight="1"
+                android:text="BAR"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10"
+                android:layout_weight="1"
+                android:text="LINE"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10"
+                android:layout_weight="1"
+                android:text="PIE"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

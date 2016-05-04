@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -26,6 +28,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -191,8 +194,7 @@ public class ReportActivity extends HomeActivity {
             LineData mData = new LineData(xVals, dataSets);
             lineChart.getXAxis().setLabelRotationAngle(90f);
             lineChart.setData(mData);
-
-            lineChart.animateY(2000);
+            lineChart.animateX(2000);
             /*Line Chart End*/
 
             ArrayList<BarEntry> barComp1 = new ArrayList<>();
@@ -224,7 +226,6 @@ public class ReportActivity extends HomeActivity {
             barChart.setData(mData2);
             barChart.animateY(2000);
 
-
             /*Pie Chart Start*/
             xValsForPieChart.add("Success");
             xValsForPieChart.add("Failed");
@@ -243,8 +244,9 @@ public class ReportActivity extends HomeActivity {
             PieDataSet setPie1 = new PieDataSet(listForPieChart, "");
             setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
             setPie1.setColors(new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82), Color.rgb(245, 199, 0), Color.rgb(255, 102, 0),
-                    Color.rgb(179, 100, 53), Color.rgb(255, 255, 255)});
+                    Color.rgb(179, 100, 53), Color.rgb(200, 200, 50)});
             PieData mData3 = new PieData(xValsForPieChart, setPie1);
+            mData3.setValueTextSize(getResources().getDimension(R.dimen.label_float_size));
             pieChart.setData(mData3);
             pieChart.animateY(3000);
             /*Pie Chart End*/
@@ -299,7 +301,7 @@ public class ReportActivity extends HomeActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        lineChart.animateY(2000);
+                        lineChart.animateX(2000);
                     }
                 }, 100);
                 return true;

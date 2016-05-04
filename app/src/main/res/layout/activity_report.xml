@@ -12,6 +12,8 @@
 
         <include layout="@layout/toolbar_custom" />
 
+        <include layout="@layout/layout_filter" />
+
     </android.support.design.widget.AppBarLayout>
 
     <com.github.mikephil.charting.charts.HorizontalBarChart
@@ -24,7 +26,6 @@
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:rotation="90"
         android:visibility="gone" />
 
     <com.github.mikephil.charting.charts.PieChart
