@@ -1,5 +1,6 @@
 package reports.payu.com.app.payureports;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,8 +11,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -38,6 +42,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -57,6 +62,9 @@ public class ReportActivity extends HomeActivity {
     private PieChart pieChart;
     private int[] colors = new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82), Color.rgb(245, 199, 0), Color.rgb(255, 102, 0),
             Color.rgb(179, 100, 53), Color.rgb(255, 32, 34)};
+    private TextView startDateFilter;
+    private TextView endDateFilter;
+    private Date START_DATE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +73,75 @@ public class ReportActivity extends HomeActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final LinearLayout filterLayout = (LinearLayout) findViewById(R.id.filter_layout);
+        Button filter = (Button) toolbar.findViewById(R.id.sign_out_button);
+        filter.setText(getString(R.string.filter));
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (filterLayout.getVisibility() == View.VISIBLE)
+                    filterLayout.setVisibility(View.GONE);
+                else
+                    filterLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        startDateFilter = (TextView) findViewById(R.id.filter_start_date);
+        startDateFilter.setOnClickListener(selectDateChooserClickListener);
+
+        endDateFilter = (TextView) findViewById(R.id.filter_end_date);
+        endDateFilter.setOnClickListener(selectDateChooserClickListener);
+
         barChart = (HorizontalBarChart) findViewById(R.id.barChart);
         lineChart = (LineChart) findViewById(R.id.lineChart);
         pieChart = (PieChart) findViewById(R.id.pieChart);
         setDataInChart();
     }
 
-    private void setDataInPieChart(ReportData l) {
+    View.OnClickListener selectDateChooserClickListener = new View.OnClickListener() {
 
+        @Override
+        public void onClick(View v) {
+
+            final Calendar c = Calendar.getInstance();
+            final int mYear = c.get(Calendar.YEAR);
+            final int mMonth = c.get(Calendar.MONTH);
+            final int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+            final View textView = v;
+            DatePickerDialog datePicker = new DatePickerDialog(ReportActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                            switch (textView.getId()) {
+                                case R.id.filter_start_date:
+                                    startDateFilter.setError(null);
+                                    startDateFilter.setText(dayOfMonth + " - "
+                                            + (monthOfYear + 1) + " - " + year);
+                                    START_DATE = new Date(year - 1900, monthOfYear, dayOfMonth);
+                                    break;
+                                case R.id.filter_end_date:
+                                    endDateFilter.setError(null);
+                                    endDateFilter.setText(dayOfMonth + " - "
+                                            + (monthOfYear + 1) + " - " + year);
+                                    break;
+                            }
+                        }
+
+                    }, mYear, mMonth, mDay);
+            datePicker.show();
+            datePicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+
+            if (textView.getId() == R.id.filter_end_date) {
+                datePicker.getDatePicker().setMinDate(START_DATE.getTime());
+                datePicker.updateDate(START_DATE.getYear(), START_DATE.getMonth(), START_DATE.getDay());
+            }
+        }
+    };
+
+    private void setDataInPieChart(ReportData l) {
         /*Pie Chart Start*/
         ArrayList<Entry> listForPieChart = new ArrayList<>();
         ArrayList<String> xValsForPieChart = new ArrayList<>();
@@ -122,7 +191,19 @@ public class ReportActivity extends HomeActivity {
             float tempUserCancelled = list.get(i).getUserCancelled();
             float tempPending = list.get(i).getPending();
 
-            xVals.add("" + list.get(i).getMinDate() + " to " + list.get(i).getMaxDate());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+            String date = null;
+            String toDate = null;
+            try {
+                Date date1 = dateFormat.parse(list.get(i).getMinDate());
+                Date date2 = dateFormat.parse(list.get(i).getMaxDate());
+                date = (String) android.text.format.DateFormat.format("dd", date1);
+                toDate = (String) android.text.format.DateFormat.format("dd-MMM ''yy", date2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            xVals.add("" + date + " - " + toDate);
 
             BarEntry tempBarEntry = new BarEntry(new float[]{tempSuccess, tempFailure, tempDropped, tempBounced, tempUserCancelled, tempPending}, i);
             barComp1.add(tempBarEntry);
@@ -183,7 +264,20 @@ public class ReportActivity extends HomeActivity {
             Entry others = new Entry(tempPendingValue, i);
             listOther.add(others);
 
-            xVals.add("" + temp.getMinDate() + " to " + temp.getMaxDate());
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+            String date = null;
+            String toDate = null;
+            try {
+                Date date1 = dateFormat.parse(temp.getMinDate());
+                Date date2 = dateFormat.parse(temp.getMaxDate());
+                date = (String) android.text.format.DateFormat.format("dd", date1);
+                toDate = (String) android.text.format.DateFormat.format("dd-MMM ''yy", date2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            xVals.add("" + date + " - " + toDate);
 
         }
         LineDataSet setComp1 = new LineDataSet(listSuccess, "Success");

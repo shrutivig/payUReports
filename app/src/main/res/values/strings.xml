@@ -24,6 +24,7 @@
 
     <!-- Button labels -->
     <string name="sign_out">Sign Out</string>
+    <string name="filter">Filter</string>
     <string name="disconnect">Disconnect</string>
 
     <!-- Content Description for images -->

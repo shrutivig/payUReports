@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/filter_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/WindowBg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:visibility="gone">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_10"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_10"
         android:orientation="horizontal">
 
         <TextView
@@ -20,11 +25,13 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_12" />
 
-        <EditText
+        <TextView
+            android:id="@+id/filter_start_date"
             android:layout_width="0dp"
             android:layout_height="@dimen/margin_30"
             android:layout_weight="1"
             android:background="@android:drawable/editbox_background_normal"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_12" />
 
         <TextView
@@ -36,11 +43,13 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_12" />
 
-        <EditText
+        <TextView
+            android:id="@+id/filter_end_date"
             android:layout_width="0dp"
             android:layout_height="@dimen/margin_30"
             android:layout_weight="1"
             android:background="@android:drawable/editbox_background_normal"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_12" />
 
         <Button
@@ -70,43 +79,61 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_5"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="VIEW BY: "
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12"
+                android:textSize="@dimen/text_size_10"
                 android:textStyle="bold" />
 
             <Button
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_10"
+                android:layout_height="@dimen/margin_25"
+                android:layout_marginRight="@dimen/margin_15"
                 android:layout_weight="1"
+                android:background="@drawable/filter_button_background_selected"
                 android:text="DAY"
-                android:background="@color/colorPrimary"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12" />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_10" />
 
             <Button
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_10"
+                android:layout_height="@dimen/margin_25"
+                android:layout_marginRight="@dimen/margin_15"
                 android:layout_weight="1"
+                android:background="@drawable/filter_button_background"
                 android:text="WEEK"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12" />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_10" />
 
             <Button
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_10"
+                android:layout_height="@dimen/margin_25"
+                android:layout_marginRight="@dimen/margin_15"
                 android:layout_weight="1"
+                android:background="@drawable/filter_button_background"
                 android:text="MONTH"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12" />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_10" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="@dimen/margin_25"
+                android:layout_marginRight="@dimen/margin_15"
+                android:layout_weight="1"
+                android:background="@drawable/filter_button_background"
+                android:text="ALL"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_10" />
 
 
         </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/margin_60"
+            android:layout_height="match_parent" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -117,39 +144,46 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/margin_5"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="CHART TYPE: "
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12"
+                android:textSize="@dimen/text_size_10"
                 android:textStyle="bold" />
 
             <Button
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_10"
+                android:layout_height="@dimen/margin_25"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_15"
                 android:layout_weight="1"
+                android:background="@drawable/filter_button_background_selected"
                 android:text="BAR"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12" />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_10" />
 
             <Button
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_10"
+                android:layout_height="@dimen/margin_25"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_15"
                 android:layout_weight="1"
+                android:background="@drawable/filter_button_background"
                 android:text="LINE"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12" />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_10" />
 
             <Button
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_10"
+                android:layout_height="@dimen/margin_25"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_15"
                 android:layout_weight="1"
+                android:background="@drawable/filter_button_background"
                 android:text="PIE"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12" />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_10" />
 
 
         </LinearLayout>
