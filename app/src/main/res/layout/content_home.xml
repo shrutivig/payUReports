@@ -10,22 +10,8 @@
     tools:showIn="@layout/activity_home">
 
     <Button
-        android:id="@+id/barchart"
+        android:id="@+id/report1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BarChart" />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone" />
-
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone" />
+        android:text="Report 1" />
 </LinearLayout>
