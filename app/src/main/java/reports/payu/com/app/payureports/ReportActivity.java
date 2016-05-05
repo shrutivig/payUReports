@@ -4,9 +4,11 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -47,6 +49,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import javax.xml.datatype.Duration;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import reports.payu.com.app.payureports.Model.DisplayReportResults;
 import reports.payu.com.app.payureports.Model.ReportData;
 import reports.payu.com.app.payureports.Model.ReportResults;
@@ -56,6 +62,10 @@ import reports.payu.com.app.payureports.Model.ReportResults;
  */
 public class ReportActivity extends HomeActivity {
 
+    private int FLAG_FILTER_DAY = 0;
+    private int FLAG_FILTER_WEEK = 1;
+    private int FLAG_FILTER_MONTH = 2;
+
     private HorizontalBarChart barChart;
     private ReportResults reportsResults;
     private LineChart lineChart;
@@ -64,7 +74,10 @@ public class ReportActivity extends HomeActivity {
             Color.rgb(179, 100, 53), Color.rgb(255, 32, 34)};
     private TextView startDateFilter;
     private TextView endDateFilter;
-    private Date START_DATE;
+    private Date startDate;
+    private boolean mFilterStartDateEntered = false;
+    private boolean mFilterEndDateEntered = false;
+    private Button filterDay, filterWeek, filterMonth, filterAll, filterBar, filterLine, filterPie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +92,11 @@ public class ReportActivity extends HomeActivity {
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (filterLayout.getVisibility() == View.VISIBLE)
+                if (filterLayout.getVisibility() == View.VISIBLE) {
                     filterLayout.setVisibility(View.GONE);
-                else
+                } else {
                     filterLayout.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -92,9 +106,40 @@ public class ReportActivity extends HomeActivity {
         endDateFilter = (TextView) findViewById(R.id.filter_end_date);
         endDateFilter.setOnClickListener(selectDateChooserClickListener);
 
+        findViewById(R.id.filter_submit_date).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mFilterStartDateEntered) {
+                    //      Crouton.makeText(ReportActivity.this, "Start date cannot be empty.", Style.ALERT, R.id.filter_layout).setConfiguration(Constants.CONFIGURATION_SHORT).show();
+                    Snackbar snack = Snackbar.make(findViewById(R.id.report_layout), "Start date cannot be empty.", Snackbar.LENGTH_SHORT);
+                    View view = snack.getView();
+                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(ContextCompat.getColor(ReportActivity.this, android.R.color.white));
+                    snack.show();
+                } else if (!mFilterEndDateEntered)
+                    Crouton.makeText(ReportActivity.this, "End date cannot be empty.", Style.ALERT, R.id.filter_layout).setConfiguration(Constants.CONFIGURATION_SHORT).show();
+
+                else if (mFilterStartDateEntered && mFilterEndDateEntered) {
+                    //submmit api call
+                }
+            }
+        });
+
+        filterDay = (Button) findViewById(R.id.button_day);
+        filterWeek = (Button) findViewById(R.id.button_week);
+        filterMonth = (Button) findViewById(R.id.button_month);
+        filterAll = (Button) findViewById(R.id.button_all);
+        filterBar = (Button) findViewById(R.id.button_bar);
+        filterLine = (Button) findViewById(R.id.button_line);
+        filterPie = (Button) findViewById(R.id.button_pie);
+
         barChart = (HorizontalBarChart) findViewById(R.id.barChart);
         lineChart = (LineChart) findViewById(R.id.lineChart);
         pieChart = (PieChart) findViewById(R.id.pieChart);
+
+        setOnClickListenersForButtons();
+        setBackgroundForButton(filterDay, true);
+        setBackgroundForButton(filterBar, true);
         setDataInChart();
     }
 
@@ -118,14 +163,19 @@ public class ReportActivity extends HomeActivity {
                             switch (textView.getId()) {
                                 case R.id.filter_start_date:
                                     startDateFilter.setError(null);
+                                    mFilterStartDateEntered = true;
                                     startDateFilter.setText(dayOfMonth + " - "
                                             + (monthOfYear + 1) + " - " + year);
-                                    START_DATE = new Date(year - 1900, monthOfYear, dayOfMonth);
+                                    startDate = new Date(year - 1900, monthOfYear, dayOfMonth);
                                     break;
                                 case R.id.filter_end_date:
-                                    endDateFilter.setError(null);
-                                    endDateFilter.setText(dayOfMonth + " - "
-                                            + (monthOfYear + 1) + " - " + year);
+                                    if (mFilterStartDateEntered) {
+                                        endDateFilter.setError(null);
+                                        mFilterEndDateEntered = true;
+                                        endDateFilter.setText(dayOfMonth + " - "
+                                                + (monthOfYear + 1) + " - " + year);
+                                    } else
+                                        endDateFilter.setError("Please enter start date.");
                                     break;
                             }
                         }
@@ -134,12 +184,90 @@ public class ReportActivity extends HomeActivity {
             datePicker.show();
             datePicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
 
-            if (textView.getId() == R.id.filter_end_date) {
-                datePicker.getDatePicker().setMinDate(START_DATE.getTime());
-                datePicker.updateDate(START_DATE.getYear(), START_DATE.getMonth(), START_DATE.getDay());
+            if (textView.getId() == R.id.filter_end_date && mFilterStartDateEntered) {
+                datePicker.getDatePicker().setMinDate(startDate.getTime());
+                datePicker.updateDate(startDate.getYear(), startDate.getMonth(), startDate.getDay());
             }
         }
     };
+
+    View.OnClickListener viewByButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            resetAllViewByBackgroundsToDefault();
+            switch (v.getId()) {
+                case R.id.button_day:
+                    setBackgroundForButton(filterDay, true);
+                    break;
+                case R.id.button_week:
+                    setBackgroundForButton(filterWeek, true);
+                    break;
+                case R.id.button_month:
+                    setBackgroundForButton(filterMonth, true);
+                    break;
+                case R.id.button_all:
+                    setBackgroundForButton(filterAll, true);
+                    break;
+            }
+
+        }
+    };
+
+    View.OnClickListener chartTypeButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            resetAllChartTypeBackgroundsToDefault();
+            switch (v.getId()) {
+                case R.id.button_bar:
+                    setBackgroundForButton(filterBar, true);
+                    break;
+                case R.id.button_line:
+                    setBackgroundForButton(filterLine, true);
+                    break;
+                case R.id.button_pie:
+                    setBackgroundForButton(filterPie, true);
+                    break;
+            }
+        }
+    };
+
+    private void setOnClickListenersForButtons() {
+        filterDay.setOnClickListener(viewByButtonListener);
+        filterWeek.setOnClickListener(viewByButtonListener);
+        filterMonth.setOnClickListener(viewByButtonListener);
+        filterAll.setOnClickListener(viewByButtonListener);
+
+        filterBar.setOnClickListener(chartTypeButtonListener);
+        filterLine.setOnClickListener(chartTypeButtonListener);
+        filterPie.setOnClickListener(chartTypeButtonListener);
+    }
+
+    private void resetAllViewByBackgroundsToDefault() {
+        setBackgroundForButton(filterDay, false);
+        setBackgroundForButton(filterWeek, false);
+        setBackgroundForButton(filterMonth, false);
+        setBackgroundForButton(filterAll, false);
+    }
+
+    private void resetAllChartTypeBackgroundsToDefault() {
+        setBackgroundForButton(filterBar, false);
+        setBackgroundForButton(filterLine, false);
+        setBackgroundForButton(filterPie, false);
+    }
+
+    private void setBackgroundForButton(Button button, boolean isSelected) {
+        if (isSelected) {
+            if (android.os.Build.VERSION.SDK_INT >= 16)
+                button.setBackground(ContextCompat.getDrawable(this, R.drawable.filter_button_background_selected));
+            else
+                button.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.filter_button_background_selected));
+        } else {
+            if (android.os.Build.VERSION.SDK_INT >= 16)
+                button.setBackground(ContextCompat.getDrawable(this, R.drawable.filter_button_background));
+            else
+                button.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.filter_button_background));
+        }
+    }
 
     private void setDataInPieChart(ReportData l) {
         /*Pie Chart Start*/
@@ -220,7 +348,7 @@ public class ReportActivity extends HomeActivity {
         dataSet2.add(setBar1);
         BarData mData2 = new BarData(xVals, dataSet2);
         barChart.getXAxis().setTextSize(2f);
-        barChart.setScaleMinima(1f,10f);
+        barChart.setScaleMinima(1f, 10f);
         barChart.setData(mData2);
         barChart.animateY(2000);
     }
@@ -327,7 +455,7 @@ public class ReportActivity extends HomeActivity {
         dataSets.add(setComp6);
 
         LineData mData = new LineData(xVals, dataSets);
-        lineChart.setScaleMinima(5f,1f);
+        lineChart.setScaleMinima(5f, 1f);
         lineChart.setData(mData);
         lineChart.animateY(2000);
         /*Line Chart End*/

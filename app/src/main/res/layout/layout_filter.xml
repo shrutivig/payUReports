@@ -53,6 +53,7 @@
             android:textSize="@dimen/text_size_12" />
 
         <Button
+            android:id="@+id/filter_submit_date"
             android:layout_width="0dp"
             android:layout_height="@dimen/margin_30"
             android:layout_marginLeft="@dimen/margin_40"
@@ -89,6 +90,7 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/button_day"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/margin_25"
                 android:layout_marginRight="@dimen/margin_15"
@@ -99,6 +101,7 @@
                 android:textSize="@dimen/text_size_10" />
 
             <Button
+                android:id="@+id/button_week"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/margin_25"
                 android:layout_marginRight="@dimen/margin_15"
@@ -109,6 +112,7 @@
                 android:textSize="@dimen/text_size_10" />
 
             <Button
+                android:id="@+id/button_month"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/margin_25"
                 android:layout_marginRight="@dimen/margin_15"
@@ -119,6 +123,7 @@
                 android:textSize="@dimen/text_size_10" />
 
             <Button
+                android:id="@+id/button_all"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/margin_25"
                 android:layout_marginRight="@dimen/margin_15"
@@ -153,6 +158,7 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/button_bar"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/margin_25"
                 android:layout_gravity="center"
@@ -164,6 +170,7 @@
                 android:textSize="@dimen/text_size_10" />
 
             <Button
+                android:id="@+id/button_line"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/margin_25"
                 android:layout_gravity="center"
@@ -175,6 +182,7 @@
                 android:textSize="@dimen/text_size_10" />
 
             <Button
+                android:id="@+id/button_pie"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/margin_25"
                 android:layout_gravity="center"
