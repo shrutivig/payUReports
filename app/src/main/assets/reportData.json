@@ -2,813 +2,748 @@
   "status": 1,
   "reportId": "1",
   "displayReportResult": {
-      "Day": [
-        {
-          "startDate": "2014-04-25",
-          "endDate": "2014-04-25",
-          "success": 60.38359236155,
-          "failed": 11.771967699996,
-          "userCancelled": 0.67778718734718,
-          "pending": 0.12046899414354,
-          "bounced": 8.8330013478214,
-          "dropped": 18.213182409141
-        },
-        {
-          "startDate": "2014-04-26",
-          "endDate": "2014-04-26",
-          "bounced": 8.5281907375196,
-          "dropped": 15.462457292374,
-          "pending": 0.090971318847064,
-          "success": 62.597749719233,
-          "failed": 12.667830230332,
-          "userCancelled": 0.65280070169408
-        },
-        {
-          "startDate": "2014-04-27",
-          "endDate": "2014-04-27",
-          "bounced": 8.5378051994653,
-          "dropped": 15.458041325175,
-          "userCancelled": 0.69319852532572,
-          "success": 62.673974412305,
-          "failed": 12.570613844283,
-          "pending": 0.06636669344621
-        },
-        {
-          "startDate": "2014-04-28",
-          "endDate": "2014-04-28",
-          "bounced": 9.2256920500443,
-          "dropped": 15.521254063639,
-          "userCancelled": 0.67111614619249,
-          "success": 62.991023051916,
-          "failed": 11.495480740814,
-          "pending": 0.095433947394345
-        },
-        {
-          "startDate": "2014-04-29",
-          "endDate": "2014-04-29",
-          "pending": 0.079984662117227,
-          "success": 62.694194970852,
-          "failed": 11.848814010197,
-          "userCancelled": 0.61740969521949,
-          "bounced": 8.8459441485378,
-          "dropped": 15.913652513076
-        },
-        {
-          "startDate": "2014-04-30",
-          "endDate": "2014-04-30",
-          "success": 60.863343472999,
-          "pending": 0.07604749288588,
-          "bounced": 8.5770123965591,
-          "dropped": 18.143459915612,
-          "failed": 11.711313904425,
-          "userCancelled": 0.62882281751873
-        },
-        {
-          "startDate": "2014-05-01",
-          "endDate": "2014-05-01",
-          "success": 63.697298692499,
-          "failed": 11.792241033955,
-          "userCancelled": 0.6912572493285,
-          "pending": 0.067216768701722,
-          "bounced": 8.4058602267625,
-          "dropped": 15.346126028753
-        },
-        {
-          "startDate": "2014-05-02",
-          "endDate": "2014-05-02",
-          "bounced": 11.853390608321,
-          "dropped": 12.971461289032,
-          "pending": 5.2183345177709,
-          "success": 58.009914749268,
-          "failed": 11.276804492998,
-          "userCancelled": 0.67009434260839
-        },
-        {
-          "startDate": "2014-05-03",
-          "endDate": "2014-05-03",
-          "success": 62.788224607133,
-          "failed": 11.810477532215,
-          "userCancelled": 0.66144113663437,
-          "pending": 0.064729848075239,
-          "bounced": 8.7545759651003,
-          "dropped": 15.920550910841
-        },
-        {
-          "startDate": "2014-05-04",
-          "endDate": "2014-05-04",
-          "bounced": 8.9821737326756,
-          "dropped": 15.023785515514,
-          "pending": 0.069948492473724,
-          "success": 63.204064885554,
-          "failed": 12.022964907659,
-          "userCancelled": 0.69706246612343
-        },
-        {
-          "startDate": "2014-05-05",
-          "endDate": "2014-05-05",
-          "success": 60.95142682219,
-          "pending": 0.080570993912119,
-          "bounced": 9.8519242950701,
-          "dropped": 15.77256716679,
-          "failed": 12.626587897919,
-          "userCancelled": 0.71692282411935
-        },
-        {
-          "startDate": "2014-05-06",
-          "endDate": "2014-05-06",
-          "bounced": 10.183884404606,
-          "dropped": 15.879090752859,
-          "pending": 0.10120325487126,
-          "success": 61.08230197851,
-          "failed": 12.028729721841,
-          "userCancelled": 0.72478988731249
-        },
-        {
-          "startDate": "2014-05-07",
-          "endDate": "2014-05-07",
-          "bounced": 9.1629989687591,
-          "dropped": 15.809989085806,
-          "pending": 0.085617609326575,
-          "success": 59.489740931509,
-          "failed": 14.792698705341,
-          "userCancelled": 0.65895469925789
-        },
-        {
-          "startDate": "2014-05-08",
-          "endDate": "2014-05-08",
-          "bounced": 8.3693121720895,
-          "dropped": 19.075564747474,
-          "pending": 0.090023647611224,
-          "success": 58.807750957321,
-          "failed": 13.051329226715,
-          "userCancelled": 0.60601924878809
-        },
-        {
-          "startDate": "2014-05-09",
-          "endDate": "2014-05-09",
-          "pending": 0.094326736475324,
-          "bounced": 8.3118349127478,
-          "dropped": 19.979485223433,
-          "success": 58.376394605335,
-          "failed": 12.643133090902,
-          "userCancelled": 0.59482543110669
-        },
-        {
-          "startDate": "2014-05-10",
-          "endDate": "2014-05-10",
-          "success": 60.676430476059,
-          "pending": 0.074969892410229,
-          "bounced": 9.1117662853482,
-          "dropped": 17.554386403333,
-          "failed": 11.903198449559,
-          "userCancelled": 0.67924849329126
-        },
-        {
-          "startDate": "2014-05-11",
-          "endDate": "2014-05-11",
-          "success": 59.558456319206,
-          "pending": 0.066587450561688,
-          "bounced": 9.1732823594919,
-          "dropped": 16.892260356932,
-          "userCancelled": 0.74566464034166,
-          "failed": 13.563748873467
-        },
-        {
-          "startDate": "2014-05-12",
-          "endDate": "2014-05-12",
-          "bounced": 8.1780269210339,
-          "dropped": 15.890134605169,
-          "pending": 0.085611600230558,
-          "success": 62.538285055549,
-          "failed": 12.740588374905,
-          "userCancelled": 0.56735344311208
-        },
-        {
-          "startDate": "2014-05-13",
-          "endDate": "2014-05-13",
-          "success": 61.178621388541,
-          "failed": 11.509942555422,
-          "userCancelled": 0.72221881507051,
-          "pending": 0.091701054562127,
-          "bounced": 9.5596889173143,
-          "dropped": 16.93782726909
-        },
-        {
-          "startDate": "2014-05-14",
-          "endDate": "2014-05-14",
-          "bounced": 8.673470870049,
-          "dropped": 16.457630614848,
-          "pending": 0.076699816094759,
-          "success": 62.158518763855,
-          "failed": 11.955583833771,
-          "userCancelled": 0.67809610138321
-        },
-        {
-          "startDate": "2014-05-15",
-          "endDate": "2014-05-15",
-          "bounced": 8.611843017612,
-          "dropped": 15.734294827347,
-          "pending": 0.092636250173346,
-          "success": 60.506448481487,
-          "failed": 14.418804604077,
-          "userCancelled": 0.63597281930384
-        },
-        {
-          "startDate": "2014-05-16",
-          "endDate": "2014-05-16",
-          "failed": 11.85079962042,
-          "userCancelled": 0.62030983471989,
-          "success": 62.512735126827,
-          "pending": 0.075100862204472,
-          "bounced": 8.0497645093119,
-          "dropped": 16.891290046516
-        },
-        {
-          "startDate": "2014-05-17",
-          "endDate": "2014-05-17",
-          "bounced": 8.6034137048084,
-          "dropped": 15.989313426535,
-          "pending": 0.07637234154822,
-          "success": 63.06383616883,
-          "failed": 11.626092124484,
-          "userCancelled": 0.64097223379379
-        },
-        {
-          "startDate": "2014-05-18",
-          "endDate": "2014-05-18",
-          "success": 62.441087613293,
-          "pending": 0.063587972953532,
-          "bounced": 8.2391022874407,
-          "dropped": 17.573874262696,
-          "failed": 10.968781470292,
-          "userCancelled": 0.7135663933247
-        },
-        {
-          "startDate": "2014-05-19",
-          "endDate": "2014-05-19",
-          "pending": 0.091829360400354,
-          "success": 61.836478534208,
-          "failed": 11.696561017621,
-          "userCancelled": 0.65367290273152,
-          "bounced": 9.3068241712264,
-          "dropped": 16.414634013812
-        },
-        {
-          "startDate": "2014-05-20",
-          "endDate": "2014-05-20",
-          "success": 60.786386915579,
-          "failed": 12.125392367421,
-          "pending": 0.13877416157277,
-          "userCancelled": 0.66881436202434,
-          "bounced": 9.6280081502285,
-          "dropped": 16.652624043174
-        },
-        {
-          "startDate": "2014-05-21",
-          "endDate": "2014-05-21",
-          "success": 61.418451332869,
-          "pending": 0.12257210324448,
-          "userCancelled": 0.6581767058406,
-          "bounced": 9.9613720431869,
-          "dropped": 16.453598678733,
-          "failed": 11.385829136126
-        },
-        {
-          "startDate": "2014-05-22",
-          "endDate": "2014-05-22",
-          "pending": 0.10374645450804,
-          "userCancelled": 0.62740729970897,
-          "bounced": 9.5399916707122,
-          "dropped": 17.192586441004,
-          "success": 60.004879286934,
-          "failed": 12.531388847133
-        },
-        {
-          "startDate": "2014-05-23",
-          "endDate": "2014-05-23",
-          "bounced": 8.4761813636375,
-          "dropped": 16.79608244337,
-          "pending": 0.11236478811387,
-          "success": 61.263833994519,
-          "failed": 12.789468131825,
-          "userCancelled": 0.56206927853465
-        },
-        {
-          "startDate": "2014-05-24",
-          "endDate": "2014-05-24",
-          "success": 61.404377961311,
-          "failed": 13.157775609364,
-          "pending": 0.13681129095537,
-          "userCancelled": 0.57138833281358,
-          "bounced": 8.0064784170129,
-          "dropped": 16.723168388544
-        },
-        {
-          "startDate": "2014-05-25",
-          "endDate": "2014-05-25",
-          "failed": 11.863316989887,
-          "pending": 0.085638926585825,
-          "success": 62.991671409184,
-          "userCancelled": 0.61999299566607,
-          "bounced": 7.491080418509,
-          "dropped": 16.948299260167
-        },
-        {
-          "startDate": "2014-05-26",
-          "endDate": "2014-05-26",
-          "success": 62.277517487565,
-          "pending": 0.14200034122078,
-          "userCancelled": 0.65304408310038,
-          "bounced": 8.5937766578737,
-          "dropped": 16.001679856162,
-          "failed": 12.331981574078
-        },
-        {
-          "startDate": "2014-05-27",
-          "endDate": "2014-05-27",
-          "bounced": 8.2911895920186,
-          "dropped": 15.918386852839,
-          "pending": 0.16529529667413,
-          "success": 62.332350369806,
-          "failed": 12.612199804907,
-          "userCancelled": 0.68057808375524
-        },
-        {
-          "startDate": "2014-05-28",
-          "endDate": "2014-05-28",
-          "dropped": 16.729364468875,
-          "pending": 0.19174298018562,
-          "success": 61.63680566863,
-          "failed": 11.814231090998,
-          "userCancelled": 0.73945975081835,
-          "bounced": 8.8883960404934
-        },
-        {
-          "startDate": "2014-05-29",
-          "endDate": "2014-05-29",
-          "success": 62.011846144452,
-          "failed": 11.880561553877,
-          "pending": 0.2725612430125,
-          "userCancelled": 0.66003119743759,
-          "bounced": 8.5146244927641,
-          "dropped": 16.660375368457
-        },
-        {
-          "startDate": "2014-05-30",
-          "endDate": "2014-05-30",
-          "bounced": 8.6530702949526,
-          "dropped": 16.531258515369,
-          "pending": 0.28783601812732,
-          "success": 61.259864600667,
-          "failed": 12.65182159458,
-          "userCancelled": 0.61614897630379
-        },
-        {
-          "startDate": "2014-05-31",
-          "endDate": "2014-05-31",
-          "failed": 11.368794129304,
-          "pending": 0.20800884542469,
-          "success": 59.294385528239,
-          "userCancelled": 0.58515109671654,
-          "bounced": 7.7210661967956,
-          "dropped": 20.82259420352
-        },
-        {
-          "startDate": "2014-06-01",
-          "endDate": "2014-06-01",
-          "success": 61.797913083732,
-          "pending": 0.18220819102524,
-          "userCancelled": 0.60395152239384,
-          "bounced": 7.6409018363464,
-          "dropped": 17.989358180394,
-          "failed": 11.785667186108
-        },
-        {
-          "startDate": "2014-06-02",
-          "endDate": "2014-06-02",
-          "success": 59.644107409748,
-          "failed": 11.999087197697,
-          "pending": 0.27860531832726,
-          "userCancelled": 0.59708304494799,
-          "bounced": 8.797257580773,
-          "dropped": 18.683859448507
-        },
-        {
-          "startDate": "2014-06-03",
-          "endDate": "2014-06-03",
-          "bounced": 8.4667923065613,
-          "dropped": 17.242872609166,
-          "pending": 0.29859523904995,
-          "success": 62.030287234185,
-          "failed": 11.324966250986,
-          "userCancelled": 0.63648636005186
-        },
-        {
-          "startDate": "2014-06-04",
-          "endDate": "2014-06-04",
-          "failed": 11.558249587364,
-          "pending": 0.2535883667969,
-          "success": 61.579664876836,
-          "userCancelled": 0.70278712157617,
-          "bounced": 8.2788375154086,
-          "dropped": 17.626872532018
-        },
-        {
-          "startDate": "2014-06-05",
-          "endDate": "2014-06-05",
-          "bounced": 7.7178048623202,
-          "dropped": 17.527826143032,
-          "pending": 0.28064744953892,
-          "success": 62.556006964597,
-          "failed": 11.270780937641,
-          "userCancelled": 0.64693364287096
-        },
-        {
-          "startDate": "2014-06-06",
-          "endDate": "2014-06-06",
-          "success": 62.619480271936,
-          "pending": 0.26507401995044,
-          "userCancelled": 0.63536438147277,
-          "bounced": 8.0673486244361,
-          "dropped": 17.222949361459,
-          "failed": 11.189783340746
-        },
-        {
-          "startDate": "2014-06-07",
-          "endDate": "2014-06-07",
-          "pending": 0.24676769966155,
-          "success": 62.792829730287,
-          "failed": 11.344438304255,
-          "userCancelled": 0.58801508619043,
-          "bounced": 7.2110156693669,
-          "dropped": 17.816933510239
-        },
-        {
-          "startDate": "2014-06-08",
-          "endDate": "2014-06-08",
-          "bounced": 7.9697753032412,
-          "dropped": 16.810233976271,
-          "pending": 0.1590773513621,
-          "success": 63.463379068072,
-          "failed": 10.926758136144,
-          "userCancelled": 0.67077616491019
-        },
-        {
-          "startDate": "2014-06-09",
-          "endDate": "2014-06-09",
-          "success": 59.476152955299,
-          "pending": 0.26255810387042,
-          "userCancelled": 0.66974791249121,
-          "bounced": 8.7204721286508,
-          "dropped": 17.332800989947,
-          "failed": 13.538267909741
-        },
-        {
-          "startDate": "2014-06-10",
-          "endDate": "2014-06-10",
-          "success": 59.106871827079,
-          "failed": 12.140053383577,
-          "pending": 0.27921704087507,
-          "userCancelled": 0.69006123410268,
-          "bounced": 8.2529962840844,
-          "dropped": 19.530800230282
-        },
-        {
-          "startDate": "2014-06-11",
-          "endDate": "2014-06-11",
-          "success": 57.692466449619,
-          "pending": 0.23966400602643,
-          "userCancelled": 0.7682663185648,
-          "bounced": 9.0801442627688,
-          "dropped": 20.064185580947,
-          "failed": 12.155273382074
-        },
-        {
-          "startDate": "2014-06-12",
-          "endDate": "2014-06-12",
-          "success": 61.268513845833,
-          "failed": 11.308698937565,
-          "pending": 0.30919824734258,
-          "userCancelled": 0.65177281672127,
-          "bounced": 7.4851074851075,
-          "dropped": 18.97670866743
-        },
-        {
-          "startDate": "2014-06-13",
-          "endDate": "2014-06-13",
-          "bounced": 8.0208192144,
-          "dropped": 17.951150749546,
-          "pending": 0.24749925452032,
-          "success": 61.22719509881,
-          "failed": 11.858548618829,
-          "userCancelled": 0.69478706389439
-        },
-        {
-          "startDate": "2014-06-14",
-          "endDate": "2014-06-14",
-          "success": 62.659817321261,
-          "failed": 12.563481791921,
-          "pending": 0.21871487075094,
-          "userCancelled": 0.65800488454353,
-          "bounced": 7.0116320168806,
-          "dropped": 16.888349114643
-        },
-        {
-          "startDate": "2014-06-15",
-          "endDate": "2014-06-15",
-          "bounced": 6.9918894194297,
-          "dropped": 15.765986880271,
-          "pending": 0.17152706501852,
-          "success": 61.99016020349,
-          "failed": 14.395443794904,
-          "userCancelled": 0.68499263688696
-        },
-        {
-          "startDate": "2014-06-16",
-          "endDate": "2014-06-16",
-          "success": 61.905538433106,
-          "pending": 0.19079301404041,
-          "userCancelled": 0.73164500540852,
-          "bounced": 7.7366295408466,
-          "dropped": 16.044822769053,
-          "failed": 13.390571237545
-        },
-        {
-          "startDate": "2014-06-17",
-          "endDate": "2014-06-17",
-          "dropped": 15.550304755256,
-          "pending": 0.28515425717585,
-          "success": 62.004135005236,
-          "failed": 13.590741884381,
-          "userCancelled": 0.72819053244905,
-          "bounced": 7.8414735655022
-        },
-        {
-          "startDate": "2014-06-18",
-          "endDate": "2014-06-18",
-          "success": 63.325387587136,
-          "pending": 0.22935719001647,
-          "userCancelled": 0.69523069621176,
-          "bounced": 7.6008707618636,
-          "dropped": 14.914050713129,
-          "failed": 13.235103051644
-        },
-        {
-          "startDate": "2014-06-19",
-          "endDate": "2014-06-19",
-          "bounced": 7.7308369092088,
-          "dropped": 14.703536772348,
-          "pending": 0.30793689994752,
-          "success": 63.214531946202,
-          "failed": 13.321550952366,
-          "userCancelled": 0.72160651992714
-        },
-        {
-          "startDate": "2014-06-20",
-          "endDate": "2014-06-20",
-          "failed": 13.103591403329,
-          "pending": 0.22933911978963,
-          "success": 63.800146587891,
-          "userCancelled": 0.64204445448551,
-          "bounced": 7.0440998373873,
-          "dropped": 15.180778597117
-        },
-        {
-          "startDate": "2014-06-21",
-          "endDate": "2014-06-21",
-          "success": 60.241672027346,
-          "failed": 13.739483608935,
-          "pending": 0.26790782154615,
-          "userCancelled": 0.719213935243,
-          "": "1",
-          "bounced": 9.2264224719668,
-          "dropped": 15.805047867711
-        },
-        {
-          "startDate": "2014-06-22",
-          "endDate": "2014-06-22",
-          "bounced": 6.6959808686261,
-          "dropped": 15.075875293418,
-          "pending": 0.16503014073021,
-          "success": 64.389856845307,
-          "failed": 13.047023947279,
-          "userCancelled": 0.62623290464068
-        },
-        {
-          "startDate": "2014-06-23",
-          "endDate": "2014-06-23",
-          "dropped": 14.694805212438,
-          "pending": 0.27968382151285,
-          "success": 64.386474164546,
-          "failed": 12.551829756729,
-          "userCancelled": 0.73613867972944,
-          "bounced": 7.3510683650444
-        },
-        {
-          "startDate": "2014-06-24",
-          "endDate": "2014-06-24",
-          "success": 63.538762454343,
-          "failed": 13.319122954894,
-          "pending": 0.20153882729257,
-          "userCancelled": 0.73321230197324,
-          "bounced": 7.5258272277335,
-          "dropped": 14.681536233763
-        },
-        {
-          "startDate": "2014-06-25",
-          "endDate": "2014-06-25",
-          "bounced": 7.3261700107229,
-          "dropped": 14.241336411975,
-          "pending": 0.23801403055904,
-          "success": 63.456503549354,
-          "failed": 14.018535649349,
-          "userCancelled": 0.71944034804031
-        },
-        {
-          "startDate": "2014-06-26",
-          "endDate": "2014-06-26",
-          "failed": 13.165350480855,
-          "pending": 0.2106333844092,
-          "success": 62.489795740185,
-          "userCancelled": 0.61378349943904,
-          "bounced": 9.5169183353633,
-          "dropped": 14.003518559748
-        },
-        {
-          "startDate": "2014-06-27",
-          "endDate": "2014-06-27",
-          "bounced": 6.2209049852354,
-          "dropped": 15.049504950495,
-          "pending": 0.17066180302241,
-          "success": 64.303022407504,
-          "failed": 13.708311620636,
-          "userCancelled": 0.54759423310752
-        },
-        {
-          "startDate": "2014-06-28",
-          "endDate": "2014-06-28",
-          "success": 64.849184673902,
-          "pending": 0.14596077871697,
-          "userCancelled": 0.55529967369657,
-          "bounced": 6.1738165824419,
-          "dropped": 14.668301427388,
-          "failed": 13.607436863854
-        },
-        {
-          "startDate": "2014-06-29",
-          "endDate": "2014-06-29",
-          "pending": 0.12810628076627,
-          "success": 63.340964355614,
-          "failed": 13.174544807544,
-          "userCancelled": 0.5845442144594,
-          "bounced": 6.6147915307514,
-          "dropped": 16.157048810865
-        }
-      ],
-      "Overall": {
-        "success": 61.782299322947,
-        "failed": 12.432433133101,
-        "pending": 0.23774204241037,
-        "dropped": 16.55316287734,
-        "bounced": 8.3367288670106,
-        "userCancelled": 0.65762970644968
+    "Day": [
+      {
+        "startDate": "2014-04-25",
+        "success": 60.4,
+        "failed": 11.8,
+        "userCancelled": 0.7,
+        "pending": 0.1,
+        "bounced": 8.8,
+        "dropped": 18.2
       },
-      "Week": [
-        {
-          "startDate": "2014-04-25",
-          "endDate": "2014-04-27",
-          "success": 61.870306213566,
-          "failed": 12.332673916873,
-          "userCancelled": 0.67416390109968,
-          "pending": 0.0931417313428,
-          "bounced": 8.6347447005392,
-          "dropped": 16.394969536579
-        },
-        {
-          "startDate": "2014-04-28",
-          "endDate": "2014-05-04",
-          "bounced": 9.2215898787568,
-          "dropped": 15.572091180262,
-          "userCancelled": 0.66239831416313,
-          "success": 62.028063715006,
-          "failed": 11.708960633924,
-          "pending": 0.806896277888
-        },
-        {
-          "startDate": "2014-05-05",
-          "endDate": "2014-05-11",
-          "success": 59.84078762566,
-          "pending": 0.084938364942237,
-          "bounced": 9.1575543282839,
-          "dropped": 17.310715372346,
-          "failed": 12.932144580387,
-          "userCancelled": 0.67385972838163
-        },
-        {
-          "startDate": "2014-05-12",
-          "endDate": "2014-05-18",
-          "bounced": 8.5574263045946,
-          "dropped": 16.486614774314,
-          "pending": 0.080293411454595,
-          "success": 62.056204572443,
-          "failed": 12.165899481946,
-          "userCancelled": 0.65356145524774
-        },
-        {
-          "startDate": "2014-05-19",
-          "endDate": "2014-05-25",
-          "pending": 0.11319768309361,
-          "success": 61.364998767802,
-          "failed": 12.245581008518,
-          "userCancelled": 0.62155886709575,
-          "bounced": 8.9073525391695,
-          "dropped": 16.747311134322
-        },
-        {
-          "startDate": "2014-05-26",
-          "endDate": "2014-06-01",
-          "success": 61.489091291772,
-          "pending": 0.20712712788205,
-          "userCancelled": 0.64689230428256,
-          "bounced": 8.3211390106611,
-          "dropped": 17.277357576532,
-          "failed": 12.05839268887
-        },
-        {
-          "startDate": "2014-06-02",
-          "endDate": "2014-06-08",
-          "success": 62.086263185953,
-          "failed": 11.37720590979,
-          "pending": 0.25488009109035,
-          "userCancelled": 0.63913981386623,
-          "bounced": 8.072114182143,
-          "dropped": 17.570396817158
-        },
-        {
-          "startDate": "2014-06-09",
-          "endDate": "2014-06-15",
-          "success": 60.460100647017,
-          "pending": 0.24742899267689,
-          "userCancelled": 0.68859739974899,
-          "bounced": 7.9502461343504,
-          "dropped": 18.099480315344,
-          "failed": 12.554146510863
-        },
-        {
-          "startDate": "2014-06-16",
-          "endDate": "2014-06-22",
-          "success": 62.678096160874,
-          "pending": 0.24033983145225,
-          "userCancelled": 0.69528499353614,
-          "bounced": 7.7119988149281,
-          "dropped": 15.323931611981,
-          "failed": 13.350310797947,
-          "": "1"
-        },
-        {
-          "startDate": "2014-06-23",
-          "endDate": "2014-06-29",
-          "dropped": 14.783337696921,
-          "pending": 0.19371616241228,
-          "success": 63.766904380454,
-          "failed": 13.381405147586,
-          "userCancelled": 0.63496983698269,
-          "bounced": 7.2396667756433
-        }
-      ],
-      "Month": [
-        {
-          "startDate": "2014-04-25",
-          "endDate": "2014-04-30",
-          "success": 62.004237894285,
-          "failed": 12.004138553116,
-          "userCancelled": 0.65599941190028,
-          "pending": 0.088214958395918,
-          "bounced": 8.7545895620247,
-          "dropped": 16.492819620278
-        },
-        {
-          "startDate": "2014-05-01",
-          "endDate": "2014-05-30",
-          "success": 61.323213231823,
-          "failed": 12.326167407799,
-          "userCancelled": 0.65652099891611,
-          "pending": 0.27277234626757,
-          "bounced": 8.9088204347251,
-          "dropped": 16.512505580469
-        },
-        {
-          "startDate": "2014-05-31",
-          "endDate": "2014-06-29",
-          "failed": 12.605905592534,
-          "pending": 0.23060036981562,
-          "success": 62.175015505887,
-          "userCancelled": 0.65895103081016,
-          "bounced": 7.7278057190602,
-          "dropped": 16.601713231639,
-          "": "1"
-        }
-      ]
-
+      {
+        "startDate": "2014-04-26",
+        "bounced": 8.5,
+        "dropped": 15.5,
+        "pending": 0.1,
+        "success": 62.6,
+        "failed": 12.7,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-04-27",
+        "bounced": 8.5,
+        "dropped": 15.5,
+        "userCancelled": 0.7,
+        "success": 62.7,
+        "failed": 12.6,
+        "pending": 0.1
+      },
+      {
+        "startDate": "2014-04-28",
+        "bounced": 9.2,
+        "dropped": 15.5,
+        "userCancelled": 0.7,
+        "success": 63,
+        "failed": 11.5,
+        "pending": 0.1
+      },
+      {
+        "startDate": "2014-04-29",
+        "pending": 0.1,
+        "success": 62.7,
+        "failed": 11.8,
+        "userCancelled": 0.6,
+        "bounced": 8.8,
+        "dropped": 15.9
+      },
+      {
+        "startDate": "2014-04-30",
+        "success": 60.9,
+        "pending": 0.1,
+        "bounced": 8.6,
+        "dropped": 18.1,
+        "failed": 11.7,
+        "userCancelled": 0.6
+      },
+      {
+        "startDate": "2014-05-01",
+        "success": 63.7,
+        "failed": 11.8,
+        "userCancelled": 0.7,
+        "pending": 0.1,
+        "bounced": 8.4,
+        "dropped": 15.3
+      },
+      {
+        "startDate": "2014-05-02",
+        "bounced": 11.9,
+        "dropped": 13,
+        "pending": 5.2,
+        "success": 58,
+        "failed": 11.3,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-05-03",
+        "success": 62.8,
+        "failed": 11.8,
+        "userCancelled": 0.7,
+        "pending": 0.1,
+        "bounced": 8.8,
+        "dropped": 15.9
+      },
+      {
+        "startDate": "2014-05-04",
+        "bounced": 9,
+        "dropped": 15,
+        "pending": 0.1,
+        "success": 63.2,
+        "failed": 12,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-05-05",
+        "success": 61,
+        "pending": 0.1,
+        "bounced": 9.9,
+        "dropped": 15.8,
+        "failed": 12.6,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-05-06",
+        "bounced": 10.2,
+        "dropped": 15.9,
+        "pending": 0.1,
+        "success": 61.1,
+        "failed": 12,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-05-07",
+        "bounced": 9.2,
+        "dropped": 15.8,
+        "pending": 0.1,
+        "success": 59.5,
+        "failed": 14.8,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-05-08",
+        "bounced": 8.4,
+        "dropped": 19.1,
+        "pending": 0.1,
+        "success": 58.8,
+        "failed": 13.1,
+        "userCancelled": 0.6
+      },
+      {
+        "startDate": "2014-05-09",
+        "pending": 0.1,
+        "bounced": 8.3,
+        "dropped": 20,
+        "success": 58.4,
+        "failed": 12.6,
+        "userCancelled": 0.6
+      },
+      {
+        "startDate": "2014-05-10",
+        "success": 60.7,
+        "pending": 0.1,
+        "bounced": 9.1,
+        "dropped": 17.6,
+        "failed": 11.9,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-05-11",
+        "success": 59.6,
+        "pending": 0.1,
+        "bounced": 9.2,
+        "dropped": 16.9,
+        "userCancelled": 0.7,
+        "failed": 13.6
+      },
+      {
+        "startDate": "2014-05-12",
+        "bounced": 8.2,
+        "dropped": 15.9,
+        "pending": 0.1,
+        "success": 62.5,
+        "failed": 12.7,
+        "userCancelled": 0.6
+      },
+      {
+        "startDate": "2014-05-13",
+        "success": 61.2,
+        "failed": 11.5,
+        "userCancelled": 0.7,
+        "pending": 0.1,
+        "bounced": 9.6,
+        "dropped": 16.9
+      },
+      {
+        "startDate": "2014-05-14",
+        "bounced": 8.7,
+        "dropped": 16.5,
+        "pending": 0.1,
+        "success": 62.2,
+        "failed": 12,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-05-15",
+        "bounced": 8.6,
+        "dropped": 15.7,
+        "pending": 0.1,
+        "success": 60.5,
+        "failed": 14.4,
+        "userCancelled": 0.6
+      },
+      {
+        "startDate": "2014-05-16",
+        "failed": 11.9,
+        "userCancelled": 0.6,
+        "success": 62.5,
+        "pending": 0.1,
+        "bounced": 8,
+        "dropped": 16.9
+      },
+      {
+        "startDate": "2014-05-17",
+        "bounced": 8.6,
+        "dropped": 16,
+        "pending": 0.1,
+        "success": 63.1,
+        "failed": 11.6,
+        "userCancelled": 0.6
+      },
+      {
+        "startDate": "2014-05-18",
+        "success": 62.4,
+        "pending": 0.1,
+        "bounced": 8.2,
+        "dropped": 17.6,
+        "failed": 11,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-05-19",
+        "pending": 0.1,
+        "success": 61.8,
+        "failed": 11.7,
+        "userCancelled": 0.7,
+        "bounced": 9.3,
+        "dropped": 16.4
+      },
+      {
+        "startDate": "2014-05-20",
+        "success": 60.8,
+        "failed": 12.1,
+        "pending": 0.1,
+        "userCancelled": 0.7,
+        "bounced": 9.6,
+        "dropped": 16.7
+      },
+      {
+        "startDate": "2014-05-21",
+        "success": 61.4,
+        "pending": 0.1,
+        "userCancelled": 0.7,
+        "bounced": 10,
+        "dropped": 16.5,
+        "failed": 11.4
+      },
+      {
+        "startDate": "2014-05-22",
+        "pending": 0.1,
+        "userCancelled": 0.6,
+        "bounced": 9.5,
+        "dropped": 17.2,
+        "success": 60,
+        "failed": 12.5
+      },
+      {
+        "startDate": "2014-05-23",
+        "bounced": 8.5,
+        "dropped": 16.8,
+        "pending": 0.1,
+        "success": 61.3,
+        "failed": 12.8,
+        "userCancelled": 0.6
+      },
+      {
+        "startDate": "2014-05-24",
+        "success": 61.4,
+        "failed": 13.2,
+        "pending": 0.1,
+        "userCancelled": 0.6,
+        "bounced": 8,
+        "dropped": 16.7
+      },
+      {
+        "startDate": "2014-05-25",
+        "failed": 11.9,
+        "pending": 0.1,
+        "success": 63,
+        "userCancelled": 0.6,
+        "bounced": 7.5,
+        "dropped": 16.9
+      },
+      {
+        "startDate": "2014-05-26",
+        "success": 62.3,
+        "pending": 0.1,
+        "userCancelled": 0.7,
+        "bounced": 8.6,
+        "dropped": 16,
+        "failed": 12.3
+      },
+      {
+        "startDate": "2014-05-27",
+        "bounced": 8.3,
+        "dropped": 15.9,
+        "pending": 0.2,
+        "success": 62.3,
+        "failed": 12.6,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-05-28",
+        "dropped": 16.7,
+        "pending": 0.2,
+        "success": 61.6,
+        "failed": 11.8,
+        "userCancelled": 0.7,
+        "bounced": 8.9
+      },
+      {
+        "startDate": "2014-05-29",
+        "success": 62,
+        "failed": 11.9,
+        "pending": 0.3,
+        "userCancelled": 0.7,
+        "bounced": 8.5,
+        "dropped": 16.7
+      },
+      {
+        "startDate": "2014-05-30",
+        "bounced": 8.7,
+        "dropped": 16.5,
+        "pending": 0.3,
+        "success": 61.3,
+        "failed": 12.7,
+        "userCancelled": 0.6
+      },
+      {
+        "startDate": "2014-05-31",
+        "failed": 11.4,
+        "pending": 0.2,
+        "success": 59.3,
+        "userCancelled": 0.6,
+        "bounced": 7.7,
+        "dropped": 20.8
+      },
+      {
+        "startDate": "2014-06-01",
+        "bounced": 7.6,
+        "dropped": 18,
+        "pending": 0.2,
+        "success": 61.8,
+        "failed": 11.8,
+        "userCancelled": 0.6
+      },
+      {
+        "startDate": "2014-06-02",
+        "failed": 12,
+        "pending": 0.3,
+        "success": 59.6,
+        "userCancelled": 0.6,
+        "bounced": 8.8,
+        "dropped": 18.7
+      },
+      {
+        "startDate": "2014-06-03",
+        "bounced": 8.5,
+        "dropped": 17.2,
+        "pending": 0.3,
+        "success": 62,
+        "failed": 11.3,
+        "userCancelled": 0.6
+      },
+      {
+        "startDate": "2014-06-04",
+        "success": 61.6,
+        "pending": 0.3,
+        "userCancelled": 0.7,
+        "bounced": 8.3,
+        "dropped": 17.6,
+        "failed": 11.6
+      },
+      {
+        "startDate": "2014-06-05",
+        "pending": 0.3,
+        "success": 62.6,
+        "failed": 11.3,
+        "userCancelled": 0.6,
+        "bounced": 7.7,
+        "dropped": 17.5
+      },
+      {
+        "startDate": "2014-06-06",
+        "success": 62.6,
+        "pending": 0.3,
+        "userCancelled": 0.6,
+        "bounced": 8.1,
+        "dropped": 17.2,
+        "failed": 11.2
+      },
+      {
+        "startDate": "2014-06-07",
+        "success": 62.8,
+        "failed": 11.3,
+        "userCancelled": 0.6,
+        "pending": 0.2,
+        "bounced": 7.2,
+        "dropped": 17.8
+      },
+      {
+        "startDate": "2014-06-08",
+        "success": 63.5,
+        "failed": 10.9,
+        "pending": 0.2,
+        "userCancelled": 0.7,
+        "bounced": 8,
+        "dropped": 16.8
+      },
+      {
+        "startDate": "2014-06-09",
+        "success": 59.5,
+        "pending": 0.3,
+        "userCancelled": 0.7,
+        "bounced": 8.7,
+        "dropped": 17.3,
+        "failed": 13.5
+      },
+      {
+        "startDate": "2014-06-10",
+        "success": 59.1,
+        "failed": 12.1,
+        "pending": 0.3,
+        "userCancelled": 0.7,
+        "bounced": 8.3,
+        "dropped": 19.5
+      },
+      {
+        "startDate": "2014-06-11",
+        "bounced": 9.1,
+        "dropped": 20.1,
+        "pending": 0.2,
+        "success": 57.7,
+        "failed": 12.2,
+        "userCancelled": 0.8
+      },
+      {
+        "startDate": "2014-06-12",
+        "success": 61.3,
+        "failed": 11.3,
+        "pending": 0.3,
+        "userCancelled": 0.7,
+        "bounced": 7.5,
+        "dropped": 19
+      },
+      {
+        "startDate": "2014-06-13",
+        "bounced": 8,
+        "dropped": 18,
+        "pending": 0.2,
+        "success": 61.2,
+        "failed": 11.9,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-06-14",
+        "success": 62.7,
+        "pending": 0.2,
+        "userCancelled": 0.7,
+        "bounced": 7,
+        "dropped": 16.9,
+        "failed": 12.6
+      },
+      {
+        "startDate": "2014-06-15",
+        "dropped": 15.8,
+        "pending": 0.2,
+        "success": 62,
+        "failed": 14.4,
+        "userCancelled": 0.7,
+        "bounced": 7
+      },
+      {
+        "startDate": "2014-06-16",
+        "success": 61.9,
+        "pending": 0.2,
+        "userCancelled": 0.7,
+        "bounced": 7.7,
+        "dropped": 16,
+        "failed": 13.4
+      },
+      {
+        "startDate": "2014-06-17",
+        "success": 62,
+        "failed": 13.6,
+        "pending": 0.3,
+        "userCancelled": 0.7,
+        "bounced": 7.8,
+        "dropped": 15.6
+      },
+      {
+        "startDate": "2014-06-18",
+        "pending": 0.2,
+        "userCancelled": 0.7,
+        "bounced": 7.6,
+        "dropped": 14.9,
+        "success": 63.3,
+        "failed": 13.2
+      },
+      {
+        "startDate": "2014-06-19",
+        "bounced": 7.7,
+        "dropped": 14.7,
+        "pending": 0.3,
+        "success": 63.2,
+        "failed": 13.3,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-06-20",
+        "success": 63.8,
+        "pending": 0.2,
+        "userCancelled": 0.6,
+        "bounced": 7,
+        "dropped": 15.2,
+        "failed": 13.1
+      },
+      {
+        "startDate": "2014-06-21",
+        "failed": 13.7,
+        "pending": 0.3,
+        "success": 60.2,
+        "userCancelled": 0.7,
+        "": "1",
+        "bounced": 9.2,
+        "dropped": 15.8
+      },
+      {
+        "startDate": "2014-06-22",
+        "bounced": 6.7,
+        "dropped": 15.1,
+        "pending": 0.2,
+        "success": 64.4,
+        "failed": 13,
+        "userCancelled": 0.6
+      },
+      {
+        "startDate": "2014-06-23",
+        "success": 64.4,
+        "failed": 12.6,
+        "pending": 0.3,
+        "userCancelled": 0.7,
+        "bounced": 7.4,
+        "dropped": 14.7
+      },
+      {
+        "startDate": "2014-06-24",
+        "failed": 13.3,
+        "pending": 0.2,
+        "success": 63.5,
+        "userCancelled": 0.7,
+        "bounced": 7.5,
+        "dropped": 14.7
+      },
+      {
+        "startDate": "2014-06-25",
+        "bounced": 7.3,
+        "dropped": 14.2,
+        "pending": 0.2,
+        "success": 63.5,
+        "failed": 14,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-06-26",
+        "success": 62.5,
+        "pending": 0.2,
+        "userCancelled": 0.6,
+        "bounced": 9.5,
+        "dropped": 14,
+        "failed": 13.2
+      },
+      {
+        "startDate": "2014-06-27",
+        "pending": 0.2,
+        "success": 64.3,
+        "failed": 13.7,
+        "userCancelled": 0.5,
+        "bounced": 6.2,
+        "dropped": 15
+      },
+      {
+        "startDate": "2014-06-28",
+        "success": 64.8,
+        "pending": 0.1,
+        "userCancelled": 0.6,
+        "bounced": 6.2,
+        "dropped": 14.7,
+        "failed": 13.6
+      },
+      {
+        "startDate": "2014-06-29",
+        "success": 63.3,
+        "failed": 13.2,
+        "pending": 0.1,
+        "userCancelled": 0.6,
+        "bounced": 6.6,
+        "dropped": 16.2
+      }
+    ],
+    "Overall": {
+      "success": 61.8,
+      "failed": 12.4,
+      "pending": 0.2,
+      "dropped": 16.6,
+      "bounced": 8.3,
+      "userCancelled": 0.7,
+      "startDate": "2014-03-20",
+      "endDate": "2014-06-29"
+    },
+    "Week": [
+      {
+        "startDate": "2014-04-25",
+        "endDate": "2014-04-27",
+        "success": 61.9,
+        "failed": 12.3,
+        "userCancelled": 0.7,
+        "pending": 0.1,
+        "bounced": 8.6,
+        "dropped": 16.4
+      },
+      {
+        "startDate": "2014-04-28",
+        "endDate": "2014-05-04",
+        "bounced": 9.2,
+        "dropped": 15.6,
+        "userCancelled": 0.7,
+        "success": 62,
+        "failed": 11.7,
+        "pending": 0.8
+      },
+      {
+        "startDate": "2014-05-05",
+        "endDate": "2014-05-11",
+        "success": 59.8,
+        "pending": 0.1,
+        "bounced": 9.2,
+        "dropped": 17.3,
+        "failed": 12.9,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-05-12",
+        "endDate": "2014-05-18",
+        "bounced": 8.6,
+        "dropped": 16.5,
+        "pending": 0.1,
+        "success": 62.1,
+        "failed": 12.2,
+        "userCancelled": 0.7
+      },
+      {
+        "startDate": "2014-05-19",
+        "endDate": "2014-05-25",
+        "pending": 0.1,
+        "success": 61.4,
+        "failed": 12.2,
+        "userCancelled": 0.6,
+        "bounced": 8.9,
+        "dropped": 16.7
+      },
+      {
+        "startDate": "2014-05-26",
+        "endDate": "2014-06-01",
+        "success": 61.5,
+        "pending": 0.2,
+        "userCancelled": 0.6,
+        "bounced": 8.3,
+        "dropped": 17.3,
+        "failed": 12.1
+      },
+      {
+        "startDate": "2014-06-02",
+        "endDate": "2014-06-08",
+        "failed": 11.4,
+        "pending": 0.3,
+        "success": 62.1,
+        "userCancelled": 0.6,
+        "bounced": 8.1,
+        "dropped": 17.6
+      },
+      {
+        "startDate": "2014-06-09",
+        "endDate": "2014-06-15",
+        "success": 60.5,
+        "pending": 0.2,
+        "userCancelled": 0.7,
+        "bounced": 8,
+        "dropped": 18.1,
+        "failed": 12.6
+      },
+      {
+        "startDate": "2014-06-16",
+        "endDate": "2014-06-22",
+        "success": 62.7,
+        "pending": 0.2,
+        "userCancelled": 0.7,
+        "bounced": 7.7,
+        "dropped": 15.3,
+        "failed": 13.4,
+        "": "1"
+      },
+      {
+        "startDate": "2014-06-23",
+        "endDate": "2014-06-29",
+        "success": 63.8,
+        "failed": 13.4,
+        "pending": 0.2,
+        "userCancelled": 0.6,
+        "bounced": 7.2,
+        "dropped": 14.8
+      }
+    ],
+    "Month": [
+      {
+        "startDate": "2014-04-25",
+        "endDate": "2014-04-30",
+        "success": 62,
+        "failed": 12,
+        "userCancelled": 0.7,
+        "pending": 0.1,
+        "bounced": 8.8,
+        "dropped": 16.5
+      },
+      {
+        "startDate": "2014-05-01",
+        "endDate": "2014-05-30",
+        "success": 61.3,
+        "failed": 12.3,
+        "userCancelled": 0.7,
+        "pending": 0.3,
+        "bounced": 8.9,
+        "dropped": 16.5
+      },
+      {
+        "startDate": "2014-05-31",
+        "endDate": "2014-06-29",
+        "failed": 12.6,
+        "pending": 0.2,
+        "success": 62.2,
+        "userCancelled": 0.7,
+        "bounced": 7.7,
+        "dropped": 16.6,
+        "": "1"
+      }
+    ]
   }
 }
