@@ -67,6 +67,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/view_type_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -95,7 +96,7 @@
                 android:layout_height="@dimen/margin_25"
                 android:layout_marginRight="@dimen/margin_15"
                 android:layout_weight="1"
-                android:background="@drawable/filter_button_background_selected"
+                android:background="@drawable/filter_button_background"
                 android:text="DAY"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_10" />
@@ -164,7 +165,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/margin_15"
                 android:layout_weight="1"
-                android:background="@drawable/filter_button_background_selected"
+                android:background="@drawable/filter_button_background"
                 android:text="BAR"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_10" />

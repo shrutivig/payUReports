@@ -31,5 +31,5 @@
     <dimen name="text_size_32">32sp</dimen>
     <dimen name="text_size_60">60sp</dimen>
 
-    <dimen name="label_float_size">10.025px</dimen>
+    <dimen name="label_float_size">10px</dimen>
 </resources>

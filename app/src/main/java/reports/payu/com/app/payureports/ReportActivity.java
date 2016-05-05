@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -69,6 +70,8 @@ public class ReportActivity extends HomeActivity {
     private boolean mFilterStartDateEntered = false;
     private boolean mFilterEndDateEntered = false;
     private Button filterDay, filterWeek, filterMonth, filterAll, filterBar, filterLine, filterPie;
+    private LinearLayout filterLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +80,7 @@ public class ReportActivity extends HomeActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final LinearLayout filterLayout = (LinearLayout) findViewById(R.id.filter_layout);
+        filterLayout = (LinearLayout) findViewById(R.id.filter_layout);
         Button filter = (Button) toolbar.findViewById(R.id.sign_out_button);
         filter.setText(getString(R.string.filter));
         filter.setOnClickListener(new View.OnClickListener() {
@@ -128,12 +131,27 @@ public class ReportActivity extends HomeActivity {
         lineChart = (LineChart) findViewById(R.id.lineChart);
         pieChart = (PieChart) findViewById(R.id.pieChart);
 
+        barChart.setOnTouchListener(onMapTouchListener);
+        lineChart.setOnTouchListener(onMapTouchListener);
+        pieChart.setOnTouchListener(onMapTouchListener);
+
         setOnClickListenersForButtons();
         setBackgroundForButton(filterDay, true);
         setBackgroundForButton(filterBar, true);
+        setVisibilityForButton(filterAll, false);
         setDataInChart(FLAG_FILTER_DAY);
     }
 
+    View.OnTouchListener onMapTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+
+            if (filterLayout.getVisibility() == View.VISIBLE)
+                filterLayout.setVisibility(View.GONE);
+
+            return false;
+        }
+    };
     View.OnClickListener selectDateChooserClickListener = new View.OnClickListener() {
 
         @Override
@@ -189,12 +207,15 @@ public class ReportActivity extends HomeActivity {
             switch (v.getId()) {
                 case R.id.button_day:
                     setBackgroundForButton(filterDay, true);
+                    setDataInChart(FLAG_FILTER_DAY);
                     break;
                 case R.id.button_week:
                     setBackgroundForButton(filterWeek, true);
+                    setDataInChart(FLAG_FILTER_WEEK);
                     break;
                 case R.id.button_month:
                     setBackgroundForButton(filterMonth, true);
+                    setDataInChart(FLAG_FILTER_MONTH);
                     break;
                 case R.id.button_all:
                     setBackgroundForButton(filterAll, true);
@@ -208,15 +229,55 @@ public class ReportActivity extends HomeActivity {
         @Override
         public void onClick(View v) {
             resetAllChartTypeBackgroundsToDefault();
+            barChart.setVisibility(View.GONE);
+            lineChart.setVisibility(View.GONE);
+            pieChart.setVisibility(View.GONE);
             switch (v.getId()) {
                 case R.id.button_bar:
                     setBackgroundForButton(filterBar, true);
+                    setVisibilityForButton(filterDay, true);
+                    setVisibilityForButton(filterWeek, true);
+                    setVisibilityForButton(filterMonth, true);
+                    setVisibilityForButton(filterAll, false);
+
+                    barChart.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            barChart.animateY(2000);
+                        }
+                    }, 100);
                     break;
                 case R.id.button_line:
                     setBackgroundForButton(filterLine, true);
+                    setVisibilityForButton(filterDay, true);
+                    setVisibilityForButton(filterWeek, true);
+                    setVisibilityForButton(filterMonth, true);
+                    setVisibilityForButton(filterAll, false);
+
+                    lineChart.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            lineChart.animateX(2000);
+                        }
+                    }, 100);
                     break;
                 case R.id.button_pie:
                     setBackgroundForButton(filterPie, true);
+                    setVisibilityForButton(filterDay, false);
+                    setVisibilityForButton(filterWeek, false);
+                    setVisibilityForButton(filterMonth, false);
+                    setVisibilityForButton(filterAll, true);
+                    setBackgroundForButton(filterAll, true);
+
+                    pieChart.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            pieChart.animateY(2000);
+                        }
+                    }, 100);
                     break;
             }
         }
@@ -246,6 +307,13 @@ public class ReportActivity extends HomeActivity {
         setBackgroundForButton(filterPie, false);
     }
 
+    private void setVisibilityForButton(Button button, boolean isVisible) {
+        if (isVisible)
+            button.setVisibility(View.VISIBLE);
+        else
+            button.setVisibility(View.GONE);
+    }
+
     private void setBackgroundForButton(Button button, boolean isSelected) {
         if (isSelected) {
             if (android.os.Build.VERSION.SDK_INT >= 16)
@@ -261,7 +329,7 @@ public class ReportActivity extends HomeActivity {
     }
 
     private void setDataInPieChart(ReportData l) {
-        /*Pie Chart Start*/
+
         ArrayList<Entry> listForPieChart = new ArrayList<>();
         ArrayList<String> xValsForPieChart = new ArrayList<>();
 
@@ -292,11 +360,12 @@ public class ReportActivity extends HomeActivity {
 
         PieData mData3 = new PieData(xValsForPieChart, setPie1);
         pieChart.setData(mData3);
+        pieChart.setHoleRadius(20f);
+        pieChart.setTransparentCircleRadius(25f);
         pieChart.animateY(3000);
-        /*Pie Chart End*/
     }
 
-    private void setDataInBarChart(List<ReportData> list) {
+    private void setDataInBarChart(List<ReportData> list, boolean isDaySelected) {
 
 
         ArrayList<BarEntry> barComp1 = new ArrayList<>();
@@ -314,15 +383,25 @@ public class ReportActivity extends HomeActivity {
             String date = null;
             String toDate = null;
             try {
-                Date date1 = dateFormat.parse(list.get(i).getMinDate());
-                Date date2 = dateFormat.parse(list.get(i).getMaxDate());
-                date = (String) android.text.format.DateFormat.format("dd", date1);
-                toDate = (String) android.text.format.DateFormat.format("dd-MMM ''yy", date2);
+                if (isDaySelected) {
+                    Date date1 = dateFormat.parse(list.get(i).getMinDate());
+                    date = (String) android.text.format.DateFormat.format("dd-MMM ''yy", date1);
+                } else {
+                    Date date1 = dateFormat.parse(list.get(i).getMinDate());
+                    date = (String) android.text.format.DateFormat.format("dd", date1);
+                    Date date2 = dateFormat.parse(list.get(i).getMaxDate());
+                    toDate = (String) android.text.format.DateFormat.format("dd-MMM ''yy", date2);
+                }
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            xVals.add("" + date + " - " + toDate);
+            if (isDaySelected)
+                xVals.add(date);
+            else
+                xVals.add("" + date + " - " + toDate);
+
 
             BarEntry tempBarEntry = new BarEntry(new float[]{tempSuccess, tempFailure, tempDropped, tempBounced, tempUserCancelled, tempPending}, i);
             barComp1.add(tempBarEntry);
@@ -330,7 +409,6 @@ public class ReportActivity extends HomeActivity {
 
         BarDataSet setBar1 = new BarDataSet(barComp1, "");
         setBar1.setAxisDependency(YAxis.AxisDependency.LEFT);
-// setBar1.setColors(ColorTemplate.PASTEL_COLORS);
         setBar1.setColors(colors);
         setBar1.setStackLabels(new String[]{"Success", "Failed", "Dropped", "Bounced", "User Cancelled", "Pending"});
         setBar1.setValueTextSize(0f);
@@ -338,14 +416,12 @@ public class ReportActivity extends HomeActivity {
         dataSet2.add(setBar1);
         BarData mData2 = new BarData(xVals, dataSet2);
         barChart.getXAxis().setTextSize(2f);
-        barChart.setScaleMinima(1f, 10f);
         barChart.setData(mData2);
         barChart.animateY(2000);
     }
 
-    private void setDataInLineChart(List<ReportData> l) {
+    private void setDataInLineChart(List<ReportData> l, boolean isDaySelected) {
 
-        /*Line Chart Start*/
         ArrayList<Entry> listSuccess = new ArrayList<>();
         ArrayList<Entry> listFailed = new ArrayList<>();
         ArrayList<Entry> listDropped = new ArrayList<>();
@@ -388,15 +464,25 @@ public class ReportActivity extends HomeActivity {
             String date = null;
             String toDate = null;
             try {
-                Date date1 = dateFormat.parse(temp.getMinDate());
-                Date date2 = dateFormat.parse(temp.getMaxDate());
-                date = (String) android.text.format.DateFormat.format("dd", date1);
-                toDate = (String) android.text.format.DateFormat.format("dd-MMM ''yy", date2);
+
+                if (isDaySelected) {
+                    Date date1 = dateFormat.parse(temp.getMinDate());
+                    date = (String) android.text.format.DateFormat.format("dd-MMM ''yy", date1);
+                } else {
+                    Date date1 = dateFormat.parse(temp.getMinDate());
+                    date = (String) android.text.format.DateFormat.format("dd", date1);
+                    Date date2 = dateFormat.parse(temp.getMaxDate());
+                    toDate = (String) android.text.format.DateFormat.format("dd-MMM ''yy", date2);
+                }
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            xVals.add("" + date + " - " + toDate);
+            if (isDaySelected)
+                xVals.add(date);
+            else
+                xVals.add("" + date + " - " + toDate);
 
         }
         LineDataSet setComp1 = new LineDataSet(listSuccess, "Success");
@@ -445,10 +531,8 @@ public class ReportActivity extends HomeActivity {
         dataSets.add(setComp6);
 
         LineData mData = new LineData(xVals, dataSets);
-        lineChart.setScaleMinima(5f, 1f);
         lineChart.setData(mData);
-        lineChart.animateY(2000);
-        /*Line Chart End*/
+        lineChart.animateX(2000);
 
     }
 
@@ -483,25 +567,21 @@ public class ReportActivity extends HomeActivity {
     public void setDataInChartByDay() {
 
         List<ReportData> mDay = reportsResults.getDisplayReportResult().getDay();
-        ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
-        setDataInPieChart(mOverall);
-        setDataInLineChart(mDay);
-        setDataInBarChart(mDay);
+        setDataInLineChart(mDay, true);
+        setDataInBarChart(mDay, true);
     }
 
     public void setDataInChartByWeek() {
         List<ReportData> mWeek = reportsResults.getDisplayReportResult().getWeek();
-        ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
-        setDataInLineChart(mWeek);
-        setDataInBarChart(mWeek);
+        setDataInLineChart(mWeek, false);
+        setDataInBarChart(mWeek, false);
 
     }
 
     public void setDataInChartByMonth() {
         List<ReportData> mMonth = reportsResults.getDisplayReportResult().getMonth();
-        ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
-        setDataInLineChart(mMonth);
-        setDataInBarChart(mMonth);
+        setDataInLineChart(mMonth, false);
+        setDataInBarChart(mMonth, false);
 
     }
 
@@ -521,52 +601,4 @@ public class ReportActivity extends HomeActivity {
         }
         return json;
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.report_menu, menu);
-        return true;
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        barChart.setVisibility(View.GONE);
-        lineChart.setVisibility(View.GONE);
-        pieChart.setVisibility(View.GONE);
-        switch (item.getItemId()) {
-
-            case R.id.bar:
-                barChart.setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        barChart.animateY(2000);
-                    }
-                }, 100);
-                return true;
-            case R.id.line:
-                lineChart.setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        lineChart.animateX(2000);
-                    }
-                }, 100);
-                return true;
-            case R.id.pie:
-                pieChart.setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pieChart.animateY(2000);
-                    }
-                }, 100);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
 }
