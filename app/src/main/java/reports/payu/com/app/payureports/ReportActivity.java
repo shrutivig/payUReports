@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,10 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -34,7 +30,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,13 +42,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
-
-import javax.xml.datatype.Duration;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import reports.payu.com.app.payureports.Model.DisplayReportResults;
 import reports.payu.com.app.payureports.Model.ReportData;
 import reports.payu.com.app.payureports.Model.ReportResults;
 
@@ -62,9 +53,9 @@ import reports.payu.com.app.payureports.Model.ReportResults;
  */
 public class ReportActivity extends HomeActivity {
 
-    private int FLAG_FILTER_DAY = 0;
-    private int FLAG_FILTER_WEEK = 1;
-    private int FLAG_FILTER_MONTH = 2;
+    private final int FLAG_FILTER_DAY = 0;
+    private final int FLAG_FILTER_WEEK = 1;
+    private final int FLAG_FILTER_MONTH = 2;
 
     private HorizontalBarChart barChart;
     private ReportResults reportsResults;
@@ -140,7 +131,7 @@ public class ReportActivity extends HomeActivity {
         setOnClickListenersForButtons();
         setBackgroundForButton(filterDay, true);
         setBackgroundForButton(filterBar, true);
-        setDataInChart();
+        setDataInChart(FLAG_FILTER_DAY);
     }
 
     View.OnClickListener selectDateChooserClickListener = new View.OnClickListener() {
@@ -461,20 +452,57 @@ public class ReportActivity extends HomeActivity {
 
     }
 
-    public void setDataInChart() {
+    public void setDataInChart(int flag) {
         try {
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset());
             reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
-            List<ReportData> mDay = reportsResults.getDisplayReportResult().getDay();
-            List<ReportData> mWeek = reportsResults.getDisplayReportResult().getWeek();
-            List<ReportData> mMonth = reportsResults.getDisplayReportResult().getMonth();
+
             ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
             setDataInPieChart(mOverall);
-            setDataInLineChart(mDay);
-            setDataInBarChart(mDay);
+
+            switch (flag) {
+                case FLAG_FILTER_DAY:
+                    setDataInChartByDay();
+                    break;
+
+                case FLAG_FILTER_WEEK:
+                    setDataInChartByWeek();
+                    break;
+
+                case FLAG_FILTER_MONTH:
+                    setDataInChartByMonth();
+                    break;
+            }
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setDataInChartByDay() {
+
+        List<ReportData> mDay = reportsResults.getDisplayReportResult().getDay();
+        ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
+        setDataInPieChart(mOverall);
+        setDataInLineChart(mDay);
+        setDataInBarChart(mDay);
+    }
+
+    public void setDataInChartByWeek() {
+        List<ReportData> mWeek = reportsResults.getDisplayReportResult().getWeek();
+        ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
+        setDataInLineChart(mWeek);
+        setDataInBarChart(mWeek);
+
+    }
+
+    public void setDataInChartByMonth() {
+        List<ReportData> mMonth = reportsResults.getDisplayReportResult().getMonth();
+        ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
+        setDataInLineChart(mMonth);
+        setDataInBarChart(mMonth);
+
     }
 
     public String loadJSONFromAsset() {
