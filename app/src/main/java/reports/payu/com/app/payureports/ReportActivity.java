@@ -105,15 +105,11 @@ public class ReportActivity extends HomeActivity {
             public void onClick(View v) {
                 if (!mFilterStartDateEntered) {
                     //      Crouton.makeText(ReportActivity.this, "Start date cannot be empty.", Style.ALERT, R.id.filter_layout).setConfiguration(Constants.CONFIGURATION_SHORT).show();
-                    Snackbar snack = Snackbar.make(findViewById(R.id.report_layout), "Start date cannot be empty.", Snackbar.LENGTH_SHORT);
-                    View view = snack.getView();
-                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                    tv.setTextColor(ContextCompat.getColor(ReportActivity.this, android.R.color.white));
-                    snack.show();
-                } else if (!mFilterEndDateEntered)
-                    Crouton.makeText(ReportActivity.this, "End date cannot be empty.", Style.ALERT, R.id.filter_layout).setConfiguration(Constants.CONFIGURATION_SHORT).show();
-
-                else if (mFilterStartDateEntered && mFilterEndDateEntered) {
+                    showSnackBar("Start Date cannot be empty.");
+                } else if (!mFilterEndDateEntered) {
+                    //             Crouton.makeText(ReportActivity.this, "End date cannot be empty.", Style.ALERT, R.id.filter_layout).setConfiguration(Constants.CONFIGURATION_SHORT).show();
+                    showSnackBar("End Date cannot be empty.");
+                } else if (mFilterStartDateEntered && mFilterEndDateEntered) {
                     //submmit api call
                 }
             }
@@ -183,8 +179,10 @@ public class ReportActivity extends HomeActivity {
                                         mFilterEndDateEntered = true;
                                         endDateFilter.setText(dayOfMonth + " - "
                                                 + (monthOfYear + 1) + " - " + year);
-                                    } else
-                                        endDateFilter.setError("Please enter start date.");
+                                    } else {
+                                        showSnackBar("Start Date cannot be empty.");
+                                    }
+
                                     break;
                             }
                         }
@@ -221,7 +219,6 @@ public class ReportActivity extends HomeActivity {
                     setBackgroundForButton(filterAll, true);
                     break;
             }
-
         }
     };
 
@@ -600,5 +597,13 @@ public class ReportActivity extends HomeActivity {
             return null;
         }
         return json;
+    }
+
+    private void showSnackBar(String snackbarText) {
+        Snackbar snack = Snackbar.make(findViewById(R.id.report_layout), snackbarText, Snackbar.LENGTH_SHORT);
+        View view = snack.getView();
+        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        tv.setTextColor(ContextCompat.getColor(ReportActivity.this, android.R.color.white));
+        snack.show();
     }
 }
