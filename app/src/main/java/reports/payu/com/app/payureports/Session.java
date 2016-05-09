@@ -382,7 +382,7 @@ public class Session {
 
                         eventBus.post(new CobbocEvent(CobbocEvent.REPORT, true, jsonObject));
                     } else {
-                        eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false, jsonObject.getString(Constants.MESSAGE)));
+                        eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false, jsonObject));
                     }
                 } catch (JSONException e) {
                     eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false, "json Exception"));
