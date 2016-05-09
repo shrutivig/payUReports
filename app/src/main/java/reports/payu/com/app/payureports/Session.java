@@ -342,7 +342,7 @@ public class Session {
                         ReportList parsedReportList = (ReportList) Session.getInstance(mContext).getParsedResponseFromGSON(jsonObject, dataType.ReportList);
                         eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, true, parsedReportList));
                     } else {
-                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false, jsonObject.getString(Constants.MESSAGE)));
+                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false, jsonObject));
                     }
                 } catch (JSONException e) {
                     eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false));

@@ -117,4 +117,5 @@ public class Constants {
     public static final String EVENT_2 = "2";
     public static final String REPORT_ID = "reportId";
     public static final String DURATION = "params";
+    public static final String ERROR_CODE = "errorCode";
 }
