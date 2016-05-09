@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -17,11 +18,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import reports.payu.com.app.payureports.Model.ReportResults;
 
@@ -32,6 +30,16 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     private LineChart lineChart;
 
     private PieChart pieChart;
+    private String email;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+    }
+
+
     private ReportResults reportsResults;
     private int[] colors = new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82), Color.rgb(245, 199, 0), Color.rgb(255, 102, 0),
             Color.rgb(179, 100, 53), Color.rgb(255, 255, 255)};
@@ -42,6 +50,11 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (getIntent() != null) {
+            email = getIntent().getStringExtra(Constants.EMAIL);
+        }
+        makeLoginCall();
 
         findViewById(R.id.report1).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +71,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        Button signOutButton = (Button) findViewById(R.id.sign_out_button);
+        Button signOutButton = (Button) findViewById(R.id.filter_button);
 
         if (signOutButton != null) {
             signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +96,11 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         });
     }
 
+    private void makeLoginCall() {
+
+        Session.getInstance(this).login(email);
+    }
+
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
@@ -91,6 +109,8 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onStop() {
         mGoogleApiClient.disconnect();
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -101,20 +121,22 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         startActivity(i);
     }
 
-    public String loadJSONFromAsset() {
+    @Subscribe
+    public void onEventMainThread(CobbocEvent event) {
+        switch (event.getType()) {
+            int errorCode = event.getValue().get;
+            case CobbocEvent.LOGIN:
+                if (event.getStatus()) { //Login successful so set some parameters for next time and finish()
+                } else {
 
-        String json;
-        try {
-            InputStream is = this.getAssets().open("reportData.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
+                    Toast.makeText(this,event.getValue().toString(),Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            default:
+                // we don't do anything else here
         }
-        return json;
     }
+
+
 }

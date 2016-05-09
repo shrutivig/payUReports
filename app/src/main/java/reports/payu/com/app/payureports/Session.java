@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import reports.payu.com.app.payureports.Model.ReportData;
+import reports.payu.com.app.payureports.Model.ReportList;
 import reports.payu.com.app.payureports.Model.ReportResults;
 import reports.payu.com.app.payureports.Utils.Helper;
 import reports.payu.com.app.payureports.Utils.Logger;
@@ -51,7 +52,8 @@ public class Session {
 
     public enum dataType {
         ReportResults,
-        ReportData
+        ReportData,
+        ReportList
     }
 
     public Object getParsedResponseFromGSON(JSONObject jsonObject, dataType type) {
@@ -63,12 +65,17 @@ public class Session {
             case ReportResults:
                 classType = new TypeToken<ReportResults>() {
                 }.getType();
-                fromJson = (ReportResults) gson.fromJson(jsonObject.toString(), classType);
+                fromJson = gson.fromJson(jsonObject.toString(), classType);
                 break;
             case ReportData:
                 classType = new TypeToken<ReportData>() {
                 }.getType();
-                fromJson = (ReportData) gson.fromJson(jsonObject.toString(), classType);
+                fromJson = gson.fromJson(jsonObject.toString(), classType);
+                break;
+            case ReportList:
+                classType = new TypeToken<ReportList>() {
+                }.getType();
+                fromJson = gson.fromJson(jsonObject.toString(), classType);
                 break;
 
         }
@@ -252,19 +259,21 @@ public class Session {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                params.put(Constants.DEVICE_ID, Helper.getAndroidID(mContext));
                 return params;
             }
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("User-Agent", "PayUMoneyAPP");
+                //params.put("User-Agent", "PayUMoneyAPP");
                 if (getToken() != null) {
-                    params.put("Authorization", "Bearer " + getToken());
+                    //params.put("Authorization", "Bearer " + getToken());
+                    params.put(Constants.ACCESS_TOKEN, getToken());
                 } else {
                     params.put("Accept", "*/*;");
                 }
+                params.put(Constants.DEVICE_ID, Helper.getAndroidID(mContext));
+                params.put(Constants.DEVICE_TYPE, Constants.ANDROID);
                 return params;
             }
 
@@ -341,24 +350,23 @@ public class Session {
         });
     }
 
-    public void login(String email, String pin) {
+    public void login(String email) {
 
         final Map p = new HashMap<>();
         p.put(Constants.EMAIL, email);
-        p.put(Constants.PASSWORD, pin);
+        p.put(Constants.EVENT_FLAG,Constants.EVENT_1);
 
-        postFetch("/auth/payu/login", p, new Task() {
+        postFetch("https://mobiletest.payu.in/reporting/reportingPostservice", p, new Task() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {
                     int status = jsonObject.getInt(Constants.STATUS);
-                    if (status < 0) {
-                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false, jsonObject));
+                    if (status == 1) {
+
+                        ReportList parsedReportList = (ReportList) Session.getInstance(mContext).getParsedResponseFromGSON(jsonObject, dataType.ReportList);
+                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, true, parsedReportList));
                     } else {
-                        String token = jsonObject.getJSONObject(Constants.RESULT).getJSONObject(Constants.BODY).getString(Constants.ACCESS_TOKEN);
-                        /*Token will be alive till the session is alive*/
-                        setToken(token);
-                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, true, jsonObject.getString(Constants.MESSAGE)));
+                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false, jsonObject.getString(Constants.MESSAGE)));
                     }
                 } catch (JSONException e) {
                     eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false));
@@ -381,8 +389,45 @@ public class Session {
             }
         }, Request.Method.POST);
     }
+    public void fetchReport(String email) {
 
+        final Map p = new HashMap<>();
+        p.put(Constants.EMAIL, email);
+        p.put(Constants.EVENT_FLAG,Constants.EVENT_2);
 
+        postFetch("https://mobiletest.payu.in/reporting/reportingPostservice", p, new Task() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                try {
+                    int status = jsonObject.getInt(Constants.STATUS);
+                    if (status == 1) {
+
+                        ReportList parsedReportList = (ReportList) Session.getInstance(mContext).getParsedResponseFromGSON(jsonObject, dataType.ReportList);
+                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, true, parsedReportList));
+                    } else {
+                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false, jsonObject.getString(Constants.MESSAGE)));
+                    }
+                } catch (JSONException e) {
+                    eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false));
+                }
+            }
+
+            @Override
+            public void onSuccess(String response) {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false, "An error occurred while trying to login. Please try again later."));
+            }
+
+            @Override
+            public void onProgress(int percent) {
+
+            }
+        }, Request.Method.POST);
+    }
 
 
 }

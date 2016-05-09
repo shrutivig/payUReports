@@ -81,7 +81,7 @@ public class ReportActivity extends HomeActivity {
         setSupportActionBar(toolbar);
 
         filterLayout = (LinearLayout) findViewById(R.id.filter_layout);
-        Button filter = (Button) toolbar.findViewById(R.id.sign_out_button);
+        Button filter = (Button) toolbar.findViewById(R.id.filter_button);
         filter.setText(getString(R.string.filter));
         filter.setOnClickListener(new View.OnClickListener() {
             @Override

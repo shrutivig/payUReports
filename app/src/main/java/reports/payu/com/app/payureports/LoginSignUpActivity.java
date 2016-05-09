@@ -22,7 +22,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.IOException;
+import java.util.EventListener;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class LoginSignUpActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -160,7 +166,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements
             case R.id.sign_in_button:
                 signIn();
                 break;
-            case R.id.sign_out_button:
+            case R.id.filter_button:
                 //signOut();
                 break;
             case R.id.disconnect_button:
@@ -192,6 +198,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             oAuthtoken = s;
+            Session.getInstance(LoginSignUpActivity.this).setToken(oAuthtoken);
             launchHomeActivity();
             // ((TextView) findViewById(R.id.token_value)).setText("Token Value: " + s);
         }
@@ -200,12 +207,18 @@ public class LoginSignUpActivity extends AppCompatActivity implements
     @Override
     protected void onStop() {
         mGoogleApiClient.disconnect();
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
     private void launchHomeActivity() {
+
         Intent i = new Intent(this, HomeActivity.class);
+        i.putExtra(Constants.EMAIL,mAccountName);
         startActivity(i);
         finish();
     }
+
+
 }

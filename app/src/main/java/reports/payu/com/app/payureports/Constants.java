@@ -61,9 +61,11 @@ public class Constants {
     public static final String EMAIL = "email";
     public static final String MOBILE = "mobile";
     public static final String PASSWORD = "password";
-    public static final String DEVICE_ID = "device_id";
+    public static final String DEVICE_ID = "deviceId";
+    public static final String DEVICE_TYPE = "deviceType";
+    public static final String ANDROID = "android";
     public static final String STATUS = "status";
-    public static final String MESSAGE = "message";
+    public static final String MESSAGE = "msg";
     public static final String CREDIT_INFO = "credit_info_data";
 
     public static final String CAT_SHOPPING = "shopping";
@@ -109,4 +111,8 @@ public class Constants {
     public static final String ANSWER = "security_questions_answer";
     public static final String SENDER_ID = "92853391562";
 
+    public static final String LOGIN_SUCCESSFUL = "login_success" ;
+    public static final String EVENT_FLAG = "eventFlag";
+    public static final int EVENT_1 = 1;
+    public static final int EVENT_2 = 2;
 }
