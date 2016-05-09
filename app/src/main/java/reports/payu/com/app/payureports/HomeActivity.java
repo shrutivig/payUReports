@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -36,6 +37,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     public String email;
     private Button signOutButton;
     private ReportList parsedReportList;
+    private ListView reportListView;
 
     @Override
     protected void onStart() {
@@ -58,15 +60,8 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         }
         makeLoginCall();
 
-       /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, values);*/
+        reportListView = (ListView) findViewById(R.id.report_list);
 
-        findViewById(R.id.report1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, ReportActivity.class));
-            }
-        });
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -97,6 +92,18 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         findViewById(R.id.disconnect_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            }
+        });
+
+        reportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(HomeActivity.this, ReportActivity.class);
+                intent.putExtra(Constants.REPORT_ID, parsedReportList.getList().get(position).getId());
+                intent.putExtra(Constants.EMAIL, email);
+                startActivity(intent);
+
             }
         });
     }
@@ -146,7 +153,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                         }
                         ArrayAdapter<String> reportsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, reportsName);
 
-                        ((ListView) findViewById(R.id.report_list)).setAdapter(reportsAdapter);
+                        reportListView.setAdapter(reportsAdapter);
                     }
 
                 } else {

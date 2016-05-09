@@ -379,10 +379,9 @@ public class Session {
                 try {
                     int status = jsonObject.getInt(Constants.STATUS);
                     if (status == 1) {
-
                         eventBus.post(new CobbocEvent(CobbocEvent.REPORT, true, jsonObject));
                     } else {
-                        eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false, jsonObject.getString(Constants.MESSAGE)));
+                        eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false, jsonObject));
                     }
                 } catch (JSONException e) {
                     eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false, "json Exception"));

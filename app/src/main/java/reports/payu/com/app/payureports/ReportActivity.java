@@ -76,6 +76,8 @@ public class ReportActivity extends HomeActivity {
     private Button filterDay, filterWeek, filterMonth, filterAll, filterBar, filterLine, filterPie;
     private LinearLayout filterLayout;
     ProgressDialog ringProgressDialog;
+    private String reportId, email;
+    private String submitStartDate, submitEndDate;
 
 
     @Override
@@ -100,6 +102,11 @@ public class ReportActivity extends HomeActivity {
         setContentView(R.layout.activity_report);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (getIntent() != null) {
+            reportId = getIntent().getStringExtra(Constants.REPORT_ID);
+            email = getIntent().getStringExtra(Constants.EMAIL);
+        }
 
         filterLayout = (LinearLayout) findViewById(R.id.filter_layout);
         Button filter = (Button) toolbar.findViewById(R.id.filter_button);
@@ -132,6 +139,14 @@ public class ReportActivity extends HomeActivity {
                     showSnackBar("End Date cannot be empty.");
                 } else if (mFilterStartDateEntered && mFilterEndDateEntered) {
                     //submmit api call
+                    JSONObject dateJson = new JSONObject();
+                    try {
+                        dateJson.put(Constants.START_DATE, submitStartDate);
+                        dateJson.put(Constants.END_DATE, submitEndDate);
+                    } catch (JSONException e) {
+
+                    }
+                    fetchReportData(dateJson);
                 }
             }
         });
@@ -194,6 +209,7 @@ public class ReportActivity extends HomeActivity {
                                     mFilterStartDateEntered = true;
                                     startDateFilter.setText(dayOfMonth + " - "
                                             + (monthOfYear + 1) + " - " + year);
+                                    submitStartDate = year + "-" + monthOfYear + "-" + dayOfMonth;
                                     startDate = new Date(year - 1900, monthOfYear, dayOfMonth);
                                     break;
                                 case R.id.filter_end_date:
@@ -202,6 +218,7 @@ public class ReportActivity extends HomeActivity {
                                         mFilterEndDateEntered = true;
                                         endDateFilter.setText(dayOfMonth + " - "
                                                 + (monthOfYear + 1) + " - " + year);
+                                        submitEndDate = year + "-" + monthOfYear + "-" + dayOfMonth;
                                     } else {
                                         showSnackBar("Start Date cannot be empty.");
                                     }
@@ -304,7 +321,18 @@ public class ReportActivity extends HomeActivity {
     };
 
     private void fetchReportData(JSONObject duration) {
-        Session.getInstance(this).fetchReportData(email, "1", null);
+
+        if (duration == null) {
+            duration = new JSONObject();
+            try {
+                duration.put("startDate", "2014-06-20");
+                duration.put("endDate", "2014-06-29");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Session.getInstance(this).fetchReportData(email, reportId, duration);
     }
 
     private void setOnClickListenersForButtons() {
