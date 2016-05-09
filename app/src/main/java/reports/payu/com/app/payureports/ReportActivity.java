@@ -592,7 +592,7 @@ public class ReportActivity extends AppCompatActivity {
 
     }
 
-    public void setVisibilityOfButtons(ReportResults reportsResults){
+    public void setVisibilityOfButtons(ReportResults reportsResults) {
         int flag = FLAG_FILTER_DAY;
 
         ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
@@ -600,22 +600,34 @@ public class ReportActivity extends AppCompatActivity {
         List<ReportData> mWeek = reportsResults.getDisplayReportResult().getWeek();
         List<ReportData> mMonth = reportsResults.getDisplayReportResult().getMonth();
 
+
+        if (mDay == null)
+            setVisibilityForButton(filterDay, false);
+        if (mWeek == null)
+            setVisibilityForButton(filterWeek, false);
+        if (mMonth == null)
+            setVisibilityForButton(filterMonth, false);
         if (mOverall == null) {
             setVisibilityForButton(filterAll, false);
             setVisibilityForButton(filterPie, false);
         }
 
-        if (mDay == null) {
-            setVisibilityForButton(filterDay, false);
-
+        if(mDay == null){
             if(mWeek != null)
-
-            if (mWeek == null)
-                setVisibilityForButton(filterWeek, false);
-
-            if (mMonth == null)
-                setVisibilityForButton(filterMonth, false);
+                flag = FLAG_FILTER_WEEK;
+            else if(mMonth != null)
+                flag = FLAG_FILTER_MONTH;
+            else if(mOverall != null)
+                flag = -1;
+            else
+                flag = -2;
         }
+        else
+            flag = FLAG_FILTER_DAY;
+
+
+        setDataInChart(flag);
+
     }
 
     public void setDataInChart(int flag) {
@@ -635,6 +647,22 @@ public class ReportActivity extends AppCompatActivity {
             case FLAG_FILTER_MONTH:
                 setDataInChartByMonth();
                 break;
+            case -1:
+                setBackgroundForButton(filterPie, true);
+                setVisibilityForButton(filterAll, true);
+                setBackgroundForButton(filterAll, true);
+
+                pieChart.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pieChart.animateY(2000);
+                    }
+                }, 100);
+                break;
+            default:break;
+
+
 
         }
     }
@@ -702,10 +730,6 @@ public class ReportActivity extends AppCompatActivity {
                     reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
                     resetVisibilityForAllButtons();
                     setVisibilityOfButtons(reportsResults);
-
-
-
-                    setDataInChart(FLAG_FILTER_DAY);
 
                 } else {
 
