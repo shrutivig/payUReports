@@ -20,6 +20,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.conn.ConnectTimeoutException;
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -338,9 +339,7 @@ public class Session {
                 try {
                     int status = jsonObject.getInt(Constants.STATUS);
                     if (status == 1) {
-
-                        ReportList parsedReportList = (ReportList) Session.getInstance(mContext).getParsedResponseFromGSON(jsonObject, dataType.ReportList);
-                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, true, parsedReportList));
+                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, true, jsonObject));
                     } else {
                         eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false, jsonObject));
                     }

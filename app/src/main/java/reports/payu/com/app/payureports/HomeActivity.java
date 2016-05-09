@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -18,8 +21,13 @@ import com.google.android.gms.common.api.Status;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import reports.payu.com.app.payureports.Model.ReportList;
 
 public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -27,6 +35,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     ProgressDialog ringProgressDialog;
     public String email;
     private Button signOutButton;
+    private ReportList parsedReportList;
 
     @Override
     protected void onStart() {
@@ -38,7 +47,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Fetching Data", true);
+        ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Authenticating with server", true);
         ringProgressDialog.setCancelable(true);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -48,6 +57,9 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             email = getIntent().getStringExtra(Constants.EMAIL);
         }
         makeLoginCall();
+
+       /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, values);*/
 
         findViewById(R.id.report1).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +134,23 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                 JSONObject temp = (JSONObject) event.getValue();
                 String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
                 String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
-                if (event.getStatus()) { //Login successful so set some parameters for next time and finish()
+                if (event.getStatus()) {
+                    JSONObject jsonObject = (JSONObject) event.getValue();
+                    parsedReportList = (ReportList) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportList);
+
+                    if (parsedReportList != null) {
+
+                        List reportList = parsedReportList.getList();
+                        ArrayList<String> reportsName = new ArrayList<>();
+
+                        for (int i = 0; i < reportList.size(); i++) {
+                            reportsName.add(((ReportList.ListItem) reportList.get(i)).getHeading());
+                        }
+                        ArrayAdapter<String> reportsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, reportsName);
+
+                        ((ListView) findViewById(R.id.report_list)).setAdapter(reportsAdapter);
+                    }
+
                 } else {
                     handleStatus(errorCode, errorMessage);
                 }
@@ -137,31 +165,31 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
         switch (errorCode) {
             case "ER101":
-                Toast.makeText(this, "Login Unsuccessful!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 signOutButton.callOnClick();
                 break;
             case "ER102":
-                Toast.makeText(this, "Login Unsuccessful!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 signOutButton.callOnClick();
                 break;
             case "ER103":
-                Toast.makeText(this, "Login Unsuccessful!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 signOutButton.callOnClick();
                 break;
             case "ER104":
-                Toast.makeText(this, "Login Unsuccessful!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 signOutButton.callOnClick();
                 break;
             case "ER105":
-                Toast.makeText(this, "Login Unsuccessful!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 signOutButton.callOnClick();
                 break;
             case "ER106":
-                Toast.makeText(this, "Login Unsuccessful!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 signOutButton.callOnClick();
                 break;
             default:
-                Toast.makeText(this, "Login Unsuccessful!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 signOutButton.callOnClick();
                 break;
         }
