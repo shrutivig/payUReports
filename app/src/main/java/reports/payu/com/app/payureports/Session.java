@@ -220,18 +220,13 @@ public class Session {
             }
 
             public void onFailure(String msg, Throwable e) {
-
                 runErrorOnHandlerThread(task, e);
-
-
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
                 runErrorOnHandlerThread(task, error);
-
             }
         }) {
             @Override
@@ -371,7 +366,10 @@ public class Session {
         p.put(Constants.EMAIL, email);
         p.put(Constants.EVENT_FLAG, Constants.EVENT_2);
         p.put(Constants.REPORT_ID, reportId);
-        p.put(Constants.DURATION, " ");
+        if (duration != null)
+            p.put(Constants.DURATION, duration.toString());
+        else
+            p.put(Constants.DURATION, " ");
 
         postFetch("https://mobiletest.payu.in/reporting/reportingPostservice", p, new Task() {
             @Override
@@ -384,7 +382,7 @@ public class Session {
                         eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false, jsonObject));
                     }
                 } catch (JSONException e) {
-                    eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false, "json Exception"));
+                    eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false));
                 }
             }
 
@@ -395,7 +393,7 @@ public class Session {
 
             @Override
             public void onError(Throwable throwable) {
-                eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false, "An error occurred while trying to login. Please try again later."));
+                eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false, "An error occurred while trying to login. Please try again later."));
             }
 
             @Override

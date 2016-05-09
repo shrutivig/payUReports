@@ -138,7 +138,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         switch (event.getType()) {
             case CobbocEvent.LOGIN:
                 ringProgressDialog.dismiss();
-                JSONObject temp = (JSONObject) event.getValue();
+
                 if (event.getStatus()) {
                     JSONObject jsonObject = (JSONObject) event.getValue();
                     parsedReportList = (ReportList) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportList);
@@ -157,9 +157,16 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                     }
 
                 } else {
-                    String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
-                    String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
-                    handleStatus(errorCode, errorMessage);
+                    JSONObject temp = null;
+                    try {
+                        temp = new JSONObject(event.getValue().toString());
+                        String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
+                        String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
+                        handleStatus(errorCode, errorMessage);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        handleStatus("XYZ", "XYZ");
+                    }
                 }
                 break;
 

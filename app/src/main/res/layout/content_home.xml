@@ -9,14 +9,19 @@
     tools:context="reports.payu.com.app.payureports.HomeActivity"
     tools:showIn="@layout/activity_home">
 
-    <Button
-        android:id="@+id/report1"
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Report 1" />
+        android:layout_margin="@dimen/margin_20"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:text="PAYU REPORTS"
+        android:textSize="@dimen/text_size_20" />
 
     <ListView
         android:id="@+id/report_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_20" />
 </LinearLayout>

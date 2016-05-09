@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,7 +57,7 @@ import reports.payu.com.app.payureports.Model.ReportResults;
 /**
  * Created by shruti.vig on 5/4/16.
  */
-public class ReportActivity extends HomeActivity {
+public class ReportActivity extends AppCompatActivity {
 
     private final int FLAG_FILTER_DAY = 0;
     private final int FLAG_FILTER_WEEK = 1;
@@ -145,6 +146,9 @@ public class ReportActivity extends HomeActivity {
                         dateJson.put(Constants.END_DATE, submitEndDate);
                     } catch (JSONException e) {
 
+                    }
+                    if (!ringProgressDialog.isShowing()) {
+                        ringProgressDialog.show();
                     }
                     fetchReportData(dateJson);
                 }
@@ -322,16 +326,6 @@ public class ReportActivity extends HomeActivity {
 
     private void fetchReportData(JSONObject duration) {
 
-        if (duration == null) {
-            duration = new JSONObject();
-            try {
-                duration.put("startDate", "2014-06-20");
-                duration.put("endDate", "2014-06-29");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
         Session.getInstance(this).fetchReportData(email, reportId, duration);
     }
 
@@ -357,6 +351,16 @@ public class ReportActivity extends HomeActivity {
         setBackgroundForButton(filterBar, false);
         setBackgroundForButton(filterLine, false);
         setBackgroundForButton(filterPie, false);
+    }
+
+    private void resetVisibilityForAllButtons() {
+        setVisibilityForButton(filterDay, true);
+        setVisibilityForButton(filterWeek, true);
+        setVisibilityForButton(filterMonth, true);
+        setVisibilityForButton(filterBar, true);
+        setVisibilityForButton(filterLine, true);
+        setVisibilityForButton(filterPie, true);
+
     }
 
     private void setVisibilityForButton(Button button, boolean isVisible) {
@@ -588,7 +592,34 @@ public class ReportActivity extends HomeActivity {
 
     }
 
+    public void setVisibilityOfButtons(ReportResults reportsResults){
+        int flag = FLAG_FILTER_DAY;
+
+        ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
+        List<ReportData> mDay = reportsResults.getDisplayReportResult().getDay();
+        List<ReportData> mWeek = reportsResults.getDisplayReportResult().getWeek();
+        List<ReportData> mMonth = reportsResults.getDisplayReportResult().getMonth();
+
+        if (mOverall == null) {
+            setVisibilityForButton(filterAll, false);
+            setVisibilityForButton(filterPie, false);
+        }
+
+        if (mDay == null) {
+            setVisibilityForButton(filterDay, false);
+
+            if(mWeek != null)
+
+            if (mWeek == null)
+                setVisibilityForButton(filterWeek, false);
+
+            if (mMonth == null)
+                setVisibilityForButton(filterMonth, false);
+        }
+    }
+
     public void setDataInChart(int flag) {
+
         ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
         setDataInPieChart(mOverall);
 
@@ -604,27 +635,35 @@ public class ReportActivity extends HomeActivity {
             case FLAG_FILTER_MONTH:
                 setDataInChartByMonth();
                 break;
+
         }
     }
 
     public void setDataInChartByDay() {
 
         List<ReportData> mDay = reportsResults.getDisplayReportResult().getDay();
-        setDataInLineChart(mDay, true);
-        setDataInBarChart(mDay, true);
+        if (mDay != null) {
+            setDataInLineChart(mDay, true);
+            setDataInBarChart(mDay, true);
+        }
     }
 
     public void setDataInChartByWeek() {
         List<ReportData> mWeek = reportsResults.getDisplayReportResult().getWeek();
-        setDataInLineChart(mWeek, false);
-        setDataInBarChart(mWeek, false);
 
+        if (mWeek != null) {
+            setDataInLineChart(mWeek, false);
+            setDataInBarChart(mWeek, false);
+        }
     }
 
     public void setDataInChartByMonth() {
         List<ReportData> mMonth = reportsResults.getDisplayReportResult().getMonth();
-        setDataInLineChart(mMonth, false);
-        setDataInBarChart(mMonth, false);
+
+        if (mMonth != null) {
+            setDataInLineChart(mMonth, false);
+            setDataInBarChart(mMonth, false);
+        }
 
     }
 
@@ -661,6 +700,10 @@ public class ReportActivity extends HomeActivity {
                 if (event.getStatus()) {
                     JSONObject jsonObject = (JSONObject) event.getValue();
                     reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
+                    resetVisibilityForAllButtons();
+                    setVisibilityOfButtons(reportsResults);
+
+
 
                     setDataInChart(FLAG_FILTER_DAY);
 
