@@ -1,6 +1,7 @@
 package reports.payu.com.app.payureports;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -32,6 +34,8 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,11 +75,28 @@ public class ReportActivity extends HomeActivity {
     private boolean mFilterEndDateEntered = false;
     private Button filterDay, filterWeek, filterMonth, filterAll, filterBar, filterLine, filterPie;
     private LinearLayout filterLayout;
+    ProgressDialog ringProgressDialog;
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Fetching Data", true);
+        ringProgressDialog.setCancelable(true);
         setContentView(R.layout.activity_report);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -135,7 +156,9 @@ public class ReportActivity extends HomeActivity {
         setBackgroundForButton(filterDay, true);
         setBackgroundForButton(filterBar, true);
         setVisibilityForButton(filterAll, false);
-        setDataInChart(FLAG_FILTER_DAY);
+
+        fetchReportData(null);
+        //    setDataInChart(FLAG_FILTER_DAY);
     }
 
     View.OnTouchListener onMapTouchListener = new View.OnTouchListener() {
@@ -279,6 +302,10 @@ public class ReportActivity extends HomeActivity {
             }
         }
     };
+
+    private void fetchReportData(JSONObject duration) {
+        Session.getInstance(this).fetchReportData(email, "1", null);
+    }
 
     private void setOnClickListenersForButtons() {
         filterDay.setOnClickListener(viewByButtonListener);
@@ -534,30 +561,21 @@ public class ReportActivity extends HomeActivity {
     }
 
     public void setDataInChart(int flag) {
-        try {
-            JSONObject jsonObject = new JSONObject(loadJSONFromAsset());
-            reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
+        ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
+        setDataInPieChart(mOverall);
 
-            ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
-            setDataInPieChart(mOverall);
+        switch (flag) {
+            case FLAG_FILTER_DAY:
+                setDataInChartByDay();
+                break;
 
-            switch (flag) {
-                case FLAG_FILTER_DAY:
-                    setDataInChartByDay();
-                    break;
+            case FLAG_FILTER_WEEK:
+                setDataInChartByWeek();
+                break;
 
-                case FLAG_FILTER_WEEK:
-                    setDataInChartByWeek();
-                    break;
-
-                case FLAG_FILTER_MONTH:
-                    setDataInChartByMonth();
-                    break;
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+            case FLAG_FILTER_MONTH:
+                setDataInChartByMonth();
+                break;
         }
     }
 
@@ -605,5 +623,26 @@ public class ReportActivity extends HomeActivity {
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
         tv.setTextColor(ContextCompat.getColor(ReportActivity.this, android.R.color.white));
         snack.show();
+    }
+
+    @Subscribe
+    public void onEventMainThread(CobbocEvent event) {
+        switch (event.getType()) {
+            case CobbocEvent.REPORT:
+                ringProgressDialog.dismiss();
+                if (event.getStatus()) {
+                    JSONObject jsonObject = (JSONObject) event.getValue();
+                    reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
+
+                    setDataInChart(FLAG_FILTER_DAY);
+
+                } else {
+
+                    Toast.makeText(this, event.getValue().toString(), Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            default:
+        }
     }
 }

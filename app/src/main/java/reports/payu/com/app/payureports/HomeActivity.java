@@ -1,5 +1,6 @@
 package reports.payu.com.app.payureports;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,10 +28,8 @@ import reports.payu.com.app.payureports.Model.ReportResults;
 public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
-    private LineChart lineChart;
-
-    private PieChart pieChart;
-    private String email;
+    public String email;
+    ProgressDialog ringProgressDialog;
 
     @Override
     protected void onStart() {
@@ -39,14 +38,11 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             EventBus.getDefault().register(this);
     }
 
-
-    private ReportResults reportsResults;
-    private int[] colors = new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82), Color.rgb(245, 199, 0), Color.rgb(255, 102, 0),
-            Color.rgb(179, 100, 53), Color.rgb(255, 255, 255)};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Fetching Data", true);
+        ringProgressDialog.setCancelable(true);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -124,12 +120,12 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     @Subscribe
     public void onEventMainThread(CobbocEvent event) {
         switch (event.getType()) {
-            int errorCode = event.getValue().get;
             case CobbocEvent.LOGIN:
+                ringProgressDialog.dismiss();
                 if (event.getStatus()) { //Login successful so set some parameters for next time and finish()
                 } else {
 
-                    Toast.makeText(this,event.getValue().toString(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, event.getValue().toString(), Toast.LENGTH_SHORT).show();
                 }
                 break;
 

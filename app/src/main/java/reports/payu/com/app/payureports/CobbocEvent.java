@@ -5,13 +5,7 @@ package reports.payu.com.app.payureports;
  */
 public class CobbocEvent {
     public static final int LOGIN = 1;
-    public static final int LOGOUT = 2;
-    public static final int SIGN_UP = 3;
-    public static final int FORGOT_PASSWORD = 4;
-    public static final int GENERATE_AND_SEND_OTP = 5;
-    public static final int OTP_VERIFICATION = 6;
-    public static final int PIN_SETUP = 7;
-    public static final int QUESTION_ANSWER_SETUP = 8;
+    public static final int REPORT = 2;
 
     private boolean STATUS;
 

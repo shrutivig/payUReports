@@ -1,5 +1,6 @@
 package reports.payu.com.app.payureports;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -203,58 +204,33 @@ public class Session {
         if (Constants.DEBUG) {
             Logger.d(Session.TAG, "SdkSession.postFetch: " + url + " " + params + " " + method);
         }
-
         StringRequest myRequest = new StringRequest(method, getAbsoluteUrl(url), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                diff = System.currentTimeMillis() - start;
-
-                Logger.i(Session.TAG, "URL=" + url + "Time=" + diff);
-
-                if (Constants.DEBUG) {
-                    Logger.d(Session.TAG, "SdkSession.postFetch.onSuccess: " + url + " " + params + " " + method + ": " + response);
-                }
-
                 try {
+
                     JSONObject object = new JSONObject(response);
-                    if (object.has("error")) {
-                        onFailure(object.getString("error"), new Throwable(object.getString("error")));
-                    } else {
-                        runSuccessOnHandlerThread(task, object);
-                    }
+                    runSuccessOnHandlerThread(task, object);
+
                 } catch (JSONException e) {
-                    // maybe this is a string?
                     onFailure(e.getMessage(), e);
                 }
             }
 
             public void onFailure(String msg, Throwable e) {
-                if (Constants.DEBUG) {
-                    Log.e(Session.TAG, "Session...new JsonHttpResponseHandler() {...}.onFailure: " + e.getMessage() + " " + msg);
-                }
-                if (msg.contains("401")) {
-                    /*not required in app*/
 
-                    // logout("force");
-                    cancelPendingRequests(TAG);
-
-                }
                 runErrorOnHandlerThread(task, e);
+
+
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (Constants.DEBUG) {
-                    Log.e(Session.TAG, "Session...new JsonHttpResponseHandler() {...}.onFailure: " + error.getMessage());
-                }
-                if (error != null && error.networkResponse != null && error.networkResponse.statusCode == 401) {
 
-                    //  logout("force");
-
-                }
                 runErrorOnHandlerThread(task, error);
+
             }
         }) {
             @Override
@@ -270,7 +246,7 @@ public class Session {
                     //params.put("Authorization", "Bearer " + getToken());
                     params.put(Constants.ACCESS_TOKEN, getToken());
                 } else {
-                    params.put("Accept", "*/*;");
+                    //        params.put("Accept", "*/*;");
                 }
                 params.put(Constants.DEVICE_ID, Helper.getAndroidID(mContext));
                 params.put(Constants.DEVICE_TYPE, Constants.ANDROID);
@@ -354,7 +330,7 @@ public class Session {
 
         final Map p = new HashMap<>();
         p.put(Constants.EMAIL, email);
-        p.put(Constants.EVENT_FLAG,Constants.EVENT_1);
+        p.put(Constants.EVENT_FLAG, Constants.EVENT_1);
 
         postFetch("https://mobiletest.payu.in/reporting/reportingPostservice", p, new Task() {
             @Override
@@ -389,11 +365,14 @@ public class Session {
             }
         }, Request.Method.POST);
     }
-    public void fetchReport(String email) {
+
+    public void fetchReportData(String email, String reportId, JSONObject duration) {
 
         final Map p = new HashMap<>();
         p.put(Constants.EMAIL, email);
-        p.put(Constants.EVENT_FLAG,Constants.EVENT_2);
+        p.put(Constants.EVENT_FLAG, Constants.EVENT_2);
+        p.put(Constants.REPORT_ID, reportId);
+        p.put(Constants.DURATION, " ");
 
         postFetch("https://mobiletest.payu.in/reporting/reportingPostservice", p, new Task() {
             @Override
@@ -402,13 +381,12 @@ public class Session {
                     int status = jsonObject.getInt(Constants.STATUS);
                     if (status == 1) {
 
-                        ReportList parsedReportList = (ReportList) Session.getInstance(mContext).getParsedResponseFromGSON(jsonObject, dataType.ReportList);
-                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, true, parsedReportList));
+                        eventBus.post(new CobbocEvent(CobbocEvent.REPORT, true, jsonObject));
                     } else {
-                        eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false, jsonObject.getString(Constants.MESSAGE)));
+                        eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false, jsonObject.getString(Constants.MESSAGE)));
                     }
                 } catch (JSONException e) {
-                    eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false));
+                    eventBus.post(new CobbocEvent(CobbocEvent.REPORT, false, "json Exception"));
                 }
             }
 

@@ -111,8 +111,10 @@ public class Constants {
     public static final String ANSWER = "security_questions_answer";
     public static final String SENDER_ID = "92853391562";
 
-    public static final String LOGIN_SUCCESSFUL = "login_success" ;
+    public static final String LOGIN_SUCCESSFUL = "login_success";
     public static final String EVENT_FLAG = "eventFlag";
-    public static final int EVENT_1 = 1;
-    public static final int EVENT_2 = 2;
+    public static final String EVENT_1 = "1";
+    public static final String EVENT_2 = "2";
+    public static final String REPORT_ID = "reportId";
+    public static final String DURATION = "params";
 }
