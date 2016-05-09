@@ -13,10 +13,10 @@ public class ReportList {
     }
 
     public ArrayList<ListItem> getList() {
-        return list;
+        return reportList;
     }
 
-    ArrayList<ListItem> list;
+    ArrayList<ListItem> reportList;
 
     public class ListItem {
         String id;
