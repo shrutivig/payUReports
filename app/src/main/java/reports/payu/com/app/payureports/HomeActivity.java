@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,7 +21,6 @@ import com.google.android.gms.common.api.Status;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -158,14 +156,14 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
                 } else {
                     JSONObject temp = null;
-                    try {
-                        temp = new JSONObject(event.getValue().toString());
+
+                    if (event.getValue().toString().contains("Server error")) {
+                        handleStatus("XYZ","XYZ");
+                    } else {
                         String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
                         String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
                         handleStatus(errorCode, errorMessage);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        handleStatus("XYZ", "XYZ");
+
                     }
                 }
                 break;

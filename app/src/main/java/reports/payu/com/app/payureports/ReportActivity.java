@@ -9,9 +9,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -49,8 +46,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 import reports.payu.com.app.payureports.Model.ReportData;
 import reports.payu.com.app.payureports.Model.ReportResults;
 
@@ -79,6 +74,8 @@ public class ReportActivity extends AppCompatActivity {
     ProgressDialog ringProgressDialog;
     private String reportId, email;
     private String submitStartDate, submitEndDate;
+    private List<ReportData> mDay, mWeek, mMonth;
+    private ReportData mOverall;
 
 
     @Override
@@ -172,10 +169,6 @@ public class ReportActivity extends AppCompatActivity {
         pieChart.setOnTouchListener(onMapTouchListener);
 
         setOnClickListenersForButtons();
-        setBackgroundForButton(filterDay, true);
-        setBackgroundForButton(filterBar, true);
-        setVisibilityForButton(filterAll, false);
-
         fetchReportData(null);
         //    setDataInChart(FLAG_FILTER_DAY);
     }
@@ -312,6 +305,7 @@ public class ReportActivity extends AppCompatActivity {
                     setVisibilityForButton(filterAll, true);
                     setBackgroundForButton(filterAll, true);
 
+                    setDataInPieChart(mOverall);
                     pieChart.setVisibility(View.VISIBLE);
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -354,19 +348,59 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private void resetVisibilityForAllButtons() {
-        setVisibilityForButton(filterDay, true);
-        setVisibilityForButton(filterWeek, true);
-        setVisibilityForButton(filterMonth, true);
-        setVisibilityForButton(filterBar, true);
-        setVisibilityForButton(filterLine, true);
-        setVisibilityForButton(filterPie, true);
+        setVisibilityForButton(filterDay, false);
+        setVisibilityForButton(filterWeek, false);
+        setVisibilityForButton(filterMonth, false);
+        setVisibilityForButton(filterAll, false);
+        initializeButtonsVisibilityAsPerData();
+
+    }
+
+    private void initializeButtonsVisibilityAsPerData() {
+
+        if (mDay != null)
+            filterDay.setVisibility(View.VISIBLE);
+        if (mWeek != null)
+            filterWeek.setVisibility(View.VISIBLE);
+        if (mMonth != null)
+            filterMonth.setVisibility(View.VISIBLE);
+        if(mDay == null && mWeek == null && mMonth == null){
+            filterBar.setVisibility(View.GONE);
+            filterLine.setVisibility(View.GONE);
+        }
+        else{
+            filterBar.setVisibility(View.VISIBLE);
+            filterLine.setVisibility(View.VISIBLE);
+        }
+        if (mOverall == null){
+            pieChart.setVisibility(View.GONE);
+        }
 
     }
 
     private void setVisibilityForButton(Button button, boolean isVisible) {
-        if (isVisible)
-            button.setVisibility(View.VISIBLE);
-        else
+
+
+        if (isVisible) {
+            switch (button.getId()) {
+                case R.id.button_day:
+                    if (mDay != null)
+                        button.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.button_week:
+                    if (mWeek != null)
+                        button.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.button_month:
+                    if (mMonth != null)
+                        button.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.button_all:
+                    if (mOverall != null)
+                        button.setVisibility(View.VISIBLE);
+                    break;
+            }
+        } else
             button.setVisibility(View.GONE);
     }
 
@@ -406,18 +440,21 @@ public class ReportActivity extends AppCompatActivity {
         PieDataSet setPie1 = new PieDataSet(listForPieChart, "");
         setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
         setPie1.setColors(colors);
+        setPie1.setValueTextSize(5f);
 
         xValsForPieChart.add("Success");
         xValsForPieChart.add("Failed");
-        xValsForPieChart.add("Pending ");
-        xValsForPieChart.add("Dropped ");
-        xValsForPieChart.add("User Cancelled");
+        xValsForPieChart.add("Dropped");
         xValsForPieChart.add("Bounced");
+        xValsForPieChart.add("User Cancelled");
+        xValsForPieChart.add("Others");
 
         PieData mData3 = new PieData(xValsForPieChart, setPie1);
         pieChart.setData(mData3);
-        pieChart.setHoleRadius(20f);
-        pieChart.setTransparentCircleRadius(25f);
+        pieChart.setDescription(mOverall.getMinDate() + " to " + mOverall.getMaxDate());
+        pieChart.setDescriptionTextSize(10f);
+        pieChart.setHoleRadius(24f);
+        pieChart.setTransparentCircleRadius(27f);
         pieChart.animateY(3000);
     }
 
@@ -466,7 +503,7 @@ public class ReportActivity extends AppCompatActivity {
         BarDataSet setBar1 = new BarDataSet(barComp1, "");
         setBar1.setAxisDependency(YAxis.AxisDependency.LEFT);
         setBar1.setColors(colors);
-        setBar1.setStackLabels(new String[]{"Success", "Failed", "Dropped", "Bounced", "User Cancelled", "Pending"});
+        setBar1.setStackLabels(new String[]{"Success", "Failed", "Dropped", "Bounced", "User Cancelled", "Others"});
         setBar1.setValueTextSize(0f);
         ArrayList<IBarDataSet> dataSet2 = new ArrayList<>();
         dataSet2.add(setBar1);
@@ -592,48 +629,24 @@ public class ReportActivity extends AppCompatActivity {
 
     }
 
-    public void setVisibilityOfButtons(ReportResults reportsResults) {
-        int flag = FLAG_FILTER_DAY;
+    public void setVisibilityOfButtons() {
 
-        ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
-        List<ReportData> mDay = reportsResults.getDisplayReportResult().getDay();
-        List<ReportData> mWeek = reportsResults.getDisplayReportResult().getWeek();
-        List<ReportData> mMonth = reportsResults.getDisplayReportResult().getMonth();
+        resetVisibilityForAllButtons();
+        filterBar.callOnClick();
 
-
-        if (mDay == null)
-            setVisibilityForButton(filterDay, false);
-        if (mWeek == null)
-            setVisibilityForButton(filterWeek, false);
-        if (mMonth == null)
-            setVisibilityForButton(filterMonth, false);
-        if (mOverall == null) {
-            setVisibilityForButton(filterAll, false);
-            setVisibilityForButton(filterPie, false);
-        }
-
-        if(mDay == null){
-            if(mWeek != null)
-                flag = FLAG_FILTER_WEEK;
-            else if(mMonth != null)
-                flag = FLAG_FILTER_MONTH;
-            else if(mOverall != null)
-                flag = -1;
-            else
-                flag = -2;
-        }
-        else
-            flag = FLAG_FILTER_DAY;
-
-
-        setDataInChart(flag);
+        if (mDay == null) {
+            if (mWeek != null)
+                filterWeek.callOnClick();
+            else if (mMonth != null)
+                filterMonth.callOnClick();
+            else if (mOverall != null)
+                filterPie.callOnClick();
+        } else
+            filterDay.callOnClick();
 
     }
 
     public void setDataInChart(int flag) {
-
-        ReportData mOverall = reportsResults.getDisplayReportResult().getOverall();
-        setDataInPieChart(mOverall);
 
         switch (flag) {
             case FLAG_FILTER_DAY:
@@ -647,29 +660,14 @@ public class ReportActivity extends AppCompatActivity {
             case FLAG_FILTER_MONTH:
                 setDataInChartByMonth();
                 break;
-            case -1:
-                setBackgroundForButton(filterPie, true);
-                setVisibilityForButton(filterAll, true);
-                setBackgroundForButton(filterAll, true);
-
-                pieChart.setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pieChart.animateY(2000);
-                    }
-                }, 100);
+            default:
                 break;
-            default:break;
-
-
 
         }
     }
 
     public void setDataInChartByDay() {
 
-        List<ReportData> mDay = reportsResults.getDisplayReportResult().getDay();
         if (mDay != null) {
             setDataInLineChart(mDay, true);
             setDataInBarChart(mDay, true);
@@ -677,7 +675,6 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     public void setDataInChartByWeek() {
-        List<ReportData> mWeek = reportsResults.getDisplayReportResult().getWeek();
 
         if (mWeek != null) {
             setDataInLineChart(mWeek, false);
@@ -686,7 +683,6 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     public void setDataInChartByMonth() {
-        List<ReportData> mMonth = reportsResults.getDisplayReportResult().getMonth();
 
         if (mMonth != null) {
             setDataInLineChart(mMonth, false);
@@ -728,8 +724,12 @@ public class ReportActivity extends AppCompatActivity {
                 if (event.getStatus()) {
                     JSONObject jsonObject = (JSONObject) event.getValue();
                     reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
-                    resetVisibilityForAllButtons();
-                    setVisibilityOfButtons(reportsResults);
+                    mOverall = reportsResults.getDisplayReportResult().getOverall();
+                    mDay = reportsResults.getDisplayReportResult().getDay();
+                    mWeek = reportsResults.getDisplayReportResult().getWeek();
+                    mMonth = reportsResults.getDisplayReportResult().getMonth();
+
+                    setVisibilityOfButtons();
 
                 } else {
 

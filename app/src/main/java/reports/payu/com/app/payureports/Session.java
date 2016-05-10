@@ -350,7 +350,7 @@ public class Session {
 
             @Override
             public void onError(Throwable throwable) {
-                eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false, "An error occurred while trying to login. Please try again later."));
+                eventBus.post(new CobbocEvent(CobbocEvent.LOGIN, false, "Server error occurred while trying to login. Please try again later."));
             }
 
             @Override
