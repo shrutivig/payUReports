@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_20"
+        android:layout_margin="@dimen/margin_5"
         android:gravity="center"
         android:text="PAYU TABLE REPORTS"
         android:textColor="@color/colorPrimary"
@@ -22,7 +22,6 @@
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dip"
             android:fillViewport="true"
             android:scrollbarStyle="outsideInset"
             android:scrollbars="horizontal|vertical">
@@ -31,7 +30,6 @@
                 android:id="@+id/horizontalView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dip"
                 android:layout_marginLeft="@dimen/margin_20"
                 android:layout_marginRight="@dimen/margin_20"
                 android:scrollbars="horizontal|vertical">
