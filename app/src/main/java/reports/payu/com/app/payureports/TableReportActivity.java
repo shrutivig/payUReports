@@ -88,31 +88,31 @@ public class TableReportActivity extends AppCompatActivity {
                     TableRow.LayoutParams.WRAP_CONTENT));
 
             TextView column1 = new TextView(this);
-            column1.setText(i + 1);
+            column1.setText("" + (i + 1));
             column1.setTextColor(Color.BLACK);
             column1.setPadding(5, 5, 5, 5);
             tableRow.addView(column1);
 
             TextView column2 = new TextView(this);
-            column2.setText(i + 1);
+            column2.setText("" + (i + 1));
             column2.setTextColor(Color.BLACK);
             column2.setPadding(5, 5, 5, 5);
             tableRow.addView(column2);
 
             TextView column3 = new TextView(this);
-            column3.setText(i + 1);
+            column3.setText("" + (i + 1));
             column3.setTextColor(Color.BLACK);
             column3.setPadding(5, 5, 5, 5);
             tableRow.addView(column3);
 
             TextView column4 = new TextView(this);
-            column4.setText(i + 1);
+            column4.setText("" + (i + 1));
             column4.setTextColor(Color.BLACK);
             column4.setPadding(5, 5, 5, 5);
             tableRow.addView(column4);
 
             TextView column5 = new TextView(this);
-            column5.setText(i + 1);
+            column5.setText("" + (i + 1));
             column5.setTextColor(Color.BLACK);
             column5.setPadding(5, 5, 5, 5);
             tableRow.addView(column5);
