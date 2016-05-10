@@ -15,6 +15,12 @@ public class ReportList {
 
     public class ListItem {
         String id;
+        String heading;
+        String reportType;
+
+        public String getReportType() {
+            return reportType;
+        }
 
         public String getId() {
             return id;
@@ -24,6 +30,6 @@ public class ReportList {
             return heading;
         }
 
-        String heading;
+
     }
 }

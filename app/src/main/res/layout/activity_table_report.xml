@@ -14,26 +14,28 @@
         android:textSize="@dimen/text_size_20"
         android:textStyle="bold" />
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dip"
+        android:fillViewport="true"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="horizontal|vertical">
 
-        <ScrollView
-            android:id="@+id/layout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dip"
-            android:fillViewport="true"
-            android:scrollbarStyle="outsideInset"
-            android:scrollbars="horizontal|vertical">
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
 
             <HorizontalScrollView
                 android:id="@+id/horizontalView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dip"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_20"
                 android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="5dip"
                 android:scrollbars="horizontal|vertical">
 
                 <TableLayout
@@ -46,7 +48,36 @@
 
             </HorizontalScrollView>
 
-        </ScrollView>
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_20"
+                android:gravity="center"
+                android:text="PAYU TABLE REPORTS"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_20"
+                android:textStyle="bold" />
 
+            <HorizontalScrollView
+                android:id="@+id/horizontalView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
+                android:layout_marginTop="5dip"
+                android:scrollbars="horizontal|vertical">
+
+                <TableLayout
+                    android:id="@+id/report_table2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/margin_20"
+                    android:gravity="center"
+                    android:stretchColumns="*" />
+
+            </HorizontalScrollView>
+
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

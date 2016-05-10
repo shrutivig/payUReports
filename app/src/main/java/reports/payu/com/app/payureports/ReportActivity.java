@@ -206,7 +206,7 @@ public class ReportActivity extends AppCompatActivity {
                                     mFilterStartDateEntered = true;
                                     startDateFilter.setText(dayOfMonth + " - "
                                             + (monthOfYear + 1) + " - " + year);
-                                    submitStartDate = year + "-" + monthOfYear + "-" + dayOfMonth;
+                                    submitStartDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                                     startDate = new Date(year - 1900, monthOfYear, dayOfMonth);
                                     break;
                                 case R.id.filter_end_date:
@@ -215,7 +215,7 @@ public class ReportActivity extends AppCompatActivity {
                                         mFilterEndDateEntered = true;
                                         endDateFilter.setText(dayOfMonth + " - "
                                                 + (monthOfYear + 1) + " - " + year);
-                                        submitEndDate = year + "-" + monthOfYear + "-" + dayOfMonth;
+                                        submitEndDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                                     } else {
                                         showSnackBar("Start Date cannot be empty.");
                                     }
@@ -364,15 +364,14 @@ public class ReportActivity extends AppCompatActivity {
             filterWeek.setVisibility(View.VISIBLE);
         if (mMonth != null)
             filterMonth.setVisibility(View.VISIBLE);
-        if(mDay == null && mWeek == null && mMonth == null){
+        if (mDay == null && mWeek == null && mMonth == null) {
             filterBar.setVisibility(View.GONE);
             filterLine.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             filterBar.setVisibility(View.VISIBLE);
             filterLine.setVisibility(View.VISIBLE);
         }
-        if (mOverall == null){
+        if (mOverall == null) {
             pieChart.setVisibility(View.GONE);
         }
 
