@@ -29,17 +29,19 @@
 
             <HorizontalScrollView
                 android:id="@+id/horizontalView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="5dip"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginRight="@dimen/margin_20"
                 android:scrollbars="horizontal|vertical">
-
 
                 <TableLayout
                     android:id="@+id/report_table"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:divider="@color/colorPrimary"
+                    android:layout_marginBottom="@dimen/margin_20"
+                    android:gravity="center"
                     android:stretchColumns="*" />
 
             </HorizontalScrollView>
