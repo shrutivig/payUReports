@@ -93,6 +93,13 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
 
+        findViewById(R.id.table).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, TableReportActivity.class));
+            }
+        });
+
         reportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -158,7 +165,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                     JSONObject temp = null;
 
                     if (event.getValue().toString().contains("Server error")) {
-                        handleStatus("XYZ","XYZ");
+                        handleStatus("XYZ", "XYZ");
                     } else {
                         String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
                         String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
