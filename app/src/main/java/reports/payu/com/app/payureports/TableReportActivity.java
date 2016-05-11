@@ -11,25 +11,56 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import reports.payu.com.app.payureports.Model.ReportResults;
 
 /**
  * Created by shruti.vig on 5/10/16.
  */
 public class TableReportActivity extends AppCompatActivity {
 
-    private TableLayout reportsTable, reportsTable2;
+    private String reportId, email;
+    private JSONObject reportsResults;
+    ProgressDialog ringProgressDialog;
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_table_report);
-        reportsTable = (TableLayout) findViewById(R.id.report_table);
-        reportsTable2 = (TableLayout) findViewById(R.id.report_table2);
 
-        setHeadersInReportsTable();
-        setDataInReportsTable();
-        setHeadersInReportsTable2();
-        setDataInReportsTable2();
+        ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Fetching Data", true);
+        ringProgressDialog.setCancelable(true);
+        setContentView(R.layout.activity_table_report);
+
+        if (getIntent() != null) {
+            reportId = getIntent().getStringExtra(Constants.REPORT_ID);
+            email = getIntent().getStringExtra(Constants.EMAIL);
+        }
+        fetchReportData(null);
     }
 
     private void setBackgroundForButton(TextView text) {
@@ -39,334 +70,135 @@ public class TableReportActivity extends AppCompatActivity {
             text.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.marker_background));
     }
 
-    private void setHeadersInReportsTable() {
+    private void fetchReportData(JSONObject duration) {
 
-        TableRow tableHeader = new TableRow(this);
-        tableHeader.setBackgroundColor(Color.GRAY);
-        tableHeader.setLayoutParams(new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-
-        TextView headerColumn1 = new TextView(this);
-        headerColumn1.setText("DATE");
-        headerColumn1.setGravity(Gravity.CENTER);
-        headerColumn1.setTextColor(Color.WHITE);
-        headerColumn1.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn1);
-        tableHeader.addView(headerColumn1);
-
-        TextView headerColumn2 = new TextView(this);
-        headerColumn2.setText("SUCCESSFUL TX 1");
-        headerColumn2.setTextColor(Color.WHITE);
-        headerColumn2.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn2);
-        tableHeader.addView(headerColumn2);
-
-        TextView headerColumn3 = new TextView(this);
-        headerColumn3.setText("SUCCESSFUL TX 2");
-        headerColumn3.setTextColor(Color.WHITE);
-        headerColumn3.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn3);
-        tableHeader.addView(headerColumn3);
-
-        TextView headerColumn4 = new TextView(this);
-        headerColumn4.setText("SUCCESSFUL TX 3");
-        headerColumn4.setTextColor(Color.WHITE);
-        setBackgroundForButton(headerColumn4);
-        headerColumn4.setPadding(5, 5, 5, 5);
-        tableHeader.addView(headerColumn4);
-
-        TextView headerColumn5 = new TextView(this);
-        headerColumn5.setText("SUCCESSFUL TX 4");
-        headerColumn5.setTextColor(Color.WHITE);
-        headerColumn5.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn5);
-        tableHeader.addView(headerColumn5);
-
-        TextView headerColumn6 = new TextView(this);
-        headerColumn6.setText("SUCCESSFUL TX 5");
-        headerColumn6.setTextColor(Color.WHITE);
-        headerColumn6.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn6);
-        tableHeader.addView(headerColumn6);
-
-        TextView headerColumn7 = new TextView(this);
-        headerColumn7.setText("SUCCESSFUL TX 6");
-        headerColumn7.setTextColor(Color.WHITE);
-        headerColumn7.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn7);
-        tableHeader.addView(headerColumn7);
-
-        TextView headerColumn8 = new TextView(this);
-        headerColumn8.setText("SUCCESSFUL TX 7");
-        headerColumn8.setTextColor(Color.WHITE);
-        headerColumn8.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn8);
-        tableHeader.addView(headerColumn8);
-
-        TextView headerColumn9 = new TextView(this);
-        headerColumn9.setText("SUCCESSFUL TX 8");
-        headerColumn9.setTextColor(Color.WHITE);
-        headerColumn9.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn9);
-        tableHeader.addView(headerColumn9);
-
-        reportsTable.addView(tableHeader, new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
-                TableLayout.LayoutParams.WRAP_CONTENT));
-
+        Session.getInstance(this).fetchReportData(email, reportId, duration);
     }
 
-    private void setDataInReportsTable() {
 
-        for (int i = 0; i < 11; i++) {
+    private void setDataInReportsTable(JSONArray tableData, int tableIndex) {
 
-            TableRow tableRow = new TableRow(this);
-            tableRow.setLayoutParams(new TableRow.LayoutParams(
+        TableLayout reportsTable = null;
+        try {
+            switch (tableIndex) {
+                case 1:
+                    reportsTable = (TableLayout) findViewById(R.id.report_table);
+                    break;
+                case 2:
+                    reportsTable = (TableLayout) findViewById(R.id.report_table2);
+                    break;
+                case 3:
+                    reportsTable = (TableLayout) findViewById(R.id.report_table3);
+                    break;
+            }
+
+            TableRow headerRow = new TableRow(this);
+            headerRow.setBackgroundColor(Color.GRAY);
+            headerRow.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
 
-            TextView column1 = new TextView(this);
-            column1.setText("" + (i + 1));
-            column1.setTextColor(Color.BLACK);
-            setBackgroundForButton(column1);
-            column1.setPadding(5, 5, 5, 5);
-            column1.setGravity(Gravity.CENTER);
-            tableRow.addView(column1);
 
-            TextView column2 = new TextView(this);
-            column2.setText("" + (i + 1));
-            column2.setTextColor(Color.BLACK);
-            column2.setPadding(5, 5, 5, 5);
-            column2.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column2);
-            tableRow.addView(column2);
+            Iterator headerValues = ((JSONObject) tableData.get(0)).keys();
+            ArrayList<String> headers = new ArrayList();
+            while (headerValues.hasNext()) {
+                String tempHeader = headerValues.next().toString();
+                TextView column1 = new TextView(this);
+                column1.setText(tempHeader);
+                column1.setTextColor(Color.BLACK);
+                setBackgroundForButton(column1);
+                column1.setPadding(5, 5, 5, 5);
+                column1.setGravity(Gravity.CENTER);
+                headerRow.addView(column1);
 
-            TextView column3 = new TextView(this);
-            column3.setText("" + (i + 1));
-            column3.setTextColor(Color.BLACK);
-            column3.setPadding(5, 5, 5, 5);
-            setBackgroundForButton(column3);
-            column3.setGravity(Gravity.CENTER);
-            tableRow.addView(column3);
+                headers.add(tempHeader);
 
-            TextView column4 = new TextView(this);
-            column4.setText("" + (i + 1));
-            column4.setTextColor(Color.BLACK);
-            column4.setPadding(5, 5, 5, 5);
-            column4.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column4);
-            tableRow.addView(column4);
-
-            TextView column5 = new TextView(this);
-            column5.setText("" + (i + 1));
-            column5.setTextColor(Color.BLACK);
-            column5.setPadding(5, 5, 5, 5);
-            column5.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column5);
-            tableRow.addView(column5);
-
-            TextView column6 = new TextView(this);
-            column6.setText("" + (i + 1));
-            column6.setTextColor(Color.BLACK);
-            column6.setPadding(5, 5, 5, 5);
-            column6.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column6);
-            tableRow.addView(column6);
-
-            TextView column7 = new TextView(this);
-            column7.setText("" + (i + 1));
-            column7.setTextColor(Color.BLACK);
-            column7.setPadding(5, 5, 5, 5);
-            column7.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column7);
-            tableRow.addView(column7);
-
-            TextView column8 = new TextView(this);
-            column8.setText("" + (i + 1));
-            column8.setTextColor(Color.BLACK);
-            column8.setPadding(5, 5, 5, 5);
-            column8.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column8);
-            tableRow.addView(column8);
-
-            TextView column9 = new TextView(this);
-            column9.setText("" + (i + 1) + "djdfkjdbskjbdksbksjbkbskbdhsbdhsbdshbkdsjbfhbrhrbnfdsbckhbkihec");
-            column9.setTextColor(Color.BLACK);
-            column9.setPadding(5, 5, 5, 5);
-            column9.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column9);
-            tableRow.addView(column9);
-
-            reportsTable.addView(tableRow, new TableLayout.LayoutParams(
+            }
+            reportsTable.addView(headerRow, new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.WRAP_CONTENT));
+
+            for (int i = 0; i < tableData.length(); i++) {
+
+                TableRow tableRow = new TableRow(this);
+                tableRow.setLayoutParams(new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+
+                JSONObject rowDataValue = (JSONObject) tableData.get(i);
+                for (int j = 0; j < rowDataValue.length(); j++) {
+                    TextView column1 = new TextView(this);
+                    column1.setText(rowDataValue.getString(headers.get(j)));
+                    column1.setTextColor(Color.BLACK);
+                    setBackgroundForButton(column1);
+                    column1.setPadding(5, 5, 5, 5);
+                    column1.setGravity(Gravity.CENTER);
+                    tableRow.addView(column1);
+                }
+
+                reportsTable.addView(tableRow, new TableLayout.LayoutParams(
+                        TableLayout.LayoutParams.MATCH_PARENT,
+                        TableLayout.LayoutParams.WRAP_CONTENT));
+                ringProgressDialog.dismiss();
+            }
+        } catch (JSONException e) {
+            ringProgressDialog.dismiss();
+            e.printStackTrace();
         }
     }
 
-    private void setHeadersInReportsTable2() {
+    private void initLayout(JSONArray displayReportresult) {
+        int numberOfTables = displayReportresult.length();
+        try {
+            while (numberOfTables > 0) {
+                switch (numberOfTables) {
+                    case 1:
+                        JSONArray dataForTable1 = displayReportresult.getJSONArray(0);
+                        setDataInReportsTable(dataForTable1, 1);
+                        findViewById(R.id.layoutForTable1).setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                    case 2:
+                        JSONArray dataForTable2 = displayReportresult.getJSONArray(1);
+                        setDataInReportsTable(dataForTable2, 2);
+                        findViewById(R.id.layoutForTable2).setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                    case 3:
+                        //findViewById(R.id.layoutForTable3).setVisibility(View.VISIBLE);
+                        break;
+                }
 
-        TableRow tableHeader = new TableRow(this);
-        tableHeader.setBackgroundColor(Color.GRAY);
-        tableHeader.setLayoutParams(new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        TextView headerColumn1 = new TextView(this);
-        headerColumn1.setText("DATE");
-        headerColumn1.setGravity(Gravity.CENTER);
-        headerColumn1.setTextColor(Color.WHITE);
-        headerColumn1.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn1);
-        tableHeader.addView(headerColumn1);
-
-        TextView headerColumn2 = new TextView(this);
-        headerColumn2.setText("SUCCESSFUL TX 1");
-        headerColumn2.setTextColor(Color.WHITE);
-        headerColumn2.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn2);
-        tableHeader.addView(headerColumn2);
-
-        TextView headerColumn3 = new TextView(this);
-        headerColumn3.setText("SUCCESSFUL TX 2");
-        headerColumn3.setTextColor(Color.WHITE);
-        headerColumn3.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn3);
-        tableHeader.addView(headerColumn3);
-
-        TextView headerColumn4 = new TextView(this);
-        headerColumn4.setText("SUCCESSFUL TX 3");
-        headerColumn4.setTextColor(Color.WHITE);
-        setBackgroundForButton(headerColumn4);
-        headerColumn4.setPadding(5, 5, 5, 5);
-        tableHeader.addView(headerColumn4);
-
-        TextView headerColumn5 = new TextView(this);
-        headerColumn5.setText("SUCCESSFUL TX 4");
-        headerColumn5.setTextColor(Color.WHITE);
-        headerColumn5.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn5);
-        tableHeader.addView(headerColumn5);
-
-        TextView headerColumn6 = new TextView(this);
-        headerColumn6.setText("SUCCESSFUL TX 5");
-        headerColumn6.setTextColor(Color.WHITE);
-        headerColumn6.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn6);
-        tableHeader.addView(headerColumn6);
-
-        TextView headerColumn7 = new TextView(this);
-        headerColumn7.setText("SUCCESSFUL TX 6");
-        headerColumn7.setTextColor(Color.WHITE);
-        headerColumn7.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn7);
-        tableHeader.addView(headerColumn7);
-
-        TextView headerColumn8 = new TextView(this);
-        headerColumn8.setText("SUCCESSFUL TX 7");
-        headerColumn8.setTextColor(Color.WHITE);
-        headerColumn8.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn8);
-        tableHeader.addView(headerColumn8);
-
-        TextView headerColumn9 = new TextView(this);
-        headerColumn9.setText("SUCCESSFUL TX 8");
-        headerColumn9.setTextColor(Color.WHITE);
-        headerColumn9.setPadding(5, 5, 5, 5);
-        setBackgroundForButton(headerColumn9);
-        tableHeader.addView(headerColumn9);
-
-        reportsTable2.addView(tableHeader, new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
-                TableLayout.LayoutParams.WRAP_CONTENT));
 
     }
 
-    private void setDataInReportsTable2() {
+    @Subscribe
+    public void onEventMainThread(CobbocEvent event) {
+        switch (event.getType()) {
+            case CobbocEvent.REPORT:
+                if (event.getStatus()) {
+                    try {
+                        reportsResults = (JSONObject) event.getValue();
 
-        for (int i = 0; i < 11; i++) {
+                        if (reportsResults != null && reportsResults.has("displayReportResult") && !reportsResults.isNull("displayReportResult")) {
+                            JSONArray displayReportresult = reportsResults.getJSONArray("displayReportResult");
+                            initLayout(displayReportresult);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    ringProgressDialog.dismiss();
+                    Toast.makeText(this, event.getValue().toString(), Toast.LENGTH_SHORT).show();
+                }
+                break;
 
-            TableRow tableRow = new TableRow(this);
-            tableRow.setLayoutParams(new TableRow.LayoutParams(
-                    TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT));
-
-            TextView column1 = new TextView(this);
-            column1.setText("" + (i + 1));
-            column1.setTextColor(Color.BLACK);
-            setBackgroundForButton(column1);
-            column1.setPadding(5, 5, 5, 5);
-            column1.setGravity(Gravity.CENTER);
-            tableRow.addView(column1);
-
-            TextView column2 = new TextView(this);
-            column2.setText("" + (i + 1));
-            column2.setTextColor(Color.BLACK);
-            column2.setPadding(5, 5, 5, 5);
-            column2.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column2);
-            tableRow.addView(column2);
-
-            TextView column3 = new TextView(this);
-            column3.setText("" + (i + 1));
-            column3.setTextColor(Color.BLACK);
-            column3.setPadding(5, 5, 5, 5);
-            setBackgroundForButton(column3);
-            column3.setGravity(Gravity.CENTER);
-            tableRow.addView(column3);
-
-            TextView column4 = new TextView(this);
-            column4.setText("" + (i + 1));
-            column4.setTextColor(Color.BLACK);
-            column4.setPadding(5, 5, 5, 5);
-            column4.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column4);
-            tableRow.addView(column4);
-
-            TextView column5 = new TextView(this);
-            column5.setText("" + (i + 1));
-            column5.setTextColor(Color.BLACK);
-            column5.setPadding(5, 5, 5, 5);
-            column5.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column5);
-            tableRow.addView(column5);
-
-            TextView column6 = new TextView(this);
-            column6.setText("" + (i + 1));
-            column6.setTextColor(Color.BLACK);
-            column6.setPadding(5, 5, 5, 5);
-            column6.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column6);
-            tableRow.addView(column6);
-
-            TextView column7 = new TextView(this);
-            column7.setText("" + (i + 1));
-            column7.setTextColor(Color.BLACK);
-            column7.setPadding(5, 5, 5, 5);
-            column7.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column7);
-            tableRow.addView(column7);
-
-            TextView column8 = new TextView(this);
-            column8.setText("" + (i + 1));
-            column8.setTextColor(Color.BLACK);
-            column8.setPadding(5, 5, 5, 5);
-            column8.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column8);
-            tableRow.addView(column8);
-
-            TextView column9 = new TextView(this);
-            column9.setText("" + (i + 1) + "djdfkjdbskjbdksbksjbkbskbdhsbdhsbdshbkdsjbfhbrhrbnfdsbckhbkihec");
-            column9.setTextColor(Color.BLACK);
-            column9.setPadding(5, 5, 5, 5);
-            column9.setGravity(Gravity.CENTER);
-            setBackgroundForButton(column9);
-            tableRow.addView(column9);
-
-            reportsTable2.addView(tableRow, new TableLayout.LayoutParams(
-                    TableLayout.LayoutParams.MATCH_PARENT,
-                    TableLayout.LayoutParams.WRAP_CONTENT));
-            //    reportsTable.addView(v);
+            default:
         }
     }
 }

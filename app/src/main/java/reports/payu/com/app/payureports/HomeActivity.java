@@ -155,15 +155,12 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                     parsedReportList = (ReportList) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportList);
 
                     if (parsedReportList != null) {
-
                         List reportList = parsedReportList.getList();
                         ArrayList<String> reportsName = new ArrayList<>();
-
                         for (int i = 0; i < reportList.size(); i++) {
                             reportsName.add(((ReportList.ListItem) reportList.get(i)).getHeading());
                         }
                         ArrayAdapter<String> reportsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, reportsName);
-
                         reportListView.setAdapter(reportsAdapter);
                     }
 

@@ -1,0 +1,60 @@
+{
+  "status": 1,
+  "reportId": "rotf108",
+  "displayReportResult": [
+    [
+      {
+        "id": "6697335",
+        "merchantid": "2",
+        "ibibo_code": "CC",
+        "amount": "0.000",
+        "cnt": "0",
+        "added_date_time": "2016-05-10 00:00:00",
+        "addedon": "2016-05-11 03:00:19",
+        "total_cnt": "3"
+      },
+      {
+        "id": "6697336",
+        "merchantid": "2",
+        "ibibo_code": "IVR",
+        "amount": "0.000",
+        "cnt": "0",
+        "added_date_time": "2016-05-10 00:00:00",
+        "addedon": "2016-05-11 03:00:19",
+        "total_cnt": "3"
+      },
+      {
+        "id": "6697337",
+        "merchantid": "2",
+        "ibibo_code": "MAST",
+        "amount": "1.010",
+        "cnt": "1",
+        "added_date_time": "2016-05-10 00:00:00",
+        "addedon": "2016-05-11 03:00:19",
+        "total_cnt": "8"
+      },
+      {
+        "id": "6697338",
+        "merchantid": "2",
+        "ibibo_code": "VISA",
+        "amount": "4.000",
+        "cnt": "4",
+        "added_date_time": "2016-05-10 00:00:00",
+        "addedon": "2016-05-11 03:00:19",
+        "total_cnt": "7"
+      }
+    ],
+    [
+      {
+        "success": "16319",
+        "Failed": "1942",
+        "bounced": "0",
+        "UserCancelled": "1104",
+        "BankFailed": "1214",
+        "OtpNotEntered_By_User": "1483",
+        "TotalDropped": "2572",
+        "added_date": "2016-05-10"
+      }
+    ]
+  ]
+}
