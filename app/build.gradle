@@ -33,9 +33,5 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
-
-    compile('de.keyboardsurfer.android.widget:crouton:1.8.+@aar') {
-        exclude module: 'support-v7'
-    }
     compile 'com.google.code.gson:gson:2.6.2'
 }

@@ -23,12 +23,8 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-import java.util.EventListener;
-
-import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 public class LoginSignUpActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,

@@ -2,8 +2,6 @@ package reports.payu.com.app.payureports;
 
 import java.util.regex.Pattern;
 
-import de.keyboardsurfer.android.widget.crouton.Configuration;
-
 /**
  * Created by sagar.chauhan on 3/14/16.
  */
@@ -24,10 +22,6 @@ public class Constants {
     */
     public static final String SP_SERVER_NAME = "ServerLogSharedPreference";
     public static final String SP_USER_NAME = "UserSessionSharedPreference";
-
-    public static final Configuration CONFIGURATION_INFINITE = new Configuration.Builder().setDuration(Configuration.DURATION_INFINITE).build();
-    public static final Configuration CONFIGURATION_LONG = new Configuration.Builder().setDuration(Configuration.DURATION_LONG).build();
-    public static final Configuration CONFIGURATION_SHORT = new Configuration.Builder().setDuration(Configuration.DURATION_SHORT).build();
 
 
     public static final String BASE_URL_IMAGE = "";
