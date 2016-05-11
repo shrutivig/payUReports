@@ -37,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/signed_out"
+            android:visibility="gone"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
@@ -67,6 +68,16 @@
             android:layout_centerInParent="true"
             android:visibility="visible"
             tools:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/text_size_12"
+            android:layout_below="@id/sign_in_button"
+            android:textColor="@android:color/white"
+            android:text="NOTE: Sign-In with PayU ID only."/>
 
     </RelativeLayout>
 

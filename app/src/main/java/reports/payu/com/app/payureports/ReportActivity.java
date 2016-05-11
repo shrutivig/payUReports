@@ -108,9 +108,12 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        TextView titleText = (TextView) toolbar.findViewById(R.id.title);
+
         if (getIntent() != null) {
             reportId = getIntent().getStringExtra(Constants.REPORT_ID);
             email = getIntent().getStringExtra(Constants.EMAIL);
+            titleText.setText(getIntent().getStringExtra(Constants.REPORT_NAME));
         }
 
         filterLayout = (LinearLayout) findViewById(R.id.filter_layout);

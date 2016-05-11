@@ -28,7 +28,7 @@ import java.util.List;
 
 import reports.payu.com.app.payureports.Model.ReportList;
 
-public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
+public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private final String REPORT_TYPE_CUSTOM = "custom";
     private final String REPORT_TYPE_GENERIC = "generic";
@@ -44,6 +44,12 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onStart();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        makeLoginCall();
     }
 
     @Override
@@ -95,13 +101,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
 
-        findViewById(R.id.table).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, TableReportActivity.class));
-            }
-        });
-
         reportListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -113,6 +112,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                     intent = new Intent(HomeActivity.this, TableReportActivity.class);
                 intent.putExtra(Constants.REPORT_ID, parsedReportList.getList().get(position).getId());
                 intent.putExtra(Constants.EMAIL, email);
+                intent.putExtra(Constants.REPORT_NAME, parsedReportList.getList().get(position).getHeading());
                 startActivity(intent);
 
             }

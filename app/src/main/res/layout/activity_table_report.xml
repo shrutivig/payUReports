@@ -4,6 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <include layout="@layout/toolbar_custom" />
+
+    </android.support.design.widget.AppBarLayout>
+
     <ScrollView
         android:id="@+id/layout"
         android:layout_width="match_parent"
@@ -30,10 +39,22 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_5"
                     android:gravity="center"
-                    android:text="PayU 1"
+                    android:text="Table 1"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_20"
+                    android:textSize="@dimen/text_size_14"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/empty_table1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="No data to show."
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <HorizontalScrollView
                     android:id="@+id/horizontalView"
@@ -42,14 +63,13 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/margin_20"
                     android:layout_marginRight="@dimen/margin_20"
-                    android:layout_marginTop="5dip"
                     android:scrollbars="horizontal|vertical">
 
                     <TableLayout
-                        android:id="@+id/report_table"
+                        android:id="@+id/report_table1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/margin_20"
+                        android:layout_marginBottom="@dimen/margin_10"
                         android:gravity="center"
                         android:stretchColumns="*" />
 
@@ -66,12 +86,24 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_20"
+                    android:layout_margin="@dimen/margin_5"
                     android:gravity="center"
-                    android:text="PayU 2"
+                    android:text="Table 2"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_20"
+                    android:textSize="@dimen/text_size_14"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/empty_table2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="No data to show."
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <HorizontalScrollView
                     android:id="@+id/horizontalView2"
@@ -80,19 +112,19 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/margin_20"
                     android:layout_marginRight="@dimen/margin_20"
-                    android:layout_marginTop="5dip"
                     android:scrollbars="horizontal|vertical">
 
                     <TableLayout
                         android:id="@+id/report_table2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/margin_20"
+                        android:layout_marginBottom="@dimen/margin_10"
                         android:gravity="center"
                         android:stretchColumns="*" />
 
                 </HorizontalScrollView>
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layoutForTable3"
                 android:layout_width="match_parent"
@@ -103,12 +135,24 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_20"
+                    android:layout_margin="@dimen/margin_5"
                     android:gravity="center"
-                    android:text="PayU 2"
+                    android:text="Table 3"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_20"
+                    android:textSize="@dimen/text_size_14"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/empty_table3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="No data to show."
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <HorizontalScrollView
                     android:id="@+id/horizontalView3"
@@ -117,14 +161,356 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/margin_20"
                     android:layout_marginRight="@dimen/margin_20"
-                    android:layout_marginTop="5dip"
                     android:scrollbars="horizontal|vertical">
 
                     <TableLayout
                         android:id="@+id/report_table3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/margin_20"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:gravity="center"
+                        android:stretchColumns="*" />
+
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutForTable4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="Table 4"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/empty_table4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="No data to show."
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:scrollbars="horizontal|vertical">
+
+                    <TableLayout
+                        android:id="@+id/report_table4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:gravity="center"
+                        android:stretchColumns="*" />
+
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutForTable5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="Table 5"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/empty_table5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="No data to show."
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:scrollbars="horizontal|vertical">
+
+                    <TableLayout
+                        android:id="@+id/report_table5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:gravity="center"
+                        android:stretchColumns="*" />
+
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutForTable6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="Table 6"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/empty_table6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="No data to show."
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:scrollbars="horizontal|vertical">
+
+                    <TableLayout
+                        android:id="@+id/report_table6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:gravity="center"
+                        android:stretchColumns="*" />
+
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutForTable7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="Table 7"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/empty_table7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="No data to show."
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:scrollbars="horizontal|vertical">
+
+                    <TableLayout
+                        android:id="@+id/report_table7"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:gravity="center"
+                        android:stretchColumns="*" />
+
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutForTable8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="Table 8"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/empty_table8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="No data to show."
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:scrollbars="horizontal|vertical">
+
+                    <TableLayout
+                        android:id="@+id/report_table8"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:gravity="center"
+                        android:stretchColumns="*" />
+
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutForTable9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="Table 9"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/empty_table9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="No data to show."
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:scrollbars="horizontal|vertical">
+
+                    <TableLayout
+                        android:id="@+id/report_table9"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:gravity="center"
+                        android:stretchColumns="*" />
+
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutForTable10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="Table 10"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/empty_table10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_5"
+                    android:gravity="center"
+                    android:text="No data to show."
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/text_size_12"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:scrollbars="horizontal|vertical">
+
+                    <TableLayout
+                        android:id="@+id/report_table10"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/margin_10"
                         android:gravity="center"
                         android:stretchColumns="*" />
 

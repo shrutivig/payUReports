@@ -55,4 +55,5 @@ public class Constants {
     public static final String START_DATE = "startDate";
 
     public static final String END_DATE = "endDate";
+    public static final String REPORT_NAME = "reportName";
 }
