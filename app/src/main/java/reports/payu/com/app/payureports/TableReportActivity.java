@@ -156,6 +156,7 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
 
             if (tableData == null || tableData.length() == 0) {
                 emptyTableText.setVisibility(View.VISIBLE);
+                return;
             } else {
                 Iterator headerValues = ((JSONObject) tableData.get(0)).keys();
 
@@ -302,11 +303,11 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
                 } else {
                     if (ringProgressDialog.isShowing())
                         ringProgressDialog.dismiss();
-                    JSONObject temp = null;
 
                     if (event.getValue().toString().contains("Server error")) {
-                        handleStatus("XYZ", "XYZ");
+                        handleStatus("XYZ", event.getValue().toString());
                     } else {
+                        JSONObject temp = (JSONObject) event.getValue();
                         String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
                         String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
                         handleStatus(errorCode, errorMessage);

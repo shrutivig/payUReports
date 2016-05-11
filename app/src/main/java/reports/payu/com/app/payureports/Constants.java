@@ -32,6 +32,7 @@ public class Constants {
 
     public static final String BASE_URL_IMAGE = "";
     public static final String BASE_URL = "";
+    public static final String SERVER_URL = "https://mobiletest.payu.in/reporting/reportingPostservice";
 
     public static final String ACCESS_TOKEN = "token";
     public static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", Pattern.CASE_INSENSITIVE);

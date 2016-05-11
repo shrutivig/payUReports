@@ -328,7 +328,7 @@ public class Session {
         p.put(Constants.EMAIL, email);
         p.put(Constants.EVENT_FLAG, Constants.EVENT_1);
 
-        postFetch("https://mobiletest.payu.in/reporting/reportingPostservice", p, new Task() {
+        postFetch(Constants.SERVER_URL, p, new Task() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {
@@ -371,7 +371,7 @@ public class Session {
         else
             p.put(Constants.DURATION, " ");
 
-        postFetch("https://mobiletest.payu.in/reporting/reportingPostservice", p, new Task() {
+        postFetch(Constants.SERVER_URL, p, new Task() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {

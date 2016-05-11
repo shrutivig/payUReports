@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         if (getIntent() != null) {
             email = getIntent().getStringExtra(Constants.EMAIL);
         }
-        makeLoginCall();
+        //       makeLoginCall();
 
         reportListView = (ListView) findViewById(R.id.report_list);
 
@@ -165,15 +165,15 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                     }
 
                 } else {
-                    JSONObject temp = null;
+
 
                     if (event.getValue().toString().contains("Server error")) {
-                        handleStatus("XYZ", "XYZ");
+                        handleStatus("XYZ", event.getValue().toString());
                     } else {
+                        JSONObject temp = (JSONObject) event.getValue();
                         String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
                         String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
                         handleStatus(errorCode, errorMessage);
-
                     }
                 }
                 break;
@@ -211,7 +211,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                 signOutButton.callOnClick();
                 break;
             default:
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 signOutButton.callOnClick();
                 break;
         }

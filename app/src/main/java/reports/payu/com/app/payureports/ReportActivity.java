@@ -256,6 +256,8 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
     View.OnClickListener viewByButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (ringProgressDialog.isShowing())
+                ringProgressDialog.dismiss();
             resetAllViewByBackgroundsToDefault();
             switch (v.getId()) {
                 case R.id.button_day:
@@ -739,8 +741,9 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
     public void onEventMainThread(CobbocEvent event) {
         switch (event.getType()) {
             case CobbocEvent.REPORT:
-                ringProgressDialog.dismiss();
+
                 if (event.getStatus()) {
+
                     JSONObject jsonObject = (JSONObject) event.getValue();
                     reportsResults = (ReportResults) Session.getInstance(this).getParsedResponseFromGSON(jsonObject, Session.dataType.ReportResults);
                     mOverall = reportsResults.getDisplayReportResult().getOverall();
@@ -751,11 +754,12 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
                     setVisibilityOfButtons();
 
                 } else {
-                    JSONObject temp = null;
-
+                    if (ringProgressDialog.isShowing())
+                        ringProgressDialog.dismiss();
                     if (event.getValue().toString().contains("Server error")) {
-                        handleStatus("XYZ", "XYZ");
+                        handleStatus("XYZ", event.getValue().toString());
                     } else {
+                        JSONObject temp = (JSONObject) event.getValue();
                         String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
                         String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
                         handleStatus(errorCode, errorMessage);
