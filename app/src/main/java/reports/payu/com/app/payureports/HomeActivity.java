@@ -28,7 +28,7 @@ import java.util.List;
 
 import reports.payu.com.app.payureports.Model.ReportList;
 
-public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     private final String REPORT_TYPE_CUSTOM = "custom";
     private final String REPORT_TYPE_GENERIC = "generic";
@@ -107,11 +107,10 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = null;
-               /* if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_CUSTOM))
+                if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_CUSTOM))
                     intent = new Intent(HomeActivity.this, ReportActivity.class);
                 else if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_GENERIC))
-                    intent = new Intent(HomeActivity.this, TableReportActivity.class);*/
-                intent = new Intent(HomeActivity.this, ReportActivity.class);
+                    intent = new Intent(HomeActivity.this, TableReportActivity.class);
                 intent.putExtra(Constants.REPORT_ID, parsedReportList.getList().get(position).getId());
                 intent.putExtra(Constants.EMAIL, email);
                 startActivity(intent);
@@ -222,6 +221,5 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
 
     }
-
 
 }

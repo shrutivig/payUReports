@@ -2,6 +2,7 @@ package reports.payu.com.app.payureports;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,6 +32,12 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -52,11 +59,12 @@ import reports.payu.com.app.payureports.Model.ReportResults;
 /**
  * Created by shruti.vig on 5/4/16.
  */
-public class ReportActivity extends AppCompatActivity {
+public class ReportActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private final int FLAG_FILTER_DAY = 0;
     private final int FLAG_FILTER_WEEK = 1;
     private final int FLAG_FILTER_MONTH = 2;
+    private GoogleApiClient mGoogleApiClient;
 
     private HorizontalBarChart barChart;
     private ReportResults reportsResults;
@@ -76,7 +84,6 @@ public class ReportActivity extends AppCompatActivity {
     private String submitStartDate, submitEndDate;
     private List<ReportData> mDay, mWeek, mMonth;
     private ReportData mOverall;
-
 
     @Override
     protected void onStart() {
@@ -119,6 +126,15 @@ public class ReportActivity extends AppCompatActivity {
                 }
             }
         });
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
         startDateFilter = (TextView) findViewById(R.id.filter_start_date);
         startDateFilter.setOnClickListener(selectDateChooserClickListener);
@@ -170,7 +186,6 @@ public class ReportActivity extends AppCompatActivity {
 
         setOnClickListenersForButtons();
         fetchReportData(null);
-        //    setDataInChart(FLAG_FILTER_DAY);
     }
 
     View.OnTouchListener onMapTouchListener = new View.OnTouchListener() {
@@ -733,12 +748,77 @@ public class ReportActivity extends AppCompatActivity {
                     setVisibilityOfButtons();
 
                 } else {
+                    JSONObject temp = null;
 
-                    Toast.makeText(this, event.getValue().toString(), Toast.LENGTH_SHORT).show();
+                    if (event.getValue().toString().contains("Server error")) {
+                        handleStatus("XYZ", "XYZ");
+                    } else {
+                        String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
+                        String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
+                        handleStatus(errorCode, errorMessage);
+                    }
                 }
                 break;
 
             default:
         }
+    }
+
+    private void handleStatus(String errorCode, String errorMessage) {
+
+        switch (errorCode) {
+            case "ER101":
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                logoutUser();
+                break;
+            case "ER102":
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                logoutUser();
+                break;
+            case "ER103":
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                logoutUser();
+                break;
+            case "ER104":
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                logoutUser();
+                break;
+            case "ER105":
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                logoutUser();
+                break;
+            case "ER106":
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                logoutUser();
+                break;
+            default:
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                logoutUser();
+                break;
+        }
+
+
+    }
+
+    private void logoutUser() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        launchLoginSignupActivity();
+                    }
+                });
+    }
+
+    private void launchLoginSignupActivity() {
+
+        Intent i = new Intent(this, LoginSignUpActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 }
