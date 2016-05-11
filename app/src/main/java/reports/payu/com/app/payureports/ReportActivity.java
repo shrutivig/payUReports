@@ -62,8 +62,8 @@ public class ReportActivity extends AppCompatActivity {
     private ReportResults reportsResults;
     private LineChart lineChart;
     private PieChart pieChart;
-    private int[] colors = new int[]{Color.rgb(106, 150, 31), Color.rgb(193, 37, 82), Color.rgb(245, 199, 0), Color.rgb(255, 102, 0),
-            Color.rgb(179, 100, 53), Color.rgb(255, 32, 34)};
+    private int[] colors = new int[]{Color.rgb(28, 148, 36), Color.rgb(217, 58, 33), Color.rgb(253, 152, 39), Color.rgb(54, 105, 201),
+            Color.rgb(151, 20, 151), Color.rgb(24, 153, 196)};
     private TextView startDateFilter;
     private TextView endDateFilter;
     private Date startDate;
@@ -454,7 +454,7 @@ public class ReportActivity extends AppCompatActivity {
         pieChart.setDescriptionTextSize(10f);
         pieChart.setHoleRadius(24f);
         pieChart.setTransparentCircleRadius(27f);
-        pieChart.animateY(3000);
+        pieChart.animateY(2000);
     }
 
     private void setDataInBarChart(List<ReportData> list, boolean isDaySelected) {
@@ -509,6 +509,7 @@ public class ReportActivity extends AppCompatActivity {
         BarData mData2 = new BarData(xVals, dataSet2);
         barChart.getXAxis().setTextSize(2f);
         barChart.setData(mData2);
+        barChart.setDescription("");
         barChart.animateY(2000);
     }
 
@@ -624,6 +625,7 @@ public class ReportActivity extends AppCompatActivity {
 
         LineData mData = new LineData(xVals, dataSets);
         lineChart.setData(mData);
+        lineChart.setDescription("");
         lineChart.animateX(2000);
 
     }
