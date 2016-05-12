@@ -41,7 +41,6 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
     ProgressDialog ringProgressDialog;
     private GoogleApiClient mGoogleApiClient;
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -95,7 +94,6 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
     }
 
     private void fetchReportData(JSONObject duration) {
-
         Session.getInstance(this).fetchReportData(email, reportId, duration);
     }
 
@@ -175,10 +173,10 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
 
                     headers.add(tempHeader);
 
-                }
-                reportsTable.addView(headerRow, new TableLayout.LayoutParams(
-                        TableLayout.LayoutParams.MATCH_PARENT,
-                        TableLayout.LayoutParams.WRAP_CONTENT));
+            }
+            reportsTable.addView(headerRow, new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT));
 
                 for (int i = 0; i < tableData.length(); i++) {
 
@@ -281,8 +279,6 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Subscribe
@@ -314,7 +310,6 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
                     }
                 }
                 break;
-
             default:
         }
     }
