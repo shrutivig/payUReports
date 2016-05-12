@@ -276,7 +276,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
             Calendar minDateToBeSelected = Calendar.getInstance();
             minDateToBeSelected.set(Calendar.YEAR, 2014);
             minDateToBeSelected.set(Calendar.MONTH, 3);
-            minDateToBeSelected.set(Calendar.DATE, 25);
+            minDateToBeSelected.set(Calendar.DAY_OF_MONTH, 25);
             datePicker.getDatePicker().setMinDate(minDateToBeSelected.getTimeInMillis());
             datePicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
 
