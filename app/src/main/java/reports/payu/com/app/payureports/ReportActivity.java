@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import reports.payu.com.app.payureports.Model.ReportData;
 import reports.payu.com.app.payureports.Model.ReportResults;
@@ -74,7 +76,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
             Color.rgb(151, 20, 151), Color.rgb(24, 153, 196)};
     private TextView startDateFilter;
     private TextView endDateFilter;
-    private Date startDate;
+    private Calendar startDate, endDate;
     private boolean mFilterStartDateEntered = false;
     private boolean mFilterEndDateEntered = false;
     private Button filterDay, filterWeek, filterMonth, filterAll, filterBar, filterLine, filterPie;
@@ -220,20 +222,47 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
                             switch (textView.getId()) {
                                 case R.id.filter_start_date:
-                                    startDateFilter.setError(null);
+
                                     mFilterStartDateEntered = true;
+
                                     startDateFilter.setText(dayOfMonth + " - "
                                             + (monthOfYear + 1) + " - " + year);
                                     submitStartDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-                                    startDate = new Date(year - 1900, monthOfYear, dayOfMonth);
+
+                                    if (mFilterEndDateEntered) {
+                                        endDate = null;
+                                        mFilterEndDateEntered = false;
+                                        endDateFilter.setText("");
+                                        submitEndDate = null;
+                                    }
+
+                                    startDate = Calendar.getInstance();
+                                    startDate.set(Calendar.YEAR, year);
+                                    startDate.set(Calendar.MONTH, monthOfYear);
+                                    startDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+
                                     break;
                                 case R.id.filter_end_date:
                                     if (mFilterStartDateEntered) {
-                                        endDateFilter.setError(null);
-                                        mFilterEndDateEntered = true;
-                                        endDateFilter.setText(dayOfMonth + " - "
-                                                + (monthOfYear + 1) + " - " + year);
-                                        submitEndDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+
+                                        endDate = Calendar.getInstance();
+                                        endDate.set(Calendar.YEAR, year);
+                                        endDate.set(Calendar.MONTH, monthOfYear);
+                                        endDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                                        if (startDate.getTimeInMillis() > endDate.getTimeInMillis()) {
+                                            showSnackBar("End Date cannot be before Start Date.");
+                                            endDate = null;
+                                            mFilterEndDateEntered = false;
+                                            endDateFilter.setText("");
+                                            submitEndDate = null;
+                                        } else {
+                                            mFilterEndDateEntered = true;
+                                            endDateFilter.setText(dayOfMonth + " - "
+                                                    + (monthOfYear + 1) + " - " + year);
+                                            submitEndDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                                        }
                                     } else {
                                         showSnackBar("Start Date cannot be empty.");
                                     }
@@ -244,12 +273,27 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
                     }, mYear, mMonth, mDay);
             datePicker.show();
+            Calendar minDateToBeSelected = Calendar.getInstance();
+            minDateToBeSelected.set(Calendar.YEAR, 2014);
+            minDateToBeSelected.set(Calendar.MONTH, 3);
+            minDateToBeSelected.set(Calendar.DATE, 25);
+            datePicker.getDatePicker().setMinDate(minDateToBeSelected.getTimeInMillis());
             datePicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
 
-            if (textView.getId() == R.id.filter_end_date && mFilterStartDateEntered) {
-                datePicker.getDatePicker().setMinDate(startDate.getTime());
-                datePicker.updateDate(startDate.getYear(), startDate.getMonth(), startDate.getDay());
+
+            switch (textView.getId()) {
+                case R.id.filter_start_date:
+                    if (mFilterStartDateEntered && startDate != null)
+                        datePicker.updateDate(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH));
+                    break;
+                case R.id.filter_end_date:
+                    if (mFilterEndDateEntered && endDate != null)
+                        datePicker.updateDate(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH), endDate.get(Calendar.DAY_OF_MONTH));
+                    break;
+
             }
+
+
         }
     };
 
