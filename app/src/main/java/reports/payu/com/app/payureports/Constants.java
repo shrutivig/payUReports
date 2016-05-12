@@ -11,7 +11,7 @@ public class Constants {
      * Tag for logging
      */
     public static final String TAG = "CCPayU";
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final String HOME = "HOME";  //CCHomeActivity
 
     public static final boolean CC_TRANSACTION_HISTORY_SHOW_FOOTER = true;

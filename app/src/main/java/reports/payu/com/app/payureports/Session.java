@@ -203,12 +203,13 @@ public class Session {
     public void postFetch(final String url, final Map<String, String> params, final Task task, final int method) {
 
         if (Constants.DEBUG) {
-            Logger.d(Session.TAG, "SdkSession.postFetch: " + url + " " + params + " " + method);
+            Log.d("PayU", "SdkSession.postFetch: " + url + " " + params + " " + method);
         }
         StringRequest myRequest = new StringRequest(method, getAbsoluteUrl(url), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
+                Log.d("PayU", "SdkSession.postFetch: " + "success");
                 try {
 
                     JSONObject object = new JSONObject(response);
@@ -226,6 +227,7 @@ public class Session {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.d("PayU", "SdkSession.postFetch: " + "error");
                 runErrorOnHandlerThread(task, error);
             }
         }) {

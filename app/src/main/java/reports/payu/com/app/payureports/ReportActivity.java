@@ -300,8 +300,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
     View.OnClickListener viewByButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (ringProgressDialog.isShowing())
-                ringProgressDialog.dismiss();
+
             resetAllViewByBackgroundsToDefault();
             switch (v.getId()) {
                 case R.id.button_day:
@@ -513,9 +512,21 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         xValsForPieChart.add("Others");
 
         PieData mData3 = new PieData(xValsForPieChart, setPie1);
+        mData3.setValueTextSize(5f);
         pieChart.setData(mData3);
-        pieChart.setDescription(mOverall.getMinDate() + " to " + mOverall.getMaxDate());
-        pieChart.setDescriptionTextSize(10f);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+        try {
+            Date fromDate = dateFormat.parse(mOverall.getMinDate());
+            Date toDate = dateFormat.parse(mOverall.getMaxDate());
+            String from = (String) android.text.format.DateFormat.format("dd-MMM ''yy", fromDate);
+            String to = (String) android.text.format.DateFormat.format("dd-MMM ''yy", toDate);
+            pieChart.setDescription(from + " to " + to);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        pieChart.setDescriptionTextSize(20f);
         pieChart.setHoleRadius(24f);
         pieChart.setTransparentCircleRadius(27f);
         pieChart.animateY(2000);
@@ -796,6 +807,8 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
                     mMonth = reportsResults.getDisplayReportResult().getMonth();
 
                     setVisibilityOfButtons();
+                    if (ringProgressDialog.isShowing())
+                        ringProgressDialog.dismiss();
 
                 } else {
                     if (ringProgressDialog.isShowing())
@@ -842,6 +855,10 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
                 Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
+            case "ER107":
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                break;
+            //logoutUser();
             default:
                 Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 logoutUser();

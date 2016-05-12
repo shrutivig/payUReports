@@ -211,7 +211,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                 signOutButton.callOnClick();
                 break;
             default:
-                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 signOutButton.callOnClick();
                 break;
         }
