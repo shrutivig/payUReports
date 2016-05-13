@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
@@ -23,11 +24,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
+import io.fabric.sdk.android.Fabric;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
-import io.fabric.sdk.android.Fabric;
 
 public class LoginSignUpActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,

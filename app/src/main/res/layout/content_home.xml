@@ -19,6 +19,12 @@
         android:textSize="@dimen/text_size_20"
         android:textStyle="bold" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="crash"
+        android:text="crash"/>
+
     <ListView
         android:id="@+id/report_list"
         android:layout_width="match_parent"
