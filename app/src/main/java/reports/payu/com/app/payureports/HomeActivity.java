@@ -1,8 +1,10 @@
 package reports.payu.com.app.payureports;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -83,18 +85,24 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             signOutButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //signOut();
-                    // LoginSignUpActivity.signOut();
-                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                            new ResultCallback<Status>() {
+                    new AlertDialog.Builder(HomeActivity.this)
+                            .setIcon(R.drawable.alert)
+                            .setTitle("Sign-Out")
+                            .setCancelable(false)
+                            .setMessage("Are you sure you want to sign-out from this application?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onResult(Status status) {
-                                    launchLoginSignupActivity();
+                                public void onClick(DialogInterface dialog, int which) {
+                                    logoutUserFromApp();
                                 }
-                            });
+
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
                 }
             });
         }
+
         findViewById(R.id.disconnect_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +130,16 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     private void makeLoginCall() {
 
         Session.getInstance(this).login(email);
+    }
+
+    private void logoutUserFromApp() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        launchLoginSignupActivity();
+                    }
+                });
     }
 
     @Override
@@ -188,31 +206,31 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         switch (errorCode) {
             case "ER101":
                 Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
-                signOutButton.callOnClick();
+                logoutUserFromApp();
                 break;
             case "ER102":
                 Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
-                signOutButton.callOnClick();
+                logoutUserFromApp();
                 break;
             case "ER103":
                 Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
-                signOutButton.callOnClick();
+                logoutUserFromApp();
                 break;
             case "ER104":
                 Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
-                signOutButton.callOnClick();
+                logoutUserFromApp();
                 break;
             case "ER105":
                 Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
-                signOutButton.callOnClick();
+                logoutUserFromApp();
                 break;
             case "ER106":
                 Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
-                signOutButton.callOnClick();
+                logoutUserFromApp();
                 break;
             default:
                 Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
-                signOutButton.callOnClick();
+                logoutUserFromApp();
                 break;
         }
 
