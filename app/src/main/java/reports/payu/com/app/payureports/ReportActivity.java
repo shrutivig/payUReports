@@ -650,7 +650,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
             if (isDaySelected)
                 xVals.add(date);
             else
-                xVals.add("" + date + " - " + toDate);
+                xVals.add("" + date + "-" + toDate);
 
         }
         LineDataSet setComp1 = new LineDataSet(listSuccess, "Success");
