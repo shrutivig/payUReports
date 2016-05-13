@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -26,6 +27,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
+import io.fabric.sdk.android.Fabric;
+
 public class LoginSignUpActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
@@ -42,6 +45,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login_sign_up);
         mStatusTextView = (TextView) findViewById(R.id.status);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -211,7 +215,7 @@ public class LoginSignUpActivity extends AppCompatActivity implements
     private void launchHomeActivity() {
 
         Intent i = new Intent(this, HomeActivity.class);
-        i.putExtra(Constants.EMAIL,mAccountName);
+        i.putExtra(Constants.EMAIL, mAccountName);
         startActivity(i);
         finish();
     }

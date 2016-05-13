@@ -66,13 +66,18 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        TextView titleText = (TextView) toolbar.findViewById(R.id.title);
-        toolbar.findViewById(R.id.filter_button).setVisibility(View.GONE);
+        TextView titleText = null;
+        if (toolbar != null) {
+            titleText = (TextView) toolbar.findViewById(R.id.title);
+            toolbar.findViewById(R.id.filter_button).setVisibility(View.GONE);
+        }
+
 
         if (getIntent() != null) {
             reportId = getIntent().getStringExtra(Constants.REPORT_ID);
             email = getIntent().getStringExtra(Constants.EMAIL);
-            titleText.setText(getIntent().getStringExtra(Constants.REPORT_NAME));
+            if (titleText != null)
+                titleText.setText(getIntent().getStringExtra(Constants.REPORT_NAME));
         }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -173,10 +178,12 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
 
                     headers.add(tempHeader);
 
-            }
-            reportsTable.addView(headerRow, new TableLayout.LayoutParams(
-                    TableLayout.LayoutParams.MATCH_PARENT,
-                    TableLayout.LayoutParams.WRAP_CONTENT));
+                }
+                if (reportsTable != null) {
+                    reportsTable.addView(headerRow, new TableLayout.LayoutParams(
+                            TableLayout.LayoutParams.MATCH_PARENT,
+                            TableLayout.LayoutParams.WRAP_CONTENT));
+                }
 
                 for (int i = 0; i < tableData.length(); i++) {
 
@@ -196,9 +203,11 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
                         tableRow.addView(column);
                     }
 
-                    reportsTable.addView(tableRow, new TableLayout.LayoutParams(
-                            TableLayout.LayoutParams.MATCH_PARENT,
-                            TableLayout.LayoutParams.WRAP_CONTENT));
+                    if (reportsTable != null) {
+                        reportsTable.addView(tableRow, new TableLayout.LayoutParams(
+                                TableLayout.LayoutParams.MATCH_PARENT,
+                                TableLayout.LayoutParams.WRAP_CONTENT));
+                    }
                 }
             }
         } catch (JSONException e) {

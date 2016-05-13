@@ -767,23 +767,6 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
     }
 
-    public String loadJSONFromAsset() {
-
-        String json;
-        try {
-            InputStream is = this.getAssets().open("reportData.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-    }
-
     private void showSnackBar(String snackbarText) {
         Snackbar snack = Snackbar.make(findViewById(R.id.report_layout), snackbarText, Snackbar.LENGTH_SHORT);
         View view = snack.getView();

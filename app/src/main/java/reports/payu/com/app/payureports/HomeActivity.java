@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -37,7 +38,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     private GoogleApiClient mGoogleApiClient;
     ProgressDialog ringProgressDialog;
     public String email;
-    private Button signOutButton;
     private ReportList parsedReportList;
     private ListView reportListView;
 
@@ -65,8 +65,8 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
         if (getIntent() != null) {
             email = getIntent().getStringExtra(Constants.EMAIL);
+            Crashlytics.setUserEmail(email);
         }
-        //       makeLoginCall();
 
         reportListView = (ListView) findViewById(R.id.report_list);
 
@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        signOutButton = (Button) findViewById(R.id.filter_button);
+        Button signOutButton = (Button) findViewById(R.id.filter_button);
 
         if (signOutButton != null) {
             signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -118,11 +118,12 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                     intent = new Intent(HomeActivity.this, ReportActivity.class);
                 else if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_GENERIC))
                     intent = new Intent(HomeActivity.this, TableReportActivity.class);
-                intent.putExtra(Constants.REPORT_ID, parsedReportList.getList().get(position).getId());
-                intent.putExtra(Constants.EMAIL, email);
-                intent.putExtra(Constants.REPORT_NAME, parsedReportList.getList().get(position).getHeading());
-                startActivity(intent);
-
+                if (intent != null) {
+                    intent.putExtra(Constants.REPORT_ID, parsedReportList.getList().get(position).getId());
+                    intent.putExtra(Constants.EMAIL, email);
+                    intent.putExtra(Constants.REPORT_NAME, parsedReportList.getList().get(position).getHeading());
+                    startActivity(intent);
+                }
             }
         });
     }
