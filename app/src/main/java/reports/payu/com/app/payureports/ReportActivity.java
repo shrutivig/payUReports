@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -109,6 +111,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         setContentView(R.layout.activity_report);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView titleText = (TextView) toolbar.findViewById(R.id.title);
 
@@ -229,17 +232,17 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
                                             + (monthOfYear + 1) + " - " + year);
                                     submitStartDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
 
-                                    if (mFilterEndDateEntered) {
+                                    startDate = Calendar.getInstance();
+                                    startDate.set(Calendar.YEAR, year);
+                                    startDate.set(Calendar.MONTH, monthOfYear);
+                                    startDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                                    if (mFilterEndDateEntered && endDate != null && (startDate.getTimeInMillis() > endDate.getTimeInMillis())) {
                                         endDate = null;
                                         mFilterEndDateEntered = false;
                                         endDateFilter.setText("");
                                         submitEndDate = null;
                                     }
-
-                                    startDate = Calendar.getInstance();
-                                    startDate.set(Calendar.YEAR, year);
-                                    startDate.set(Calendar.MONTH, monthOfYear);
-                                    startDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
 
                                     break;
@@ -871,5 +874,16 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

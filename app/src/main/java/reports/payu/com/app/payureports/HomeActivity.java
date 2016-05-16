@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -62,6 +63,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (getIntent() != null) {
             email = getIntent().getStringExtra(Constants.EMAIL);
@@ -236,6 +238,17 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         }
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

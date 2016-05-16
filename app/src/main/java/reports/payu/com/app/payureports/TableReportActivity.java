@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -65,6 +66,7 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView titleText = null;
         if (toolbar != null) {
@@ -379,5 +381,16 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
