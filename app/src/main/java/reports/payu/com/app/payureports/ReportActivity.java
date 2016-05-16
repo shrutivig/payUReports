@@ -497,10 +497,10 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
         listForPieChart.add(new Entry(successTotal, 0));
         listForPieChart.add(new Entry(failedTotal, 1));
-        listForPieChart.add(new Entry(pendingTotal, 2));
-        listForPieChart.add(new Entry(droppedTotal, 3));
+        listForPieChart.add(new Entry(droppedTotal, 2));
+        listForPieChart.add(new Entry(bouncedTotal, 3));
         listForPieChart.add(new Entry(userCancelledTotal, 4));
-        listForPieChart.add(new Entry(bouncedTotal, 5));
+        listForPieChart.add(new Entry(pendingTotal, 5));
 
         PieDataSet setPie1 = new PieDataSet(listForPieChart, "");
         setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
