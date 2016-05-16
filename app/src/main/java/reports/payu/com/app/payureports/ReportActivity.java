@@ -704,6 +704,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         LineData mData = new LineData(xVals, dataSets);
         lineChart.setData(mData);
         lineChart.setDescription("");
+        lineChart.getXAxis().setAvoidFirstLastClipping(true);
         lineChart.animateX(2000);
 
     }
