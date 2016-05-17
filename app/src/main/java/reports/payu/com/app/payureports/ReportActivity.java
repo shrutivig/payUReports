@@ -234,7 +234,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
                                     startDate = Calendar.getInstance();
                                     startDate.set(Calendar.YEAR, year);
-                                    startDate.set(Calendar.MONTH, monthOfYear);
+                                    startDate.set(Calendar.MONTH, monthOfYear + 1);
                                     startDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
                                     if (mFilterEndDateEntered && endDate != null && (startDate.getTimeInMillis() > endDate.getTimeInMillis())) {
@@ -251,7 +251,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
                                         endDate = Calendar.getInstance();
                                         endDate.set(Calendar.YEAR, year);
-                                        endDate.set(Calendar.MONTH, monthOfYear);
+                                        endDate.set(Calendar.MONTH, monthOfYear + 1);
                                         endDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
                                         if (startDate.getTimeInMillis() > endDate.getTimeInMillis()) {
@@ -287,11 +287,11 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
             switch (textView.getId()) {
                 case R.id.filter_start_date:
                     if (mFilterStartDateEntered && startDate != null)
-                        datePicker.updateDate(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH));
+                        datePicker.updateDate(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH) - 1, startDate.get(Calendar.DAY_OF_MONTH));
                     break;
                 case R.id.filter_end_date:
                     if (mFilterEndDateEntered && endDate != null)
-                        datePicker.updateDate(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH), endDate.get(Calendar.DAY_OF_MONTH));
+                        datePicker.updateDate(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH) - 1, endDate.get(Calendar.DAY_OF_MONTH));
                     break;
 
             }
@@ -792,6 +792,34 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
                     mDay = reportsResults.getDisplayReportResult().getDay();
                     mWeek = reportsResults.getDisplayReportResult().getWeek();
                     mMonth = reportsResults.getDisplayReportResult().getMonth();
+
+                    if (!mFilterStartDateEntered && !mFilterEndDateEntered) {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        try {
+                            Date start = dateFormat.parse(reportsResults.getDisplayReportResult().getOverall().getMinDate());
+                            startDateFilter.setText(android.text.format.DateFormat.format("dd - M - yyyy", start));
+                            Date end = dateFormat.parse(reportsResults.getDisplayReportResult().getOverall().getMaxDate());
+                            endDateFilter.setText(android.text.format.DateFormat.format("dd - M - yyyy", end));
+                            mFilterEndDateEntered = true;
+                            mFilterStartDateEntered = true;
+
+                            startDate = Calendar.getInstance();
+                            startDate.set(Calendar.YEAR, Integer.parseInt((String) android.text.format.DateFormat.format("yyyy", start)));
+                            startDate.set(Calendar.MONTH, Integer.parseInt((String) android.text.format.DateFormat.format("M", start)));
+                            startDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt((String) android.text.format.DateFormat.format("dd", start)));
+
+                            submitStartDate = Integer.parseInt((String) android.text.format.DateFormat.format("yyyy", start)) + "-" + Integer.parseInt((String) android.text.format.DateFormat.format("M", start)) + "-" + Integer.parseInt((String) android.text.format.DateFormat.format("dd", start));
+
+                            endDate = Calendar.getInstance();
+                            endDate.set(Calendar.YEAR, Integer.parseInt((String) android.text.format.DateFormat.format("yyyy", end)));
+                            endDate.set(Calendar.MONTH, Integer.parseInt((String) android.text.format.DateFormat.format("M", end)));
+                            endDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt((String) android.text.format.DateFormat.format("dd", end)));
+
+                            submitEndDate = Integer.parseInt((String) android.text.format.DateFormat.format("yyyy", end)) + "-" + Integer.parseInt((String) android.text.format.DateFormat.format("M", end)) + "-" + Integer.parseInt((String) android.text.format.DateFormat.format("dd", end));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
                     setVisibilityOfButtons();
                     if (ringProgressDialog.isShowing())
