@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -59,6 +60,8 @@ import java.util.TimeZone;
 
 import reports.payu.com.app.payureports.Model.ReportData;
 import reports.payu.com.app.payureports.Model.ReportResults;
+
+import static android.graphics.Typeface.*;
 
 /**
  * Created by shruti.vig on 5/4/16.
@@ -515,7 +518,8 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         xValsForPieChart.add("Others");
 
         PieData mData3 = new PieData(xValsForPieChart, setPie1);
-        mData3.setValueTextSize(5f);
+        mData3.setValueTextSize(8f);
+        mData3.setValueTypeface(Typeface.DEFAULT_BOLD);
         pieChart.setData(mData3);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
         try {
@@ -531,6 +535,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
         pieChart.setDescriptionTextSize(20f);
         pieChart.setHoleRadius(24f);
+        pieChart.setDrawSliceText(false);
         pieChart.setTransparentCircleRadius(27f);
         pieChart.animateY(2000);
     }
