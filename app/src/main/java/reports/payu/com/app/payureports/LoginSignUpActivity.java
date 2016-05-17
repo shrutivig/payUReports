@@ -25,6 +25,7 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
 import io.fabric.sdk.android.Fabric;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
@@ -46,6 +47,15 @@ public class LoginSignUpActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!isTaskRoot()) {  //launcher issue on some devices, app restarts rather than resuming fix
+            final Intent intent = getIntent();
+            final String intentAction = intent.getAction();
+            if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && intentAction != null && intentAction.equals(Intent.ACTION_MAIN)) {
+                finish();
+                return;
+            }
+        }
+
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login_sign_up);
         mStatusTextView = (TextView) findViewById(R.id.status);
