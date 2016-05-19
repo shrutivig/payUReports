@@ -659,8 +659,8 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
                 xVals.add(date);
             else
                 xVals.add("" + date + "-" + toDate);
-
         }
+
         LineDataSet setComp1 = new LineDataSet(listSuccess, "Success");
         LineDataSet setComp2 = new LineDataSet(listFailed, "Failed");
         LineDataSet setComp3 = new LineDataSet(listDropped, "Dropped");
@@ -669,32 +669,32 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         LineDataSet setComp6 = new LineDataSet(listOther, "Others");
 
         setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp1.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp1.setCircleColor(colors[0]);
         setComp1.setColor(colors[0]);
         setComp1.setLineWidth(2);
 
         setComp2.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp2.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp2.setCircleColor(colors[1]);
         setComp2.setColor(colors[1]);
         setComp2.setLineWidth(2);
 
         setComp3.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp3.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp3.setCircleColor(colors[2]);
         setComp3.setColor(colors[2]);
         setComp3.setLineWidth(2);
 
         setComp4.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp4.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp4.setCircleColor(colors[3]);
         setComp4.setColor(colors[3]);
         setComp4.setLineWidth(2);
 
         setComp5.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp5.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp5.setCircleColor(colors[4]);
         setComp5.setColor(colors[4]);
         setComp5.setLineWidth(2);
 
         setComp6.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp6.setCircleColor(ContextCompat.getColor(this, R.color.black));
+        setComp6.setCircleColor(colors[5]);
         setComp6.setColor(colors[5]);
         setComp6.setLineWidth(2);
 
@@ -706,7 +706,17 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         dataSets.add(setComp5);
         dataSets.add(setComp6);
 
+        if (xVals.size() < 2) {
+            xVals.add("");
+        }
+
         LineData mData = new LineData(xVals, dataSets);
+
+        if (xVals.size() < 3 && xVals.get(1).equals(""))
+            lineChart.getXAxis().setAxisMinValue(-1f);
+        else
+            lineChart.getXAxis().setAxisMinValue(0f);
+
         lineChart.setData(mData);
         lineChart.setDescription("");
         lineChart.getXAxis().setAvoidFirstLastClipping(true);
