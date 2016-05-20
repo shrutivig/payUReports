@@ -36,6 +36,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -78,7 +79,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
     private LineChart lineChart;
     private PieChart pieChart;
     private int[] colors = new int[]{Color.rgb(28, 148, 36), Color.rgb(217, 58, 33), Color.rgb(253, 152, 39), Color.rgb(54, 105, 201),
-            Color.rgb(151, 20, 151), Color.rgb(24, 153, 196)};
+            Color.rgb(151, 20, 151), Color.rgb(24, 153, 196), Color.rgb(0, 0, 0)};
     private TextView startDateFilter;
     private TextView endDateFilter;
     private Calendar startDate, endDate;
@@ -376,6 +377,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
                     setDataInPieChart(mOverall);
                     pieChart.setVisibility(View.VISIBLE);
+
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -388,7 +390,6 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
     };
 
     private void fetchReportData(JSONObject duration) {
-
         Session.getInstance(this).fetchReportData(email, reportId, duration);
     }
 
@@ -488,56 +489,110 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
     private void setDataInPieChart(ReportData l) {
 
+        pieChart.clear();
+
         ArrayList<Entry> listForPieChart = new ArrayList<>();
         ArrayList<String> xValsForPieChart = new ArrayList<>();
+        ArrayList<Integer> colorList = new ArrayList<>();
 
-        float successTotal = l.getSuccess();
-        float failedTotal = l.getFailed();
-        float droppedTotal = l.getDropped();
-        float bouncedTotal = l.getBounced();
-        float userCancelledTotal = l.getUserCancelled();
-        float pendingTotal = l.getPending();
+        float otherTotal = 0.0f;
+        int index = 0;
 
-        listForPieChart.add(new Entry(successTotal, 0));
-        listForPieChart.add(new Entry(failedTotal, 1));
-        listForPieChart.add(new Entry(droppedTotal, 2));
-        listForPieChart.add(new Entry(bouncedTotal, 3));
-        listForPieChart.add(new Entry(userCancelledTotal, 4));
-        listForPieChart.add(new Entry(pendingTotal, 5));
-
-        PieDataSet setPie1 = new PieDataSet(listForPieChart, "");
-        setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setPie1.setColors(colors);
-        setPie1.setValueTextSize(5f);
-
-        xValsForPieChart.add("Success");
-        xValsForPieChart.add("Failed");
-        xValsForPieChart.add("Dropped");
-        xValsForPieChart.add("Bounced");
-        xValsForPieChart.add("User Cancelled");
-        xValsForPieChart.add("Others");
-
-        PieData mData3 = new PieData(xValsForPieChart, setPie1);
-        mData3.setValueTextSize(8f);
-        mData3.setValueTypeface(Typeface.DEFAULT_BOLD);
-        pieChart.setData(mData3);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
-        try {
-            Date fromDate = dateFormat.parse(mOverall.getMinDate());
-            Date toDate = dateFormat.parse(mOverall.getMaxDate());
-            String from = (String) android.text.format.DateFormat.format("dd-MMM ''yy", fromDate);
-            String to = (String) android.text.format.DateFormat.format("dd-MMM ''yy", toDate);
-            pieChart.setDescription(from + " to " + to);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (l.getSuccess() < 1f)
+            otherTotal = otherTotal + l.getSuccess();
+        else {
+            listForPieChart.add(new Entry(l.getSuccess(), index++));
+            xValsForPieChart.add("Success");
+            colorList.add(Color.rgb(28, 148, 36));
         }
 
-        pieChart.setDescriptionTextSize(20f);
-        pieChart.setHoleRadius(24f);
-        pieChart.setDrawSliceText(false);
-        pieChart.setTransparentCircleRadius(27f);
-        pieChart.animateY(2000);
+        if (l.getFailed() < 1f)
+            otherTotal = otherTotal + l.getFailed();
+        else {
+            listForPieChart.add(new Entry(l.getFailed(), index++));
+            xValsForPieChart.add("Failed");
+            colorList.add(Color.rgb(217, 58, 33));
+        }
+
+        if (l.getDropped() < 1f)
+            otherTotal = otherTotal + l.getDropped();
+        else {
+            listForPieChart.add(new Entry(l.getDropped(), index++));
+            xValsForPieChart.add("Dropped");
+            colorList.add(Color.rgb(253, 152, 39));
+        }
+
+        if (l.getBounced() < 1f)
+            otherTotal = otherTotal + l.getBounced();
+        else {
+            listForPieChart.add(new Entry(l.getBounced(), index++));
+            xValsForPieChart.add("Bounced");
+            colorList.add(Color.rgb(54, 105, 201));
+        }
+
+        if (l.getUserCancelled() < 1f)
+            otherTotal = otherTotal + l.getUserCancelled();
+        else {
+            listForPieChart.add(new Entry(l.getUserCancelled(), index++));
+            xValsForPieChart.add("User Cancelled");
+            colorList.add(Color.rgb(151, 20, 151));
+        }
+
+        if (l.getPending() < 1f)
+            otherTotal = otherTotal + l.getPending();
+        else {
+            listForPieChart.add(new Entry(l.getPending(), index++));
+            xValsForPieChart.add("Pending");
+            colorList.add(Color.rgb(24, 153, 196));
+        }
+
+        if (otherTotal > 0.0f) {
+            listForPieChart.add(new Entry(otherTotal, index++));
+            xValsForPieChart.add("Others");
+            colorList.add(Color.rgb(0, 0, 0));
+        }
+
+        if (l.getSuccess() == 0.0f && l.getPending() == 0.0f && l.getBounced() == 0.0f && l.getFailed() == 0.0f
+                && l.getUserCancelled() == 0.0f && l.getDropped() == 0.0f && otherTotal == 0.0f) {
+            pieChart.setNoDataText("No data to display.");
+            return;
+        } else {
+
+            PieDataSet setPie1 = new PieDataSet(listForPieChart, "");
+            setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+            int[] ret = new int[colorList.size()];
+            int i = 0;
+            for (Integer e : colorList)
+                ret[i++] = e.intValue();
+
+            setPie1.setColors(ret);
+            setPie1.setValueTextSize(5f);
+
+            PieData mData3 = new PieData(xValsForPieChart, setPie1);
+            mData3.setValueTextSize(8f);
+            mData3.setValueTypeface(Typeface.DEFAULT_BOLD);
+            pieChart.setData(mData3);
+
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+            try {
+                Date fromDate = dateFormat.parse(mOverall.getMinDate());
+                Date toDate = dateFormat.parse(mOverall.getMaxDate());
+                String from = (String) android.text.format.DateFormat.format("dd-MMM ''yy", fromDate);
+                String to = (String) android.text.format.DateFormat.format("dd-MMM ''yy", toDate);
+                pieChart.setDescription(from + " to " + to);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            pieChart.setDescriptionTextSize(20f);
+            pieChart.setHoleRadius(24f);
+            pieChart.setDrawSliceText(false);
+            pieChart.setTransparentCircleRadius(27f);
+            pieChart.animateY(2000);
+        }
     }
 
     private void setDataInBarChart(List<ReportData> list, boolean isDaySelected) {
@@ -547,12 +602,45 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         ArrayList<String> xVals = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
+
             float tempSuccess = list.get(i).getSuccess();
             float tempFailure = list.get(i).getFailed();
             float tempDropped = list.get(i).getDropped();
             float tempBounced = list.get(i).getBounced();
             float tempUserCancelled = list.get(i).getUserCancelled();
             float tempPending = list.get(i).getPending();
+
+            float tempOthers = 0.0f;
+
+            if (tempSuccess < 1f) {
+                tempOthers = tempOthers + tempSuccess;
+                tempSuccess = 0.0f;
+            }
+
+            if (tempFailure < 1f) {
+                tempOthers = tempOthers + tempFailure;
+                tempFailure = 0.0f;
+            }
+
+            if (tempDropped < 1f) {
+                tempOthers = tempOthers + tempDropped;
+                tempDropped = 0.0f;
+            }
+
+            if (tempBounced < 1f) {
+                tempOthers = tempOthers + tempBounced;
+                tempBounced = 0.0f;
+            }
+
+            if (tempUserCancelled < 1f) {
+                tempOthers = tempOthers + tempUserCancelled;
+                tempUserCancelled = 0.0f;
+            }
+
+            if (tempPending < 1f) {
+                tempOthers = tempOthers + tempPending;
+                tempPending = 0.0f;
+            }
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
             String date = null;
@@ -578,22 +666,24 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
                 xVals.add("" + date + " - " + toDate);
 
 
-            BarEntry tempBarEntry = new BarEntry(new float[]{tempSuccess, tempFailure, tempDropped, tempBounced, tempUserCancelled, tempPending}, i);
+            BarEntry tempBarEntry = new BarEntry(new float[]{tempSuccess, tempFailure, tempDropped, tempBounced, tempUserCancelled, tempPending, tempOthers}, i);
             barComp1.add(tempBarEntry);
         }
 
         BarDataSet setBar1 = new BarDataSet(barComp1, "");
         setBar1.setAxisDependency(YAxis.AxisDependency.LEFT);
         setBar1.setColors(colors);
-        setBar1.setStackLabels(new String[]{"Success", "Failed", "Dropped", "Bounced", "User Cancelled", "Others"});
+        setBar1.setStackLabels(new String[]{"Success", "Failed", "Dropped", "Bounced", "User Cancelled", "Pending", "Others"});
         setBar1.setValueTextSize(0f);
         ArrayList<IBarDataSet> dataSet2 = new ArrayList<>();
         dataSet2.add(setBar1);
         BarData mData2 = new BarData(xVals, dataSet2);
         barChart.getXAxis().setTextSize(2f);
+        barChart.setHighlightPerTapEnabled(false);
         barChart.setData(mData2);
         barChart.setDescription("");
         barChart.animateY(2000);
+
     }
 
     private void setDataInLineChart(List<ReportData> l, boolean isDaySelected) {
@@ -603,6 +693,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         ArrayList<Entry> listDropped = new ArrayList<>();
         ArrayList<Entry> listBounced = new ArrayList<>();
         ArrayList<Entry> listUserCancelled = new ArrayList<>();
+        ArrayList<Entry> listPending = new ArrayList<>();
         ArrayList<Entry> listOther = new ArrayList<>();
         ArrayList<String> xVals = new ArrayList<>();
 
@@ -610,30 +701,63 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         for (int i = 0; i < list.size(); i++) {
 
             ReportData temp = list.get(i);
+            float otherData = 0.0f;
 
             float tempSuccessValue = temp.getSuccess();
-            Entry success = new Entry(tempSuccessValue, i);
-            listSuccess.add(success);
+            if (tempSuccessValue < 1f) {
+                otherData = otherData + tempSuccessValue;
+            } else {
+                Entry success = new Entry(tempSuccessValue, i);
+                listSuccess.add(success);
+            }
 
             float tempFailedValue = temp.getFailed();
-            Entry failed = new Entry(tempFailedValue, i);
-            listFailed.add(failed);
+
+            if (tempFailedValue < 1f) {
+                otherData = otherData + tempFailedValue;
+            } else {
+                Entry failed = new Entry(tempFailedValue, i);
+                listFailed.add(failed);
+            }
+
 
             float tempDroppedValue = temp.getDropped();
-            Entry dropped = new Entry(tempDroppedValue, i);
-            listDropped.add(dropped);
+
+            if (tempDroppedValue < 1f) {
+                otherData = otherData + tempDroppedValue;
+            } else {
+                Entry dropped = new Entry(tempDroppedValue, i);
+                listDropped.add(dropped);
+            }
 
             float tempBouncedValue = temp.getBounced();
-            Entry bounced = new Entry(tempBouncedValue, i);
-            listBounced.add(bounced);
+            if (tempBouncedValue < 1f) {
+                otherData = otherData + tempBouncedValue;
+            } else {
+                Entry bounced = new Entry(tempBouncedValue, i);
+                listBounced.add(bounced);
+            }
 
             float tempUserCancelledValue = temp.getUserCancelled();
-            Entry userCancelled = new Entry(tempUserCancelledValue, i);
-            listUserCancelled.add(userCancelled);
+            if (tempUserCancelledValue < 1f) {
+                otherData = otherData + tempUserCancelledValue;
+            } else {
+                Entry userCancelled = new Entry(tempUserCancelledValue, i);
+                listUserCancelled.add(userCancelled);
+            }
 
             float tempPendingValue = temp.getPending();
-            Entry others = new Entry(tempPendingValue, i);
-            listOther.add(others);
+            if (tempPendingValue < 1f) {
+                otherData = otherData + tempPendingValue;
+            } else {
+                Entry pending = new Entry(tempPendingValue, i);
+                listPending.add(pending);
+            }
+
+            if (otherData > 0.0f) {
+                Entry other = new Entry(otherData, i);
+                listOther.add(other);
+            }
 
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
@@ -661,50 +785,65 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
                 xVals.add("" + date + "-" + toDate);
         }
 
-        LineDataSet setComp1 = new LineDataSet(listSuccess, "Success");
-        LineDataSet setComp2 = new LineDataSet(listFailed, "Failed");
-        LineDataSet setComp3 = new LineDataSet(listDropped, "Dropped");
-        LineDataSet setComp4 = new LineDataSet(listBounced, "Bounced");
-        LineDataSet setComp5 = new LineDataSet(listUserCancelled, "User Cancelled");
-        LineDataSet setComp6 = new LineDataSet(listOther, "Others");
-
-        setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp1.setCircleColor(colors[0]);
-        setComp1.setColor(colors[0]);
-        setComp1.setLineWidth(2);
-
-        setComp2.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp2.setCircleColor(colors[1]);
-        setComp2.setColor(colors[1]);
-        setComp2.setLineWidth(2);
-
-        setComp3.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp3.setCircleColor(colors[2]);
-        setComp3.setColor(colors[2]);
-        setComp3.setLineWidth(2);
-
-        setComp4.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp4.setCircleColor(colors[3]);
-        setComp4.setColor(colors[3]);
-        setComp4.setLineWidth(2);
-
-        setComp5.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp5.setCircleColor(colors[4]);
-        setComp5.setColor(colors[4]);
-        setComp5.setLineWidth(2);
-
-        setComp6.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp6.setCircleColor(colors[5]);
-        setComp6.setColor(colors[5]);
-        setComp6.setLineWidth(2);
-
+        LineDataSet setComp1, setComp2, setComp3, setComp4, setComp5, setComp6, setComp7;
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(setComp1);
-        dataSets.add(setComp2);
-        dataSets.add(setComp3);
-        dataSets.add(setComp4);
-        dataSets.add(setComp5);
-        dataSets.add(setComp6);
+        if (listSuccess.size() > 0) {
+            setComp1 = new LineDataSet(listSuccess, "Success");
+            setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setComp1.setCircleColor(colors[0]);
+            setComp1.setColor(colors[0]);
+            setComp1.setLineWidth(2);
+            dataSets.add(setComp1);
+        }
+        if (listFailed.size() > 0) {
+            setComp2 = new LineDataSet(listFailed, "Failed");
+            setComp2.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setComp2.setCircleColor(colors[1]);
+            setComp2.setColor(colors[1]);
+            setComp2.setLineWidth(2);
+            dataSets.add(setComp2);
+        }
+        if (listDropped.size() > 0) {
+            setComp3 = new LineDataSet(listDropped, "Dropped");
+            setComp3.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setComp3.setCircleColor(colors[2]);
+            setComp3.setColor(colors[2]);
+            setComp3.setLineWidth(2);
+            dataSets.add(setComp3);
+        }
+        if (listBounced.size() > 0) {
+            setComp4 = new LineDataSet(listBounced, "Bounced");
+            setComp4.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setComp4.setCircleColor(colors[3]);
+            setComp4.setColor(colors[3]);
+            setComp4.setLineWidth(2);
+            dataSets.add(setComp4);
+        }
+        if (listUserCancelled.size() > 0) {
+            setComp5 = new LineDataSet(listUserCancelled, "User Cancelled");
+            setComp5.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setComp5.setCircleColor(colors[4]);
+            setComp5.setColor(colors[4]);
+            setComp5.setLineWidth(2);
+            dataSets.add(setComp5);
+        }
+        if (listPending.size() > 0) {
+            setComp6 = new LineDataSet(listPending, "Pending");
+            setComp6.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setComp6.setCircleColor(colors[5]);
+            setComp6.setColor(colors[5]);
+            setComp6.setLineWidth(2);
+            dataSets.add(setComp6);
+        }
+
+        if (listOther.size() > 0) {
+            setComp7 = new LineDataSet(listOther, "Others");
+            setComp7.setAxisDependency(YAxis.AxisDependency.LEFT);
+            setComp7.setCircleColor(colors[6]);
+            setComp7.setColor(colors[6]);
+            setComp7.setLineWidth(2);
+            dataSets.add(setComp7);
+        }
 
         if (xVals.size() < 2) {
             xVals.add("");
