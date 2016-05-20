@@ -61,7 +61,8 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
         super.onCreate(savedInstanceState);
 
         ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Fetching Data", true);
-        ringProgressDialog.setCancelable(true);
+        ringProgressDialog.setCancelable(false);
+        ringProgressDialog.setCanceledOnTouchOutside(false);
         setContentView(R.layout.activity_table_report);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

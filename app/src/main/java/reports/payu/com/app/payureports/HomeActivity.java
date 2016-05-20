@@ -1,9 +1,14 @@
 package reports.payu.com.app.payureports;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -59,7 +65,9 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Authenticating with server", true);
-        ringProgressDialog.setCancelable(true);
+        ringProgressDialog.setCancelable(false);
+        ringProgressDialog.setCanceledOnTouchOutside(false);
+
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -115,16 +123,24 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = null;
-                if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_CUSTOM))
-                    intent = new Intent(HomeActivity.this, ReportActivity.class);
-                else if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_GENERIC))
-                    intent = new Intent(HomeActivity.this, TableReportActivity.class);
-                if (intent != null) {
-                    intent.putExtra(Constants.REPORT_ID, parsedReportList.getList().get(position).getId());
-                    intent.putExtra(Constants.EMAIL, email);
-                    intent.putExtra(Constants.REPORT_NAME, parsedReportList.getList().get(position).getHeading());
-                    startActivity(intent);
+                if (!isInternetConnected(HomeActivity.this)) {
+                    Snackbar snack = Snackbar.make(findViewById(R.id.home_layout), "The Internet connection appears to be offline.", Snackbar.LENGTH_SHORT);
+                    View snackview = snack.getView();
+                    TextView tv = (TextView) snackview.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(ContextCompat.getColor(HomeActivity.this, android.R.color.white));
+                    snack.show();
+                } else {
+                    Intent intent = null;
+                    if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_CUSTOM))
+                        intent = new Intent(HomeActivity.this, ReportActivity.class);
+                    else if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_GENERIC))
+                        intent = new Intent(HomeActivity.this, TableReportActivity.class);
+                    if (intent != null) {
+                        intent.putExtra(Constants.REPORT_ID, parsedReportList.getList().get(position).getId());
+                        intent.putExtra(Constants.EMAIL, email);
+                        intent.putExtra(Constants.REPORT_NAME, parsedReportList.getList().get(position).getHeading());
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -132,7 +148,14 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void makeLoginCall() {
 
-        Session.getInstance(this).login(email);
+        if (!isInternetConnected(this)) {
+            Snackbar snack = Snackbar.make(findViewById(R.id.home_layout), "The Internet connection appears to be offline.", Snackbar.LENGTH_SHORT);
+            View snackview = snack.getView();
+            TextView tv = (TextView) snackview.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextColor(ContextCompat.getColor(HomeActivity.this, android.R.color.white));
+            snack.show();
+        } else
+            Session.getInstance(this).login(email);
     }
 
     private void logoutUserFromApp() {
@@ -186,9 +209,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                     }
 
                 } else {
-
-
-                    if (event.getValue().toString().contains("Server error")) {
+                    if (event.getValue() instanceof String) {
                         handleStatus("XYZ", event.getValue().toString());
                     } else {
                         JSONObject temp = (JSONObject) event.getValue();
@@ -236,8 +257,6 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                 logoutUserFromApp();
                 break;
         }
-
-
     }
 
     @Override
@@ -249,6 +268,21 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static boolean isInternetConnected(Context c) {
+        ConnectivityManager conMgr = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (conMgr != null) {
+            NetworkInfo resultTypeMobile = conMgr.getNetworkInfo(0);
+            NetworkInfo resultTypeWifi = conMgr.getNetworkInfo(1);
+            if (((resultTypeMobile != null && resultTypeMobile.isConnectedOrConnecting())) || (resultTypeWifi != null && resultTypeWifi.isConnectedOrConnecting())) {
+                return true;
+            } else
+                return false;
+        } else {
+            return false;
+        }
     }
 
 }

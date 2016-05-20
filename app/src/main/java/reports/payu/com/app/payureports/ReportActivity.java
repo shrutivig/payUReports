@@ -2,9 +2,12 @@ package reports.payu.com.app.payureports;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -111,7 +114,8 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Fetching Data", true);
-        ringProgressDialog.setCancelable(true);
+        ringProgressDialog.setCancelable(false);
+        ringProgressDialog.setCanceledOnTouchOutside(false);
         setContentView(R.layout.activity_report);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -157,25 +161,29 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         findViewById(R.id.filter_submit_date).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mFilterStartDateEntered) {
-                    //      Crouton.makeText(ReportActivity.this, "Start date cannot be empty.", Style.ALERT, R.id.filter_layout).setConfiguration(Constants.CONFIGURATION_SHORT).show();
-                    showSnackBar("Start Date cannot be empty.");
-                } else if (!mFilterEndDateEntered) {
-                    //             Crouton.makeText(ReportActivity.this, "End date cannot be empty.", Style.ALERT, R.id.filter_layout).setConfiguration(Constants.CONFIGURATION_SHORT).show();
-                    showSnackBar("End Date cannot be empty.");
-                } else if (mFilterStartDateEntered && mFilterEndDateEntered) {
-                    //submmit api call
-                    JSONObject dateJson = new JSONObject();
-                    try {
-                        dateJson.put(Constants.START_DATE, submitStartDate);
-                        dateJson.put(Constants.END_DATE, submitEndDate);
-                    } catch (JSONException e) {
+                if (!isInternetConnected(ReportActivity.this)) {
+                    showSnackBar("The Internet connection appears to be offline.");
+                } else {
+                    if (!mFilterStartDateEntered) {
+                        //      Crouton.makeText(ReportActivity.this, "Start date cannot be empty.", Style.ALERT, R.id.filter_layout).setConfiguration(Constants.CONFIGURATION_SHORT).show();
+                        showSnackBar("Start Date cannot be empty.");
+                    } else if (!mFilterEndDateEntered) {
+                        //             Crouton.makeText(ReportActivity.this, "End date cannot be empty.", Style.ALERT, R.id.filter_layout).setConfiguration(Constants.CONFIGURATION_SHORT).show();
+                        showSnackBar("End Date cannot be empty.");
+                    } else if (mFilterStartDateEntered && mFilterEndDateEntered) {
+                        //submmit api call
+                        JSONObject dateJson = new JSONObject();
+                        try {
+                            dateJson.put(Constants.START_DATE, submitStartDate);
+                            dateJson.put(Constants.END_DATE, submitEndDate);
+                        } catch (JSONException e) {
 
+                        }
+                        if (!ringProgressDialog.isShowing()) {
+                            ringProgressDialog.show();
+                        }
+                        fetchReportData(dateJson);
                     }
-                    if (!ringProgressDialog.isShowing()) {
-                        ringProgressDialog.show();
-                    }
-                    fetchReportData(dateJson);
                 }
             }
         });
@@ -597,7 +605,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
     private void setDataInBarChart(List<ReportData> list, boolean isDaySelected) {
 
-
+        barChart.clear();
         ArrayList<BarEntry> barComp1 = new ArrayList<>();
         ArrayList<String> xVals = new ArrayList<>();
 
@@ -688,6 +696,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
     private void setDataInLineChart(List<ReportData> l, boolean isDaySelected) {
 
+        lineChart.clear();
         ArrayList<Entry> listSuccess = new ArrayList<>();
         ArrayList<Entry> listFailed = new ArrayList<>();
         ArrayList<Entry> listDropped = new ArrayList<>();
@@ -1069,4 +1078,20 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public static boolean isInternetConnected(Context c) {
+        ConnectivityManager conMgr = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (conMgr != null) {
+            NetworkInfo resultTypeMobile = conMgr.getNetworkInfo(0);
+            NetworkInfo resultTypeWifi = conMgr.getNetworkInfo(1);
+            if (((resultTypeMobile != null && resultTypeMobile.isConnectedOrConnecting())) || (resultTypeWifi != null && resultTypeWifi.isConnectedOrConnecting())) {
+                return true;
+            } else
+                return false;
+        } else {
+            return false;
+        }
+    }
+
 }
