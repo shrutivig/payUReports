@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -301,6 +302,8 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
                     try {
                         reportsResults = (JSONObject) event.getValue();
 
+                        Log.d("SHRUTI", "reportResult " + reportsResults.toString());
+
                         if (reportsResults != null && reportsResults.has("displayReportResult") && !reportsResults.isNull("displayReportResult")) {
                             JSONArray displayReportresult = reportsResults.getJSONArray("displayReportResult");
                             initLayout(displayReportresult);
@@ -316,8 +319,16 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
                         handleStatus("XYZ", event.getValue().toString());
                     } else {
                         JSONObject temp = (JSONObject) event.getValue();
-                        String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
-                        String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
+                        String errorMessage = null;
+                        String errorCode = null;
+                        try {
+                            errorCode = temp.optString(Constants.ERROR_CODE, temp.getString("errorCode").toString());
+                            errorMessage = temp.optString(Constants.MESSAGE, temp.getString("msg").toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            errorCode = "XYZ";
+                            errorMessage = "XYZ";
+                        }
                         handleStatus(errorCode, errorMessage);
                     }
                 }
@@ -330,28 +341,41 @@ public class TableReportActivity extends AppCompatActivity implements GoogleApiC
 
         switch (errorCode) {
             case "ER101":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
             case "ER102":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
             case "ER103":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
             case "ER104":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
             case "ER105":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
             case "ER106":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
+                break;
+            case "ER107":
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+            //logoutUser();
+            case "ER108":
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+            case "ER109":
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                finish();
                 break;
             default:
                 Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();

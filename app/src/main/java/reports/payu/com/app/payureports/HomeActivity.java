@@ -31,11 +31,13 @@ import com.google.android.gms.common.api.Status;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.fabric.sdk.android.Fabric;
 import reports.payu.com.app.payureports.Model.ReportList;
 
 public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -75,6 +77,8 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
         if (getIntent() != null) {
             email = getIntent().getStringExtra(Constants.EMAIL);
+            if (!Fabric.isInitialized())
+                Fabric.with(this, new Crashlytics());
             Crashlytics.setUserEmail(email);
         }
 
@@ -213,8 +217,17 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                         handleStatus("XYZ", event.getValue().toString());
                     } else {
                         JSONObject temp = (JSONObject) event.getValue();
-                        String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
-                        String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
+
+                        String errorMessage = null;
+                        String errorCode = null;
+                        try {
+                            errorCode = temp.optString(Constants.ERROR_CODE, temp.getString("errorCode").toString());
+                            errorMessage = temp.optString(Constants.MESSAGE, temp.getString("msg").toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            errorCode = "XYZ";
+                            errorMessage = "XYZ";
+                        }
                         handleStatus(errorCode, errorMessage);
                     }
                 }

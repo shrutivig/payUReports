@@ -82,7 +82,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
     private LineChart lineChart;
     private PieChart pieChart;
     private int[] colors = new int[]{Color.rgb(28, 148, 36), Color.rgb(217, 58, 33), Color.rgb(253, 152, 39), Color.rgb(54, 105, 201),
-            Color.rgb(151, 20, 151), Color.rgb(24, 153, 196), Color.rgb(0, 0, 0)};
+            Color.rgb(151, 20, 151), Color.rgb(24, 153, 196), Color.rgb(170, 160, 57)};
     private TextView startDateFilter;
     private TextView endDateFilter;
     private Calendar startDate, endDate;
@@ -557,7 +557,7 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
         if (otherTotal > 0.0f) {
             listForPieChart.add(new Entry(otherTotal, index++));
             xValsForPieChart.add("Others");
-            colorList.add(Color.rgb(0, 0, 0));
+            colorList.add(Color.rgb(170, 160, 57));
         }
 
         if (l.getSuccess() == 0.0f && l.getPending() == 0.0f && l.getBounced() == 0.0f && l.getFailed() == 0.0f
@@ -995,8 +995,16 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
                         handleStatus("XYZ", event.getValue().toString());
                     } else {
                         JSONObject temp = (JSONObject) event.getValue();
-                        String errorCode = temp.optString(Constants.ERROR_CODE, "XYZ");
-                        String errorMessage = temp.optString(Constants.MESSAGE, "XYZ");
+                        String errorMessage = null;
+                        String errorCode = null;
+                        try {
+                            errorCode = temp.optString(Constants.ERROR_CODE, temp.getString("errorCode").toString());
+                            errorMessage = temp.optString(Constants.MESSAGE, temp.getString("msg").toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            errorCode = "XYZ";
+                            errorMessage = "XYZ";
+                        }
                         handleStatus(errorCode, errorMessage);
                     }
                 }
@@ -1010,39 +1018,47 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
 
         switch (errorCode) {
             case "ER101":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
             case "ER102":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
             case "ER103":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
             case "ER104":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
             case "ER105":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
             case "ER106":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
             case "ER107":
                 Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                finish();
                 break;
             //logoutUser();
+            case "ER108":
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+            case "ER109":
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                finish();
+                break;
             default:
                 Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 logoutUser();
                 break;
         }
-
 
     }
 
