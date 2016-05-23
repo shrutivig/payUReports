@@ -242,27 +242,27 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
         switch (errorCode) {
             case "ER101":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUserFromApp();
                 break;
             case "ER102":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUserFromApp();
                 break;
             case "ER103":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUserFromApp();
                 break;
             case "ER104":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUserFromApp();
                 break;
             case "ER105":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUserFromApp();
                 break;
             case "ER106":
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                 logoutUserFromApp();
                 break;
             default:
