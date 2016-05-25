@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,7 +41,7 @@ import java.util.List;
 import io.fabric.sdk.android.Fabric;
 import reports.payu.com.app.payureports.Model.ReportList;
 
-public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     private final String REPORT_TYPE_CUSTOM = "custom";
     private final String REPORT_TYPE_GENERIC = "generic";
@@ -60,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onResume() {
         super.onResume();
-        makeLoginCall();
+        //      makeLoginCall();
     }
 
     @Override
@@ -91,6 +92,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addConnectionCallbacks(this)
                 .build();
 
         Button signOutButton = (Button) findViewById(R.id.filter_button);
@@ -163,13 +165,15 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void logoutUserFromApp() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        launchLoginSignupActivity();
-                    }
-                });
+        if (mGoogleApiClient.isConnected()) {
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            launchLoginSignupActivity();
+                        }
+                    });
+        }
     }
 
     @Override
@@ -266,7 +270,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                 logoutUserFromApp();
                 break;
             default:
-                Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 logoutUserFromApp();
                 break;
         }
@@ -298,4 +302,13 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        makeLoginCall();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
 }
