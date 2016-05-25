@@ -7,31 +7,20 @@ import java.util.regex.Pattern;
  */
 public class Constants {
 
-    /**
-     * Tag for logging
-     */
-    public static final String TAG = "CCPayU";
     public static final boolean DEBUG = true;
-    public static final String HOME = "HOME";  //CCHomeActivity
-
-    public static final boolean CC_TRANSACTION_HISTORY_SHOW_FOOTER = true;
-
 
     /*
     ** Shared Preference File Names
     */
-    public static final String SP_SERVER_NAME = "ServerLogSharedPreference";
     public static final String SP_USER_NAME = "UserSessionSharedPreference";
 
 
     public static final String BASE_URL_IMAGE = "";
     public static final String BASE_URL = "";
-  //  public static final String SERVER_URL = "https://reporting.payu.in/reporting/reportingPostservice";
-    public static final String SERVER_URL = "https://mobiletest.payu.in/reporting/reportingPostservice";
+    public static final String SERVER_URL = "https://reporting.payu.in/reportingPostservice";
+    //  public static final String SERVER_URL = "https://mobiletest.payu.in/reporting/reportingPostservice";
 
     public static final String ACCESS_TOKEN = "token";
-    public static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", Pattern.CASE_INSENSITIVE);
-    public static final Pattern PHONE_PATTERN = Pattern.compile("[\\d]{10}$");
 
     public static final String EMAIL = "email";
     public static final String DEVICE_ID = "deviceId";
