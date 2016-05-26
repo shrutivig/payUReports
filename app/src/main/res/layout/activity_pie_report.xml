@@ -28,26 +28,75 @@
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieChart1"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_20"
-                android:layout_marginBottom="@dimen/margin_20"
                 android:layout_height="@dimen/pie_chart_fixed_height_300"
-                android:visibility="visible" />
+                android:layout_marginBottom="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_20"
+                android:visibility="gone" />
 
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieChart2"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="@dimen/margin_20"
                 android:layout_height="@dimen/pie_chart_fixed_height_300"
-                android:visibility="visible" />
+                android:layout_marginBottom="@dimen/margin_20"
+                android:visibility="gone" />
 
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieChart3"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="@dimen/margin_20"
                 android:layout_height="@dimen/pie_chart_fixed_height_300"
-                android:visibility="visible" />
+                android:layout_marginBottom="@dimen/margin_20"
+                android:visibility="gone" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/pie_chart_fixed_height_300"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:visibility="gone" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/pie_chart_fixed_height_300"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:visibility="gone" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart6"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/pie_chart_fixed_height_300"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:visibility="gone" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart7"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/pie_chart_fixed_height_300"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:visibility="gone" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart8"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/pie_chart_fixed_height_300"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:visibility="gone" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart9"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/pie_chart_fixed_height_300"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:visibility="gone" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/pie_chart_fixed_height_300"
+                android:layout_marginBottom="@dimen/margin_20"
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>

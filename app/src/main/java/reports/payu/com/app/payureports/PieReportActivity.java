@@ -102,6 +102,9 @@ public class PieReportActivity extends AppCompatActivity implements GoogleApiCli
         setUpPieCharts(null, 1);
         setUpPieCharts(null, 2);
         setUpPieCharts(null, 3);
+        setUpPieCharts(null, 4);
+        setUpPieCharts(null, 5);
+        setUpPieCharts(null, 6);
     }
 
     private void setUpPieCharts(JSONObject pieData, int pieIndex) {
@@ -117,7 +120,30 @@ public class PieReportActivity extends AppCompatActivity implements GoogleApiCli
             case 3:
                 pieChartLayout = (PieChart) findViewById(R.id.pieChart3);
                 break;
+            case 4:
+                pieChartLayout = (PieChart) findViewById(R.id.pieChart4);
+                break;
+            case 5:
+                pieChartLayout = (PieChart) findViewById(R.id.pieChart5);
+                break;
+            case 6:
+                pieChartLayout = (PieChart) findViewById(R.id.pieChart6);
+                break;
+            case 7:
+                pieChartLayout = (PieChart) findViewById(R.id.pieChart7);
+                break;
+            case 8:
+                pieChartLayout = (PieChart) findViewById(R.id.pieChart8);
+                break;
+            case 9:
+                pieChartLayout = (PieChart) findViewById(R.id.pieChart9);
+                break;
+            case 10:
+                pieChartLayout = (PieChart) findViewById(R.id.pieChart10);
+                break;
         }
+
+        pieChartLayout.setVisibility(View.VISIBLE);
 
         ArrayList<Entry> valsComp1 = new ArrayList<Entry>();
         ArrayList<Entry> valsComp2 = new ArrayList<Entry>();
