@@ -32,4 +32,5 @@
     <dimen name="text_size_60">60sp</dimen>
 
     <dimen name="label_float_size">10px</dimen>
+    <dimen name="pie_chart_fixed_height_300">300dp</dimen>
 </resources>

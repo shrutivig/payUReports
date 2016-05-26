@@ -25,6 +25,10 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".PieReportActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".LoginSignUpActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
