@@ -1043,7 +1043,6 @@ public class ReportActivity extends AppCompatActivity implements GoogleApiClient
                 break;
             case "ER107":
                 Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-                finish();
                 break;
             //logoutUser();
             case "ER108":
