@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "17619777938",
-    "project_id": "payureports-3751e"
+    "project_number": "329839263992",
+    "project_id": "payu-reports"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:17619777938:android:a60dad36261658fc",
+        "mobilesdk_app_id": "1:329839263992:android:a60dad36261658fc",
         "android_client_info": {
           "package_name": "reports.payu.com.app.payureports"
         }
       },
       "oauth_client": [
         {
-          "client_id": "17619777938-262i3nf1oeg83m0fkqmodh2dp8i3hd8h.apps.googleusercontent.com",
+          "client_id": "329839263992-jli3pl15volm2r37mepqc15rli8cni6e.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "reports.payu.com.app.payureports",
-            "certificate_hash": "B964DE07956A606862922AB8C6E2A92DCD35078B"
+            "certificate_hash": "4726FD86AB510F73D796BC3A4046894CAFEFD0C7"
           }
         },
         {
-          "client_id": "17619777938-ph7srm9vumbdqdok664vugt230mc2q60.apps.googleusercontent.com",
+          "client_id": "329839263992-f6or7gsc6octe1a4l2vv2ckvsto28sdf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDrDPh59xnhIsVALyYAr3aHcHixCVtttzM"
+          "current_key": "AIzaSyBg46KVK9fHWKFDcW1NIYp6bnQ1flU6jXk"
         }
       ],
       "services": {
