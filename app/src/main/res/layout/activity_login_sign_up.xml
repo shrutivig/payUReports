@@ -84,7 +84,8 @@
                 android:layout_marginTop="@dimen/margin_5"
                 android:text="NOTE: Sign-In with PayU ID only."
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_12" />
+                android:textSize="@dimen/text_size_12"
+                android:visibility="gone" />
 
         </RelativeLayout>
     </LinearLayout>
