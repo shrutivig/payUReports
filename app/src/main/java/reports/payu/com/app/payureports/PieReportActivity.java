@@ -148,23 +148,22 @@ public class PieReportActivity extends AppCompatActivity implements GoogleApiCli
         ArrayList<Entry> valsComp1 = new ArrayList<Entry>();
         ArrayList<Entry> valsComp2 = new ArrayList<Entry>();
 
-        Entry c1e1 = new Entry(100.000f, 0); // 0 == quarter 1
+        Entry c1e1 = new Entry(100.000f, 0);
         valsComp1.add(c1e1);
-        Entry c1e2 = new Entry(50.000f, 1); // 1 == quarter 2 ...
+        Entry c1e2 = new Entry(50.000f, 1);
         valsComp1.add(c1e2);
-        Entry c1e3 = new Entry(70.000f, 2); // 0 == quarter 1
+        Entry c1e3 = new Entry(70.000f, 2);
         valsComp1.add(c1e3);
-        Entry c1e4 = new Entry(60.000f, 3); // 1 == quarter 2 ...
+        Entry c1e4 = new Entry(60.000f, 3);
         valsComp1.add(c1e4);
-        // and so on ...
 
-        Entry c2e1 = new Entry(120.000f, 0); // 0 == quarter 1
+        Entry c2e1 = new Entry(120.000f, 0);
         valsComp2.add(c2e1);
-        Entry c2e2 = new Entry(110.000f, 1); // 1 == quarter 2 ...
+        Entry c2e2 = new Entry(110.000f, 1);
         valsComp2.add(c2e2);
-        Entry c2e3 = new Entry(100.000f, 2); // 0 == quarter 1
+        Entry c2e3 = new Entry(100.000f, 2);
         valsComp2.add(c2e3);
-        Entry c2e4 = new Entry(150.000f, 3); // 1 == quarter 2 ...
+        Entry c2e4 = new Entry(150.000f, 3);
         valsComp2.add(c2e4);
 
         ArrayList<String> xVals = new ArrayList<String>();
@@ -172,7 +171,6 @@ public class PieReportActivity extends AppCompatActivity implements GoogleApiCli
         xVals.add("Quarter2");
         xVals.add("Quarter3");
         xVals.add("Quarter4");
-
 
         PieDataSet setPie1 = new PieDataSet(valsComp1, "Company 1");
         setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -188,7 +186,6 @@ public class PieReportActivity extends AppCompatActivity implements GoogleApiCli
         pieChartLayout.setTransparentCircleRadius(27f);
         pieChartLayout.getLegend().setPosition(Legend.LegendPosition.LEFT_OF_CHART_CENTER);
         pieChartLayout.animateY(2000);
-
 
     }
 

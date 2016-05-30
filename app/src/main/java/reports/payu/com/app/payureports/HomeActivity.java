@@ -138,11 +138,11 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                     snack.show();
                 } else {
                     Intent intent = null;
-                /*    if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_CUSTOM))
+                    if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_CUSTOM))
                         intent = new Intent(HomeActivity.this, ReportActivity.class);
                     else if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_GENERIC))
-                        intent = new Intent(HomeActivity.this, TableReportActivity.class);  */
-                    intent = new Intent(HomeActivity.this, PieReportActivity.class);
+                        intent = new Intent(HomeActivity.this, TableReportActivity.class);
+                    //       intent = new Intent(HomeActivity.this, PieReportActivity.class);
                     if (intent != null) {
                         intent.putExtra(Constants.REPORT_ID, parsedReportList.getList().get(position).getId());
                         intent.putExtra(Constants.EMAIL, email);
