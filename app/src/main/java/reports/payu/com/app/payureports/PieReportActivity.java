@@ -267,8 +267,6 @@ public class PieReportActivity extends AppCompatActivity implements GoogleApiCli
                     try {
                         reportsResults = (JSONObject) event.getValue();
 
-                        Log.d("SHRUTI", "reportResult " + reportsResults.toString());
-
                         if (reportsResults != null && reportsResults.has("displayReportResult") && !reportsResults.isNull("displayReportResult")) {
                             JSONArray displayReportresult = reportsResults.getJSONArray("displayReportResult");
                             initPieLayout(displayReportresult);
