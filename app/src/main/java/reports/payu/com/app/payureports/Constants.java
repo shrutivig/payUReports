@@ -17,8 +17,8 @@ public class Constants {
 
     public static final String BASE_URL_IMAGE = "";
     public static final String BASE_URL = "";
-    public static final String SERVER_URL = "https://reporting.payu.in/reportingPostservice";
-    //  public static final String SERVER_URL = "https://mobiletest.payu.in/reporting/reportingPostservice";
+    // public static final String SERVER_URL = "https://reporting.payu.in/reportingPostservice";
+    public static final String SERVER_URL = "https://mobiletest.payu.in/reporting/reportingPostservice";
 
     public static final String ACCESS_TOKEN = "token";
 

@@ -46,6 +46,7 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private final String REPORT_TYPE_CUSTOM = "custom";
     private final String REPORT_TYPE_GENERIC = "generic";
+    private final String REPORT_TYPE_PIE = "piechart";
     private GoogleApiClient mGoogleApiClient;
     ProgressDialog ringProgressDialog;
     public String email;
@@ -142,7 +143,9 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                         intent = new Intent(HomeActivity.this, ReportActivity.class);
                     else if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_GENERIC))
                         intent = new Intent(HomeActivity.this, TableReportActivity.class);
-                    //       intent = new Intent(HomeActivity.this, PieReportActivity.class);
+                    else if (parsedReportList.getList().get(position).getReportType().equals(REPORT_TYPE_PIE))
+                        intent = new Intent(HomeActivity.this, PieReportActivity.class);
+
                     if (intent != null) {
                         intent.putExtra(Constants.REPORT_ID, parsedReportList.getList().get(position).getId());
                         intent.putExtra(Constants.EMAIL, email);

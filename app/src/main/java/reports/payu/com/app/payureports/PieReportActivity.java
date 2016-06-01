@@ -2,13 +2,13 @@ package reports.payu.com.app.payureports;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +19,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -33,7 +35,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+
+import reports.payu.com.app.payureports.Model.ReportResults;
 
 /**
  * Created by shruti.vig on 5/26/16.
@@ -43,7 +48,10 @@ public class PieReportActivity extends AppCompatActivity implements GoogleApiCli
     private String reportId, email;
     private JSONObject reportsResults;
     ProgressDialog ringProgressDialog;
+    private float totalDataSum = 0.0f;
     private GoogleApiClient mGoogleApiClient;
+    private int[] colors = new int[]{Color.rgb(28, 148, 36), Color.rgb(217, 58, 33), Color.rgb(253, 152, 39), Color.rgb(54, 105, 201),
+            Color.rgb(151, 20, 151), Color.rgb(24, 153, 196), Color.rgb(170, 160, 57), Color.rgb(138, 19, 77), Color.rgb(153, 217, 255), Color.rgb(255, 102, 102)};
 
     @Override
     protected void onStart() {
@@ -98,99 +106,156 @@ public class PieReportActivity extends AppCompatActivity implements GoogleApiCli
     }
 
     private void fetchPieChartData() {
-        //  Session.getInstance(this).fetchPieReportData(email, reportId);
-        setUpPieCharts(null, 1);
-        setUpPieCharts(null, 2);
-        setUpPieCharts(null, 3);
-        setUpPieCharts(null, 4);
-        setUpPieCharts(null, 5);
-        setUpPieCharts(null, 6);
+        Session.getInstance(this).fetchReportData(email, reportId, null);
     }
 
-    private void setUpPieCharts(JSONObject pieData, int pieIndex) {
+    private void setUpPieCharts(JSONArray pieData, PieChart pieChartLayout, int pieChartIndex) {
         ringProgressDialog.dismiss();
-        PieChart pieChartLayout = null;
-        switch (pieIndex) {
-            case 1:
-                pieChartLayout = (PieChart) findViewById(R.id.pieChart1);
-                break;
-            case 2:
-                pieChartLayout = (PieChart) findViewById(R.id.pieChart2);
-                break;
-            case 3:
-                pieChartLayout = (PieChart) findViewById(R.id.pieChart3);
-                break;
-            case 4:
-                pieChartLayout = (PieChart) findViewById(R.id.pieChart4);
-                break;
-            case 5:
-                pieChartLayout = (PieChart) findViewById(R.id.pieChart5);
-                break;
-            case 6:
-                pieChartLayout = (PieChart) findViewById(R.id.pieChart6);
-                break;
-            case 7:
-                pieChartLayout = (PieChart) findViewById(R.id.pieChart7);
-                break;
-            case 8:
-                pieChartLayout = (PieChart) findViewById(R.id.pieChart8);
-                break;
-            case 9:
-                pieChartLayout = (PieChart) findViewById(R.id.pieChart9);
-                break;
-            case 10:
-                pieChartLayout = (PieChart) findViewById(R.id.pieChart10);
-                break;
+
+        totalDataSum = 0.0f;
+
+        ArrayList<Entry> data = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
+
+        for (int i = 0; i < pieData.length(); i++) {
+            try {
+                JSONObject pieObject = (JSONObject) pieData.get(i);
+                if (pieObject.has("count") && !pieObject.isNull("count")) {
+                    String value = pieObject.getString("count");
+                    totalDataSum = totalDataSum + Float.parseFloat(value);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
-        pieChartLayout.setVisibility(View.VISIBLE);
 
-        ArrayList<Entry> valsComp1 = new ArrayList<Entry>();
-        ArrayList<Entry> valsComp2 = new ArrayList<Entry>();
+        for (int i = 0; i < pieData.length(); i++) {
 
-        Entry c1e1 = new Entry(100.000f, 0);
-        valsComp1.add(c1e1);
-        Entry c1e2 = new Entry(50.000f, 1);
-        valsComp1.add(c1e2);
-        Entry c1e3 = new Entry(70.000f, 2);
-        valsComp1.add(c1e3);
-        Entry c1e4 = new Entry(60.000f, 3);
-        valsComp1.add(c1e4);
+            try {
+                JSONObject pieObject = (JSONObject) pieData.get(i);
+                if (pieObject.has("count") && !pieObject.isNull("count")) {
+                    String value = pieObject.getString("count");
+                    Entry entry = new Entry(Float.parseFloat(value), i);
+                    data.add(entry);
+                }
 
-        Entry c2e1 = new Entry(120.000f, 0);
-        valsComp2.add(c2e1);
-        Entry c2e2 = new Entry(110.000f, 1);
-        valsComp2.add(c2e2);
-        Entry c2e3 = new Entry(100.000f, 2);
-        valsComp2.add(c2e3);
-        Entry c2e4 = new Entry(150.000f, 3);
-        valsComp2.add(c2e4);
+                if (pieObject.has("status") && !pieObject.isNull("status"))
+                    labels.add(pieObject.getString("status"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        xVals.add("Quarter1");
-        xVals.add("Quarter2");
-        xVals.add("Quarter3");
-        xVals.add("Quarter4");
-
-        PieDataSet setPie1 = new PieDataSet(valsComp1, "Company 1");
+        PieDataSet setPie1 = new PieDataSet(data, "");
         setPie1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setPie1.setColors(ColorTemplate.COLORFUL_COLORS);
+        setPie1.setColors(colors);
 
-        PieData mData3 = new PieData(xVals, setPie1);
-        mData3.setValueFormatter(new PercentFormatter());
-        mData3.setValueTextSize(10f);
+        PieData mData3 = new PieData(labels, setPie1);
+        mData3.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+
+                float percentValue = (entry.getVal() / totalDataSum) * 100;
+                if (percentValue < 1f)
+                    return "";
+                else
+                    return String.format("%.2f", percentValue) + "%";
+            }
+        });
+        mData3.setValueTextSize(8f);
         pieChartLayout.setData(mData3);
+        pieChartLayout.setDescription("Data Set " + pieChartIndex);
         pieChartLayout.setDescriptionTextSize(20f);
         pieChartLayout.setHoleRadius(24f);
         pieChartLayout.setDrawSliceText(false);
         pieChartLayout.setTransparentCircleRadius(27f);
+        pieChartLayout.setUsePercentValues(true);
         pieChartLayout.getLegend().setPosition(Legend.LegendPosition.LEFT_OF_CHART_CENTER);
         pieChartLayout.animateY(2000);
 
     }
 
     private void initPieLayout(JSONArray displayReportresult) {
-
+        int numberOfTables = displayReportresult.length();
+        try {
+            while (numberOfTables > 0) {
+                switch (numberOfTables) {
+                    case 1:
+                        JSONArray dataForTable1 = displayReportresult.getJSONArray(0);
+                        PieChart piechart1 = (PieChart) findViewById(R.id.pieChart1);
+                        setUpPieCharts(dataForTable1, piechart1, 1);
+                        piechart1.setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                    case 2:
+                        JSONArray dataForTable2 = displayReportresult.getJSONArray(1);
+                        PieChart piechart2 = (PieChart) findViewById(R.id.pieChart2);
+                        setUpPieCharts(dataForTable2, piechart2, 2);
+                        piechart2.setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                    case 3:
+                        JSONArray dataForTable3 = displayReportresult.getJSONArray(2);
+                        PieChart piechart3 = (PieChart) findViewById(R.id.pieChart3);
+                        setUpPieCharts(dataForTable3, piechart3, 3);
+                        piechart3.setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                    case 4:
+                        JSONArray dataForTable4 = displayReportresult.getJSONArray(3);
+                        PieChart piechart4 = (PieChart) findViewById(R.id.pieChart4);
+                        setUpPieCharts(dataForTable4, piechart4, 4);
+                        piechart4.setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                    case 5:
+                        JSONArray dataForTable5 = displayReportresult.getJSONArray(4);
+                        PieChart piechart5 = (PieChart) findViewById(R.id.pieChart5);
+                        setUpPieCharts(dataForTable5, piechart5, 5);
+                        piechart5.setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                    case 6:
+                        JSONArray dataForTable6 = displayReportresult.getJSONArray(5);
+                        PieChart piechart6 = (PieChart) findViewById(R.id.pieChart6);
+                        setUpPieCharts(dataForTable6, piechart6, 6);
+                        piechart6.setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                    case 7:
+                        JSONArray dataForTable7 = displayReportresult.getJSONArray(6);
+                        PieChart piechart7 = (PieChart) findViewById(R.id.pieChart7);
+                        setUpPieCharts(dataForTable7, piechart7, 7);
+                        piechart7.setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                    case 8:
+                        JSONArray dataForTable8 = displayReportresult.getJSONArray(7);
+                        PieChart piechart8 = (PieChart) findViewById(R.id.pieChart8);
+                        setUpPieCharts(dataForTable8, piechart8, 8);
+                        piechart8.setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                    case 9:
+                        JSONArray dataForTable9 = displayReportresult.getJSONArray(8);
+                        PieChart piechart9 = (PieChart) findViewById(R.id.pieChart9);
+                        setUpPieCharts(dataForTable9, piechart9, 8);
+                        piechart9.setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                    case 10:
+                        JSONArray dataForTable10 = displayReportresult.getJSONArray(9);
+                        PieChart piechart10 = (PieChart) findViewById(R.id.pieChart10);
+                        setUpPieCharts(dataForTable10, piechart10, 10);
+                        piechart10.setVisibility(View.VISIBLE);
+                        numberOfTables--;
+                        break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -202,9 +267,11 @@ public class PieReportActivity extends AppCompatActivity implements GoogleApiCli
                     try {
                         reportsResults = (JSONObject) event.getValue();
 
+                        Log.d("SHRUTI", "reportResult " + reportsResults.toString());
+
                         if (reportsResults != null && reportsResults.has("displayReportResult") && !reportsResults.isNull("displayReportResult")) {
                             JSONArray displayReportresult = reportsResults.getJSONArray("displayReportResult");
-
+                            initPieLayout(displayReportresult);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -233,6 +300,7 @@ public class PieReportActivity extends AppCompatActivity implements GoogleApiCli
                 break;
             default:
         }
+
     }
 
     private void handleStatus(String errorCode, String errorMessage) {

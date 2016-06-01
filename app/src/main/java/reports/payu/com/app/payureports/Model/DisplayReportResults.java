@@ -29,4 +29,5 @@ public class DisplayReportResults {
     public List<ReportData> getMonth() {
         return Month;
     }
+
 }
